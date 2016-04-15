@@ -6,7 +6,7 @@ for WoW 5.0 MoP
 
 -- Tidy Bar
 local TidyBarScale = 1
-local HideMainButtonArt = true
+local HideMainButtonArt = false
 local HideExperienceBar = true
 
 local MenuButtonFrames = {
