@@ -10,20 +10,23 @@ local HideMainButtonArt = false
 local HideExperienceBar = false
 
 local MenuButtonFrames = {
-	HelpMicroButton,
-	MainMenuMicroButton,
-	EJMicroButton,
-	CompanionsMicroButton,		-- Added for 5.x
-	LFDMicroButton,
-	PVPMicroButton,
-	GuildMicroButton,
-	QuestLogMicroButton,
-	AchievementMicroButton,
-	TalentMicroButton,
-	SpellbookMicroButton,
-	CharacterMicroButton,
-	StoreMicroButton,
+	CharacterMicroButton,     -- Character Info
+	SpellbookMicroButton,     -- Spellbook & Abilities
+	TalentMicroButton,        -- Specialization & Talents
+	AchievementMicroButton,   -- Achievements
+	QuestLogMicroButton,      -- Quest Log
+	GuildMicroButton,         -- Guild Finder
+	LFDMicroButton,           -- Group Finder
+  CollectionsMicroButton,   -- Collections
+	EJMicroButton,            -- Dungeon Journal
+	StoreMicroButton,         -- Shop
+	MainMenuMicroButton,      -- Game Menu
 }
+
+-- Depricated on or before 6.1
+--	HelpMicroButton,
+--	CompanionsMicroButton,		-- Added for 5.x
+--	PVPMicroButton,
 
 local BagButtonFrameList = {
 	MainMenuBarBackpackButton,
