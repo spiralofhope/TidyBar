@@ -1,25 +1,27 @@
-﻿-- Tidy Bar
---[[
-Notes:
-- Vehicle Destroyed
-- The animation finishes, and then the anchors are reset
-
+﻿--[[
+Tidy Bar
+for WoW 5.0 MoP
 --]]
+
+
+-- Tidy Bar
 local TidyBarScale = 1
+local HideMainButtonArt = false
+local HideExperienceBar = true
 
 local MenuButtonFrames = {
-	CharacterMicroButton,
-	SpellbookMicroButton,
-	TalentMicroButton,
-	AchievementMicroButton,
-	QuestLogMicroButton,
-	GuildMicroButton,
-	PVPMicroButton,
-	LFDMicroButton,
-	MainMenuMicroButton,
 	HelpMicroButton,
+	MainMenuMicroButton,
 	EJMicroButton,
-	RaidMicroButton,
+	CompanionsMicroButton,		-- Added for 5.x
+	LFDMicroButton,
+	PVPMicroButton,
+	GuildMicroButton,
+	QuestLogMicroButton,
+	AchievementMicroButton,
+	TalentMicroButton,
+	SpellbookMicroButton,
+	CharacterMicroButton,
 }
 
 local BagButtonFrameList = {
@@ -88,6 +90,15 @@ local function RefreshMainActionBars()
 	local anchor
 	local anchorOffset = 4
 	local repOffset = 0
+	local initialOffset = 32
+	
+	-- [[
+	-- Hides Rep Bars
+	if HideExperienceBar == true or HideMainButtonArt == true then
+		MainMenuExpBar:Hide()
+		ReputationWatchBar:Hide()
+	end
+	--]]
 	
 	if MainMenuExpBar:IsShown() then repOffset = 9 end
 	if ReputationWatchBar:IsShown() then repOffset = repOffset + 9 end
@@ -100,36 +111,59 @@ local function RefreshMainActionBars()
 		anchorOffset = 8 + repOffset
 	end
 
-    if MultiBarBottomRight:IsShown() then
+	--[[
+	ExtraActionBarFrame
+	StanceBarFrame, StanceBarLeft (textures), StanceButton1 (buttons)
+	/run local f = GetMouseFocus(); if f then DEFAULT_CHAT_FRAME:AddMessage(f:GetName()) end
+	--]]
+	
+	if MultiBarBottomRight:IsShown() then
+		--print("MultiBarBottomRight")
 		MultiBarBottomRight:ClearAllPoints()
 		MultiBarBottomRight:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset )
 		anchor = MultiBarBottomRight
 		anchorOffset = 4
 	end
-
-	if ShapeshiftButton1:IsShown() then
-		ShapeshiftButton1:ClearAllPoints();
-		ShapeshiftButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
-		anchor = ShapeshiftButton1
+	
+	-- PetActionBarFrame, PetActionButton1
+	if PetActionBarFrame:IsShown() then
+		--print("PetActionBarFrame")
+		PetActionButton1:ClearAllPoints()
+		PetActionButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT",  initialOffset, anchorOffset)
+		anchor = PetActionButton1
 		anchorOffset = 4
 	end
 	
+	-- [[ StanceBarFrame
+	if StanceBarFrame:IsShown() then
+		--print("StanceBarFrame")
+		StanceButton1:ClearAllPoints();
+		StanceButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
+		anchor = StanceButton1
+		--anchorOffset = 4
+		anchorOffset = 4
+	end
+	--]]
+	
+	--[[		-- Totem bar is not in mists
 	if MultiCastActionBarFrame:IsShown() then	-- Totem bar
+		--print("MultiCastActionBarFrame")
 		MultiCastActionBarFrame:ClearAllPoints();
 		MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
 		anchor = MultiCastActionBarFrame
 		anchorOffset = 4
 	end
+	--]]
 
-	PetActionButton1:ClearAllPoints()
-	PetActionButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset)
-	anchor = PetActionButton1
-	anchorOffset = 4
+	-- StanceButtonX
 
-	PossessButton1:ClearAllPoints();
-	PossessButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
+
+	-- PossessBarFrame, PossessButton1
+	PossessBarFrame:ClearAllPoints();
+	PossessBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);		
 end
 
+	
 function SetSidebarAlpha()
 	local Alpha = 0
 	if MouseInSidebar or ButtonGridIsShown then Alpha = 1 end
@@ -193,9 +227,11 @@ local function RefreshPositions()
 	-- Hide backgrounds
 	ForceTransparent(SlidingActionBarTexture0)
 	ForceTransparent(SlidingActionBarTexture1)
-    ForceTransparent(ShapeshiftBarLeft)
-    ForceTransparent(ShapeshiftBarMiddle)
-    ForceTransparent(ShapeshiftBarRight)
+	-- [[ Shapeshift, Aura, and Stance
+    ForceTransparent(StanceBarLeft)
+    ForceTransparent(StanceBarMiddle)
+    ForceTransparent(StanceBarRight)
+	--]]
     ForceTransparent(PossessBackground1)
     ForceTransparent(PossessBackground2)
 
@@ -259,7 +295,10 @@ do
  	MainMenuBarLeftEndCap:SetPoint("RIGHT", MainMenuBar, "LEFT", 32, 0);
     MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBar, "RIGHT", -32, 0); 
 	
-
+	-- Hide 'ring' around the stance/shapeshift button
+	for i = 1, 10 do
+		_G["StanceButton"..i.."NormalTexture2"]:SetTexture(Empty_Art)
+	end
 	
 	-- Hide Unwanted Art
 	MainMenuBarPageNumber:Hide();
@@ -302,6 +341,14 @@ do
 	ConfigureCornerBars()
 	CornerMenuFrame:SetAlpha(0)
 	
+	if HideMainButtonArt == true then
+		-- Hide Standard Background Art
+		MainMenuBarTexture0:Hide()
+		MainMenuBarTexture1:Hide()
+		MainMenuBarLeftEndCap:Hide()
+		MainMenuBarRightEndCap:Hide()
+	end
+	
 	MainMenuBar:HookScript("OnShow", function() 
 		--print("Showing")
 		RefreshPositions() 
@@ -322,95 +369,6 @@ do
 	for i = 1, 12 do HookFrame_SideBar( _G["MultiBarLeftButton"..i] ) end
 end
 
-
------------------------------------------------------------------------------
--- New Artwork
-do
-
-	--for i = 1, 12 do HookFrame_SideBar( _G["MultiBarRightButton"..i] ) end
-	
-	--[[
-		MainMenuBar:SetScale(TidyBarScale)
-		MultiBarRight:SetScale(TidyBarScale)
-		MultiBarLeft
-	--]]
-	
-	--MainMenuBarTexture0:SetTexture(Empty_art)
-	--MainMenuBarTexture1:SetTexture(Empty_art)
-	--MainMenuBarLeftEndCap:SetTexture(Empty_art)
-	--MainMenuBarRightEndCap:SetTexture(Empty_art)
-	
-	local function dummy() end
-	
-	-- [[
-	-- /run SetAllButtonShapes()
-	function SetAllButtonShapes()
-		for i = 1, 12 do 
-			local name = "ActionButton"..i
-			local bu = _G["ActionButton"..i]
-			local ic = _G[name.."Icon"]
-			local co  = _G[name.."Count"]
-			local bo  = _G[name.."Border"]
-			local ho  = _G[name.."HotKey"]
-			local cd  = _G[name.."Cooldown"]
-			local na  = _G[name.."Name"]
-			local fl  = _G[name.."Flash"]
-			local nt  = _G[name.."NormalTexture"]
-			
-			--bu:ClearAllPoints()
-			bu:SetHeight(16)
-
-			ic:SetAlpha(.25)
-			ic:ClearAllPoints()
-			ic:SetHeight(16)
-			ic:SetWidth(25)
-			ic:SetPoint("TOPLEFT", bu)
-			print(ic:GetTexture())
-			
-			--local OldSetHeight = ic.SetHeight
-			local function NewSetHeight(...)
-				print(...)
-				--return OldSetHeight(...)
-			end
-			
-			--ic.SetHeight = NewSetHeight
-			
-			--nt:SetAllPoints(bu)
-			--ic:SetAllPoints(bu)
-			--bo:SetAllPoints(bu)
-			
-			--disable resetting of textures
-			--fl.SetTexture = dummy
-			--bu.SetHighlightTexture = dummy
-			--bu.SetPushedTexture = dummy
-			--bu.SetCheckedTexture = dummy
-			--bu.SetNormalTexture = dummy
-			
-			--bo.SetAllPoints = function() bo:SetAllPoints(bu) end
-			--bo.SetPoint = dummy
-			--bo.SetHeight = dummy
-			--bo.SetWidth = dummy
-			--bo.SetSize = dummy
-
-			
-		end
-		
-		print(GetTime(), "Setting Buttons")
-	end
-	
-	--SetAllButtonShapes()
-	
-	--hooksecurefunc("ActionButton_Update", SetAllButtonShapes)
-	--]]
-	
-	--[[
-	  hooksecurefunc("ActionButton_Update",         rActionButtonStyler_AB_style)
-	  hooksecurefunc("ShapeshiftBar_Update",        rActionButtonStyler_AB_styleshapeshift)
-	  hooksecurefunc("ShapeshiftBar_UpdateState",   rActionButtonStyler_AB_styleshapeshift)
-	  hooksecurefunc("PetActionBar_Update",         rActionButtonStyler_AB_stylepet)
-	--]]
-end
-
 -----------------------------------------------------------------------------
 -- Corner Menu
 do
@@ -421,7 +379,7 @@ do
 	
     MainMenuBarBackpackButton:ClearAllPoints();
 	MainMenuBarBackpackButton:SetPoint("BOTTOM");
-	MainMenuBarBackpackButton:SetPoint("RIGHT", -55, 0);
+	MainMenuBarBackpackButton:SetPoint("RIGHT", -60, 0);
 	--MainMenuBarBackpackButton:SetScale(.8)
 	
 	-- Setup the Corner Buttons
@@ -454,14 +412,20 @@ TidyBar:SetScript("OnEvent", EventHandler);
 TidyBar:SetFrameStrata("TOOLTIP")
 TidyBar:Show()
 
---[[
-local function TestEvent(frame, event, ...)
-	if event == "COMBAT_LOG_EVENT_UNFILTERED" or event == "COMBAT_LOG_EVENT" then return end
-	print(event, ...)
-end
-local tester = CreateFrame("Frame", nil, WorldFrame)
-tester:SetScript("OnEvent", TestEvent)
-tester:RegisterAllEvents()
---]]
+SLASH_TIDYBAR1 = '/tidybar'
+SlashCmdList['TIDYBAR'] = RefreshPositions;
 
+local function GetMouseoverFrame() 
+	local frame = EnumerateFrames(); -- Get the first frame
+	while frame do
+	  if ( frame:IsVisible() and MouseIsOver(frame) ) then
+		print(frame:GetName() or string.format("[Unnamed Frame: %s]", tostring(frame)), frame.this);
+	  end
+	  if frame and frame.GetObjectType then frame = EnumerateFrames(frame); -- Get the next frame
+	  else frame = nil end
+	end
+end;
+
+SLASH_GETMOUSEOVERFRAME1 = '/getmouseoverframe'
+SlashCmdList['GETMOUSEOVERFRAME'] = GetMouseoverFrame
 

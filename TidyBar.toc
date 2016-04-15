@@ -1,7 +1,7 @@
-﻿## Interface: 40300
+﻿## Interface: 50001
 ## Author: Binny
 ## Title: Tidy Bar
-## Notes: Ultra Slim-Fast for your Action Bar
-## Version: 4.9
+## Notes: Slim-Fast for your Action Bar
+## Version: 5.0
 
 TidyBar.lua
