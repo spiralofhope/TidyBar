@@ -1,7 +1,7 @@
-﻿## Interface: 50100
+﻿## Interface: 50400
 ## Author: Binny
 ## Title: Tidy Bar
 ## Notes: Slim-Fast for your Action Bar
-## Version: 5.1
+## Version: 5.2
 
 TidyBar.lua

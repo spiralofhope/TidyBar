@@ -7,7 +7,7 @@ for WoW 5.0 MoP
 -- Tidy Bar
 local TidyBarScale = 1
 local HideMainButtonArt = false
-local HideExperienceBar = true
+local HideExperienceBar = false
 
 local MenuButtonFrames = {
 	HelpMicroButton,
@@ -22,6 +22,7 @@ local MenuButtonFrames = {
 	TalentMicroButton,
 	SpellbookMicroButton,
 	CharacterMicroButton,
+	StoreMicroButton,
 }
 
 local BagButtonFrameList = {
@@ -81,7 +82,7 @@ local function DelayEvent(functionToCall, timeToCall)
 end
 -- Event Delay
 
-local function ForceTransparent(frame) 
+local function ForceTransparent(frame)
 		frame:Hide()
 		frame:SetAlpha(0)
 end
@@ -91,11 +92,11 @@ local function RefreshMainActionBars()
 	local anchorOffset = 8
 	local reputationBarOffset = 16
 	local initialOffset = 32
-	
+
 	-- [[
 	-- Hides Rep Bars
 	if HideExperienceBar == true or HideMainButtonArt == true then
---		print("XP Bar Hidden")
+		print("XP Bar Hidden")
 		MainMenuExpBar:Hide()
 		MainMenuExpBar:SetHeight(.001)
 		ReputationWatchBar:Hide()
@@ -104,18 +105,18 @@ local function RefreshMainActionBars()
 	--]]
 
 	--HideExperienceBar
-	
-	if MainMenuExpBar:IsShown() then 
-		--reputationBarOffset = 9 
+
+	if MainMenuExpBar:IsShown() then
+		--reputationBarOffset = 9
 		anchorOffset = 16
 	end
-	if ReputationWatchBar:IsShown() then 
-		--reputationBarOffset = reputationBarOffset + 9 
+	if ReputationWatchBar:IsShown() then
+		--reputationBarOffset = reputationBarOffset + 9
 		anchorOffset = 25
 	end
-	
+
 	reputationBarOffset = anchorOffset
-	
+
 	if MultiBarBottomLeft:IsShown() then
 		MultiBarBottomLeft:ClearAllPoints()
 		MultiBarBottomLeft:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset )
@@ -125,7 +126,7 @@ local function RefreshMainActionBars()
 		anchor = ActionButton1;
 		anchorOffset = 8 + reputationBarOffset
 	end
-	
+
 	if MultiBarBottomRight:IsShown() then
 		--print("MultiBarBottomRight")
 		MultiBarBottomRight:ClearAllPoints()
@@ -133,7 +134,7 @@ local function RefreshMainActionBars()
 		anchor = MultiBarBottomRight
 		anchorOffset = 4
 	end
-	
+
 	-- PetActionBarFrame, PetActionButton1
 	if PetActionBarFrame:IsShown() then
 		--print("PetActionBarFrame")
@@ -142,7 +143,7 @@ local function RefreshMainActionBars()
 		anchor = PetActionButton1
 		anchorOffset = 4
 	end
-	
+
 	-- [[ StanceBarFrame
 	if StanceBarFrame:IsShown() then
 		--print("StanceBarFrame")
@@ -153,7 +154,7 @@ local function RefreshMainActionBars()
 		anchorOffset = 4
 	end
 	--]]
-	
+
 	--[[		-- Totem bar is not in mists
 	if MultiCastActionBarFrame:IsShown() then	-- Totem bar
 		--print("MultiCastActionBarFrame")
@@ -169,14 +170,14 @@ local function RefreshMainActionBars()
 
 	-- PossessBarFrame, PossessButton1
 	PossessBarFrame:ClearAllPoints();
-	PossessBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);		
+	PossessBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
 end
 
-	
+
 function SetSidebarAlpha()
 	local Alpha = 0
 	if MouseInSidebar or ButtonGridIsShown then Alpha = 1 end
-	if SpellFlyout:IsShown() then 
+	if SpellFlyout:IsShown() then
 		DelayEvent(SetSidebarAlpha, GetTime()+.5)
 	else
 		for i = 1, 12 do
@@ -203,7 +204,7 @@ local function HookFrame_SideBar(frameTarget)
 end
 
 local function ConfigureCornerBars()
-	if not UnitHasVehicleUI("player") then 
+	if not UnitHasVehicleUI("player") then
 		CharacterMicroButton:ClearAllPoints();
 		CharacterMicroButton:SetPoint("BOTTOMRIGHT", CornerMenuFrame.MicroButtons, "BOTTOMRIGHT", -270, 0);
 		for i, name in pairs(MenuButtonFrames) do name:SetParent(CornerMenuFrame.MicroButtons) end
@@ -219,9 +220,9 @@ local function ConfigureSideBars()
 		-- Right Bar 2
 		if MultiBarLeft:IsShown() then
 			MultiBarLeft:EnableMouse();
-			SideMouseoverFrame:SetPoint("TOPLEFT", MultiBarLeft, "TOPLEFT", -6,0)	
+			SideMouseoverFrame:SetPoint("TOPLEFT", MultiBarLeft, "TOPLEFT", -6,0)
 		else SideMouseoverFrame:SetPoint("TOPLEFT", MultiBarRight, "TOPLEFT", -6,0) end
-	else SideMouseoverFrame:Hide() 	end	
+	else SideMouseoverFrame:Hide() 	end
 end
 
 
@@ -237,19 +238,19 @@ local function RefreshExperienceBars()
 	MainMenuBarTexture2:SetAlpha(0)
 	MainMenuBarTexture3:SetAlpha(0)
 	for i=1,19 do _G["MainMenuXPBarDiv"..i]:SetTexture(Empty_Art) end
-	
-	
-	
+
+
+
 	-- Hide Rested State
 	ExhaustionLevelFillBar:SetTexture(Empty_Art)
 	ExhaustionTick:SetAlpha(0)
-	
+
 	-- Max-level Rep Bar
 	MainMenuMaxLevelBar0:SetAlpha(0)
 	MainMenuMaxLevelBar1:SetAlpha(0)
 	MainMenuMaxLevelBar2:SetAlpha(0)
 	MainMenuMaxLevelBar3:SetAlpha(0)
-	
+
 	-- Rep Bar Bubbles (For the Rep Bar)
 	--ReputationWatchBarTexture0:SetAlpha(0)
 	ReputationWatchBarTexture1:SetAlpha(0)
@@ -260,25 +261,25 @@ local function RefreshExperienceBars()
 	ReputationWatchBarTexture0:ClearAllPoints()
 	ReputationWatchBarTexture0:SetPoint("LEFT", ReputationWatchBar, "LEFT", 0, 2)
 	ReputationWatchBarTexture3:ClearAllPoints()
-	ReputationWatchBarTexture3:SetPoint("LEFT", ReputationWatchBarTexture0, "RIGHT")	
+	ReputationWatchBarTexture3:SetPoint("LEFT", ReputationWatchBarTexture0, "RIGHT")
 
 	-- Rep Bar Bubbles (for the XP bar?)
 	ReputationXPBarTexture0:SetAlpha(0)
 	ReputationXPBarTexture1:SetAlpha(0)
 	ReputationXPBarTexture2:SetAlpha(0)
 	ReputationXPBarTexture3:SetAlpha(0)
-	
+
 	--[[
 	--local XPBarLeft = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
 	--local XPBarRight = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
-	
+
 	local XPBarLeft = _G["MainMenuXPBarDiv1"]
 	local XPBarRight = _G["MainMenuXPBarDiv2"]
-	
+
 	XPBarLeft:SetTexture("Interface\\PaperDollInfoFrame\\UI-ReputationWatchBar")
 	XPBarLeft:SetSize(256, 10)
 	XPBarLeft:SetPoint("TOPLEFT", MainMenuExpBar, "TOPLEFT", 0, 100)
-	
+
 	XPBarRight:SetTexture(ReputationWatchBarTexture3:GetTexture())
 	XPBarRight:SetSize(ReputationWatchBarTexture3:GetSize())
 	XPBarRight:SetPoint("LEFT", XPBarLeft, "RIGHT")
@@ -287,14 +288,14 @@ local function RefreshExperienceBars()
 end
 
 local function RefreshPositions()
-	if InCombatLockdown() then return end 
+	if InCombatLockdown() then return end
 	-- Change the size of the central button and status bars
     MainMenuBar:SetWidth(512);
 	MainMenuExpBar:SetWidth(512);
     ReputationWatchBar:SetWidth(512);
     MainMenuBarMaxLevelBar:SetWidth(512);
     ReputationWatchStatusBar:SetWidth(512);
-	
+
 	-- Hide backgrounds
 	ForceTransparent(SlidingActionBarTexture0)
 	ForceTransparent(SlidingActionBarTexture1)
@@ -302,13 +303,13 @@ local function RefreshPositions()
     ForceTransparent(StanceBarLeft)
     ForceTransparent(StanceBarMiddle)
     ForceTransparent(StanceBarRight)
-	
+
 	if HideExperienceBar == true or HideMainButtonArt == true then
-	
+
 		ForceTransparent(MainMenuXPBarTextureLeftCap)
 		ForceTransparent(MainMenuXPBarTextureRightCap)
 		ForceTransparent(MainMenuXPBarTextureMid)
-	
+
 	end
 	--]]
     ForceTransparent(PossessBackground1)
@@ -320,7 +321,7 @@ local function RefreshPositions()
 	RefreshExperienceBars()
 end
 
-	
+
 -- Event Handlers
 local events = {}
 
@@ -328,7 +329,7 @@ function events:ACTIONBAR_SHOWGRID() ButtonGridIsShown = true; SetSidebarAlpha()
 function events:ACTIONBAR_HIDEGRID() ButtonGridIsShown = false; SetSidebarAlpha() end
 function events:UNIT_EXITED_VEHICLE()  RefreshPositions(); DelayEvent(ConfigureCornerBars, GetTime()+1) end	-- Echos the event to verify positions
 events.PLAYER_ENTERING_WORLD = RefreshPositions
-events.UPDATE_INSTANCE_INFO = RefreshPositions	
+events.UPDATE_INSTANCE_INFO = RefreshPositions
 events.PLAYER_TALENT_UPDATE = RefreshPositions
 events.ACTIVE_TALENT_GROUP_CHANGED = RefreshPositions
 events.SPELL_UPDATE_USEABLE = RefreshPositions
@@ -349,15 +350,15 @@ events.QUEST_WATCH_UPDATE = RefreshPositions
 --events.PLAYER_AURAS_CHANGED = RefreshPositions
 
 
-local function EventHandler(frame, event) 
-	if events[event] then 
+local function EventHandler(frame, event)
+	if events[event] then
 		--print(GetTime(), event)
-		events[event]() 
-	end 
+		events[event]()
+	end
 end
 
 -- Set Event Monitoring
-for eventname in pairs(events) do 
+for eventname in pairs(events) do
 	TidyBar:RegisterEvent(eventname)
 end
 
@@ -373,7 +374,7 @@ do
 	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["MultiCastActionBarFrame"] = nil
-	
+
 	-- Scaling
 	MainMenuBar:SetScale(TidyBarScale)
 	MultiBarRight:SetScale(TidyBarScale)
@@ -383,15 +384,15 @@ do
 	MainMenuBarTexture0:SetPoint("LEFT", MainMenuBar, "LEFT", 0, 0);
     MainMenuBarTexture1:SetPoint("RIGHT", MainMenuBar, "RIGHT", 0, 0);
  	MainMenuBarLeftEndCap:SetPoint("RIGHT", MainMenuBar, "LEFT", 32, 0);
-    MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBar, "RIGHT", -32, 0); 
-	
+    MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBar, "RIGHT", -32, 0);
+
 	-- Hide 'ring' around the stance/shapeshift buttons
 	for i = 1, 10 do
 		_G["StanceButton"..i.."NormalTexture2"]:SetTexture(Empty_Art)
 	end
-	
+
 	RefreshExperienceBars()
-	
+
 	-- Set Pet Bars
 	PetActionBarFrame:SetAttribute("unit", "pet")
 	RegisterUnitWatch(PetActionBarFrame)
@@ -401,7 +402,7 @@ do
 	SetSidebarAlpha()
 	ConfigureCornerBars()
 	CornerMenuFrame:SetAlpha(0)
-	
+
 	if HideMainButtonArt == true then
 		-- Hide Standard Background Art
 		MainMenuBarTexture0:Hide()
@@ -409,10 +410,10 @@ do
 		MainMenuBarLeftEndCap:Hide()
 		MainMenuBarRightEndCap:Hide()
 	end
-	
-	MainMenuBar:HookScript("OnShow", function() 
+
+	MainMenuBar:HookScript("OnShow", function()
 		--print("Showing")
-		RefreshPositions() 
+		RefreshPositions()
 	end)
 end
 
@@ -423,7 +424,7 @@ do
 	SideMouseoverFrame:SetScript("OnEnter", function() MouseInSidebar = true; SetSidebarAlpha() end)
 	SideMouseoverFrame:SetScript("OnLeave", function() MouseInSidebar = false;SetSidebarAlpha() end)
 	SideMouseoverFrame:EnableMouse();
-		
+
 	HookFrame_SideBar(MultiBarRight)
 	HookFrame_SideBar(MultiBarLeft)
 	for i = 1, 12 do HookFrame_SideBar( _G["MultiBarRightButton"..i] ) end
@@ -437,12 +438,12 @@ do
 	for i, name in pairs(BagButtonFrameList) do
 		name:SetParent(CornerMenuFrame.BagButtonFrame)
 	end
-	
+
     MainMenuBarBackpackButton:ClearAllPoints();
 	MainMenuBarBackpackButton:SetPoint("BOTTOM");
 	MainMenuBarBackpackButton:SetPoint("RIGHT", -60, 0);
 	--MainMenuBarBackpackButton:SetScale(.8)
-	
+
 	-- Setup the Corner Buttons
 	for i, name in pairs(BagButtonFrameList) do HookFrame_CornerBar( name) end
 	for i, name in pairs(MenuButtonFrames) do HookFrame_Microbuttons( name) end
@@ -476,7 +477,7 @@ TidyBar:Show()
 SLASH_TIDYBAR1 = '/tidybar'
 SlashCmdList['TIDYBAR'] = RefreshPositions;
 
-function GetMouseoverFrame() 
+function GetMouseoverFrame()
 	local frame = EnumerateFrames(); -- Get the first frame
 	while frame do
 	  if ( frame:IsVisible() and MouseIsOver(frame) ) then
