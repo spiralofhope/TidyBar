@@ -181,8 +181,11 @@ function SetSidebarAlpha()
 		DelayEvent(SetSidebarAlpha, GetTime()+.5)
 	else
 		for i = 1, 12 do
-			_G["MultiBarRightButton"..i]:SetAlpha(Alpha);
-			_G["MultiBarLeftButton"..i]:SetAlpha(Alpha);
+      _G["MultiBarRightButton"..i]:SetAlpha(Alpha);
+			_G["MultiBarLeftButton" ..i]:SetAlpha(Alpha);
+      -- Also hide the grey cooldown background.
+			_G["MultiBarRightButton" .. i .. "Cooldown"]:Hide();
+			_G["MultiBarLeftButton"  .. i .. "Cooldown"]:Hide();
 		end
 	end
 
@@ -212,8 +215,17 @@ local function ConfigureCornerBars()
 end
 
 local function ConfigureSideBars()
+  local l=MultiBarLeft
+  local r=MultiBarRight
+  l:ClearAllPoints()
+  r:ClearAllPoints()
+  --r:SetPoint( "BOTTOMRIGHT", WorldFrame, "BOTTOMRIGHT" )
+  r:SetPoint( "BOTTOMRIGHT", TidyBar_CornerBarMouseoverFrame, "TOPRIGHT", 0, -10 )
+  l:SetPoint( "BOTTOMRIGHT", r, "BOTTOMLEFT" )
 	-- Right Bar
 	if MultiBarRight:IsShown() then
+    _G["ObjectiveTrackerFrame"]:ClearAllPoints()
+    _G["ObjectiveTrackerFrame"]:SetPoint( "TOPRIGHT", TidyBar_SideBarMouseoverFrame, "TOPLEFT" )
 		SideMouseoverFrame:Show()
 		MultiBarRight:EnableMouse();
 		SideMouseoverFrame:SetPoint("BOTTOMRIGHT", MultiBarRight, "BOTTOMRIGHT", 0,0)
@@ -222,7 +234,16 @@ local function ConfigureSideBars()
 			MultiBarLeft:EnableMouse();
 			SideMouseoverFrame:SetPoint("TOPLEFT", MultiBarLeft, "TOPLEFT", -6,0)
 		else SideMouseoverFrame:SetPoint("TOPLEFT", MultiBarRight, "TOPLEFT", -6,0) end
-	else SideMouseoverFrame:Hide() 	end
+	else
+    SideMouseoverFrame:Hide()
+    -- Move it to the right
+    _G["ObjectiveTrackerFrame"]:ClearAllPoints()
+    _G["ObjectiveTrackerFrame"]:SetPoint( "TOPRIGHT", Minimap, "BOTTOMRIGHT" )
+
+    -- Also move the frame header minimize/maximize button .
+    _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:ClearAllPoints()
+    _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:SetPoint( "TOPRIGHT", TidyBar_SideBarMouseoverFrame, "TOPLEFT" )
+  end
 end
 
 
