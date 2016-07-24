@@ -1,6 +1,6 @@
 ﻿--[[
 Tidy Bar
-for WoW 7.0.3 Legion
+for WoW 7.0.3 WoD final patch.
 --]]
 
 
@@ -91,6 +91,19 @@ local function RefreshMainActionBars()
 	local reputationBarOffset = 16
 	local initialOffset = 32
 
+	-- [[
+	-- Hides Rep Bars
+	if HideExperienceBar == true or HideMainButtonArt == true then
+		print("XP Bar Hidden")
+		MainMenuExpBar:Hide()
+		MainMenuExpBar:SetHeight(.001)
+		ReputationWatchBar:Hide()
+		ReputationWatchBar:SetHeight(.001)
+	end
+	--]]
+
+	--HideExperienceBar
+
 	if MainMenuExpBar:IsShown() then
 		--reputationBarOffset = 9
 		anchorOffset = 16
@@ -128,6 +141,16 @@ local function RefreshMainActionBars()
 		anchor = PetActionButton1
 		anchorOffset = 4
 	end
+
+	-- [[ StanceBarFrame
+	if StanceBarFrame:IsShown() then
+		--print("StanceBarFrame")
+		StanceButton1:ClearAllPoints();
+		StanceButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
+		anchor = StanceButton1
+		anchorOffset = 4
+	end
+	--]]
 
 	-- PossessBarFrame, PossessButton1
 	PossessBarFrame:ClearAllPoints();
@@ -201,7 +224,7 @@ local function ConfigureSideBars()
     _G["ObjectiveTrackerFrame"]:ClearAllPoints()
     _G["ObjectiveTrackerFrame"]:SetPoint( "TOPRIGHT", Minimap, "BOTTOMRIGHT" )
 
-    -- Also move the frame header minimize/maximize button.
+    -- Also move the frame header minimize/maximize button .
     _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:ClearAllPoints()
     _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:SetPoint( "TOPRIGHT", TidyBar_SideBarMouseoverFrame, "TOPLEFT" )
   end
@@ -214,13 +237,14 @@ local function RefreshExperienceBars()
 	MainMenuBarPageNumber:Hide();
   ActionBarUpButton:Hide();
   ActionBarDownButton:Hide();
-
 	-- Experience Bar
 	MainMenuBarTexture2:SetTexture(Empty_Art)
 	MainMenuBarTexture3:SetTexture(Empty_Art)
 	MainMenuBarTexture2:SetAlpha(0)
 	MainMenuBarTexture3:SetAlpha(0)
 	for i=1,19 do _G["MainMenuXPBarDiv"..i]:SetTexture(Empty_Art) end
+
+
 
 	-- Hide Rested State
 	ExhaustionLevelFillBar:SetTexture(Empty_Art)
@@ -233,8 +257,10 @@ local function RefreshExperienceBars()
 	MainMenuMaxLevelBar3:SetAlpha(0)
 
 	-- Rep Bar Bubbles (For the Rep Bar)
+	--ReputationWatchBarTexture0:SetAlpha(0)
 	ReputationWatchBarTexture1:SetAlpha(0)
 	ReputationWatchBarTexture2:SetAlpha(0)
+	--ReputationWatchBarTexture3:SetAlpha(0)
 
 	-- Repositions the bubbles for the Rep Watch bar
 	ReputationWatchBarTexture0:ClearAllPoints()
@@ -248,6 +274,22 @@ local function RefreshExperienceBars()
 	ReputationXPBarTexture2:SetAlpha(0)
 	ReputationXPBarTexture3:SetAlpha(0)
 
+	--[[
+	--local XPBarLeft = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
+	--local XPBarRight = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
+
+	local XPBarLeft = _G["MainMenuXPBarDiv1"]
+	local XPBarRight = _G["MainMenuXPBarDiv2"]
+
+	XPBarLeft:SetTexture("Interface\\PaperDollInfoFrame\\UI-ReputationWatchBar")
+	XPBarLeft:SetSize(256, 10)
+	XPBarLeft:SetPoint("TOPLEFT", MainMenuExpBar, "TOPLEFT", 0, 100)
+
+	XPBarRight:SetTexture(ReputationWatchBarTexture3:GetTexture())
+	XPBarRight:SetSize(ReputationWatchBarTexture3:GetSize())
+	XPBarRight:SetPoint("LEFT", XPBarLeft, "RIGHT")
+
+	--]]
 end
 
 local function RefreshPositions()
@@ -262,6 +304,19 @@ local function RefreshPositions()
 	-- Hide backgrounds
 	ForceTransparent(SlidingActionBarTexture0)
 	ForceTransparent(SlidingActionBarTexture1)
+	-- [[ Shapeshift, Aura, and Stance
+  ForceTransparent(StanceBarLeft)
+  ForceTransparent(StanceBarMiddle)
+  ForceTransparent(StanceBarRight)
+
+	if HideExperienceBar == true or HideMainButtonArt == true then
+
+		ForceTransparent(MainMenuXPBarTextureLeftCap)
+		ForceTransparent(MainMenuXPBarTextureRightCap)
+		ForceTransparent(MainMenuXPBarTextureMid)
+
+	end
+	--]]
   ForceTransparent(PossessBackground1)
   ForceTransparent(PossessBackground2)
 
@@ -296,6 +351,8 @@ events.PLAYER_LOSES_VEHICLE_DATA = RefreshPositions
 events.UPDATE_VEHICLE_ACTIONBAR = RefreshPositions
 
 events.QUEST_WATCH_UPDATE = RefreshPositions
+
+--events.PLAYER_AURAS_CHANGED = RefreshPositions
 
 
 local function EventHandler(frame, event)
@@ -387,7 +444,7 @@ do
 		name:SetParent(CornerMenuFrame.BagButtonFrame)
 	end
 
-    MainMenuBarBackpackButton:ClearAllPoints();
+  MainMenuBarBackpackButton:ClearAllPoints();
 	MainMenuBarBackpackButton:SetPoint("BOTTOM");
 	MainMenuBarBackpackButton:SetPoint("RIGHT", -60, 0);
 	--MainMenuBarBackpackButton:SetScale(.8)
@@ -438,3 +495,4 @@ end;
 
 SLASH_MFRAME1 = '/mframe'
 SlashCmdList['mframe'] = GetMouseoverFrame
+
