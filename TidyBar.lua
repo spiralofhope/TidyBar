@@ -60,9 +60,10 @@ CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, CornerMenuFrame )
 CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
 
 -- Event Delay
+-- FIXME? - This doesn't seem to work..
 local DelayedEventWatcher = CreateFrame( 'Frame' )
 local DelayedEvents = {}
-local function CheckDelayedEvent(self)
+local function CheckDelayedEvent( self )
   local pendingEvents, currentTime = 0, GetTime()
   for functionToCall, timeToCall in pairs( DelayedEvents ) do
     if currentTime > timeToCall then
@@ -74,11 +75,11 @@ local function CheckDelayedEvent(self)
   for functionToCall, timeToCall in pairs( DelayedEvents ) do pendingEvents = pendingEvents + 1 end
   if pendingEvents == 0 then DelayedEventWatcher:SetScript( 'OnUpdate', nil ) end
 end
-local function DelayEvent(functionToCall, timeToCall)
+local function DelayEvent( functionToCall, timeToCall )
   DelayedEvents[ functionToCall ] = timeToCall
   DelayedEventWatcher:SetScript( 'OnUpdate', CheckDelayedEvent )
 end
--- Event Delay
+--/ Event Delay
 
 local function RefreshMainActionBars()
   local anchor = ActionButton1
