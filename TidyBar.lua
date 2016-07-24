@@ -227,6 +227,16 @@ local function RefreshExperienceBars()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
+  -- Some options for the main row of buttons:
+  -- .. hide the textured background entirely.
+  --MainMenuBarTexture0:Hide()
+  --MainMenuBarTexture1:Hide()
+  -- .. make them transparent
+  --MainMenuBarTexture0:SetAlpha( 0.8 )
+  --MainMenuBarTexture1:SetAlpha( 0.8 )
+  -- TODO - a grey background
+  -- TODO - an alternate texture
+
   -- The top-right GM ticket window
   TicketStatusFrame:Hide()
   
