@@ -153,25 +153,22 @@ function SetSidebarAlpha()
     for i = 1, 12 do
       _G[ 'MultiBarRightButton'..i ]:SetAlpha( Alpha )
       _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( Alpha )
-      -- Also hide the grey cooldown background.
-      _G[ 'MultiBarRightButton' .. i .. 'Cooldown' ]:Hide()
-      _G[ 'MultiBarLeftButton'  .. i .. 'Cooldown' ]:Hide()
     end
   end
 end
 
 
-local function HookFrame_Microbuttons(frameTarget)
+local function HookFrame_Microbuttons( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then CornerMenuFrame:SetAlpha( 1 ) end end )
   frameTarget:HookScript( 'OnLeave', function()                                          CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
-local function HookFrame_CornerBar(frameTarget)
+local function HookFrame_CornerBar( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
   frameTarget:HookScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
-local function HookFrame_SideBar(frameTarget)
+local function HookFrame_SideBar( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
   frameTarget:HookScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
 end
