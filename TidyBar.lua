@@ -1,6 +1,6 @@
 ﻿--[[
 Tidy Bar
-for WoW 5.0 MoP
+for WoW 7.0.3 Legion
 --]]
 
 
@@ -22,11 +22,6 @@ local MenuButtonFrames = {
 	StoreMicroButton,         -- Shop
 	MainMenuMicroButton,      -- Game Menu
 }
-
--- Depricated on or before 6.1
---	HelpMicroButton,
---	CompanionsMicroButton,		-- Added for 5.x
---	PVPMicroButton,
 
 local BagButtonFrameList = {
 	MainMenuBarBackpackButton,
@@ -96,19 +91,6 @@ local function RefreshMainActionBars()
 	local reputationBarOffset = 16
 	local initialOffset = 32
 
-	-- [[
-	-- Hides Rep Bars
-	if HideExperienceBar == true or HideMainButtonArt == true then
-		print("XP Bar Hidden")
-		MainMenuExpBar:Hide()
-		MainMenuExpBar:SetHeight(.001)
-		ReputationWatchBar:Hide()
-		ReputationWatchBar:SetHeight(.001)
-	end
-	--]]
-
-	--HideExperienceBar
-
 	if MainMenuExpBar:IsShown() then
 		--reputationBarOffset = 9
 		anchorOffset = 16
@@ -146,30 +128,6 @@ local function RefreshMainActionBars()
 		anchor = PetActionButton1
 		anchorOffset = 4
 	end
-
-	-- [[ StanceBarFrame
-	if StanceBarFrame:IsShown() then
-		--print("StanceBarFrame")
-		StanceButton1:ClearAllPoints();
-		StanceButton1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
-		anchor = StanceButton1
-		--anchorOffset = 4
-		anchorOffset = 4
-	end
-	--]]
-
-	--[[		-- Totem bar is not in mists
-	if MultiCastActionBarFrame:IsShown() then	-- Totem bar
-		--print("MultiCastActionBarFrame")
-		MultiCastActionBarFrame:ClearAllPoints();
-		MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, anchorOffset);
-		anchor = MultiCastActionBarFrame
-		anchorOffset = 4
-	end
-	--]]
-
-	-- StanceButtonX
-
 
 	-- PossessBarFrame, PossessButton1
 	PossessBarFrame:ClearAllPoints();
@@ -243,7 +201,7 @@ local function ConfigureSideBars()
     _G["ObjectiveTrackerFrame"]:ClearAllPoints()
     _G["ObjectiveTrackerFrame"]:SetPoint( "TOPRIGHT", Minimap, "BOTTOMRIGHT" )
 
-    -- Also move the frame header minimize/maximize button .
+    -- Also move the frame header minimize/maximize button.
     _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:ClearAllPoints()
     _G["ObjectiveTrackerFrame"].HeaderMenu.MinimizeButton:SetPoint( "TOPRIGHT", TidyBar_SideBarMouseoverFrame, "TOPLEFT" )
   end
@@ -254,16 +212,15 @@ local function RefreshExperienceBars()
 
 	-- Hide Unwanted Art
 	MainMenuBarPageNumber:Hide();
-    ActionBarUpButton:Hide();
-    ActionBarDownButton:Hide();
+  ActionBarUpButton:Hide();
+  ActionBarDownButton:Hide();
+
 	-- Experience Bar
 	MainMenuBarTexture2:SetTexture(Empty_Art)
 	MainMenuBarTexture3:SetTexture(Empty_Art)
 	MainMenuBarTexture2:SetAlpha(0)
 	MainMenuBarTexture3:SetAlpha(0)
 	for i=1,19 do _G["MainMenuXPBarDiv"..i]:SetTexture(Empty_Art) end
-
-
 
 	-- Hide Rested State
 	ExhaustionLevelFillBar:SetTexture(Empty_Art)
@@ -276,10 +233,8 @@ local function RefreshExperienceBars()
 	MainMenuMaxLevelBar3:SetAlpha(0)
 
 	-- Rep Bar Bubbles (For the Rep Bar)
-	--ReputationWatchBarTexture0:SetAlpha(0)
 	ReputationWatchBarTexture1:SetAlpha(0)
 	ReputationWatchBarTexture2:SetAlpha(0)
-	--ReputationWatchBarTexture3:SetAlpha(0)
 
 	-- Repositions the bubbles for the Rep Watch bar
 	ReputationWatchBarTexture0:ClearAllPoints()
@@ -293,54 +248,25 @@ local function RefreshExperienceBars()
 	ReputationXPBarTexture2:SetAlpha(0)
 	ReputationXPBarTexture3:SetAlpha(0)
 
-	--[[
-	--local XPBarLeft = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
-	--local XPBarRight = MainMenuExpBar:CreateTexture(nil, "OVERLAY")
-
-	local XPBarLeft = _G["MainMenuXPBarDiv1"]
-	local XPBarRight = _G["MainMenuXPBarDiv2"]
-
-	XPBarLeft:SetTexture("Interface\\PaperDollInfoFrame\\UI-ReputationWatchBar")
-	XPBarLeft:SetSize(256, 10)
-	XPBarLeft:SetPoint("TOPLEFT", MainMenuExpBar, "TOPLEFT", 0, 100)
-
-	XPBarRight:SetTexture(ReputationWatchBarTexture3:GetTexture())
-	XPBarRight:SetSize(ReputationWatchBarTexture3:GetSize())
-	XPBarRight:SetPoint("LEFT", XPBarLeft, "RIGHT")
-
-	--]]
 end
 
 local function RefreshPositions()
 	if InCombatLockdown() then return end
 	-- Change the size of the central button and status bars
-    MainMenuBar:SetWidth(512);
+  MainMenuBar:SetWidth(512);
 	MainMenuExpBar:SetWidth(512);
-    ReputationWatchBar:SetWidth(512);
-    MainMenuBarMaxLevelBar:SetWidth(512);
-    ReputationWatchStatusBar:SetWidth(512);
+  ReputationWatchBar:SetWidth(512);
+  MainMenuBarMaxLevelBar:SetWidth(512);
+  ReputationWatchStatusBar:SetWidth(512);
 
 	-- Hide backgrounds
 	ForceTransparent(SlidingActionBarTexture0)
 	ForceTransparent(SlidingActionBarTexture1)
-	-- [[ Shapeshift, Aura, and Stance
-    ForceTransparent(StanceBarLeft)
-    ForceTransparent(StanceBarMiddle)
-    ForceTransparent(StanceBarRight)
-
-	if HideExperienceBar == true or HideMainButtonArt == true then
-
-		ForceTransparent(MainMenuXPBarTextureLeftCap)
-		ForceTransparent(MainMenuXPBarTextureRightCap)
-		ForceTransparent(MainMenuXPBarTextureMid)
-
-	end
-	--]]
-    ForceTransparent(PossessBackground1)
-    ForceTransparent(PossessBackground2)
+  ForceTransparent(PossessBackground1)
+  ForceTransparent(PossessBackground2)
 
 	ConfigureSideBars()
-    RefreshMainActionBars()
+  RefreshMainActionBars()
 	ConfigureCornerBars()
 	RefreshExperienceBars()
 end
@@ -370,8 +296,6 @@ events.PLAYER_LOSES_VEHICLE_DATA = RefreshPositions
 events.UPDATE_VEHICLE_ACTIONBAR = RefreshPositions
 
 events.QUEST_WATCH_UPDATE = RefreshPositions
-
---events.PLAYER_AURAS_CHANGED = RefreshPositions
 
 
 local function EventHandler(frame, event)
@@ -406,9 +330,9 @@ do
 
 	-- Adjust the fill and endcap artwork
 	MainMenuBarTexture0:SetPoint("LEFT", MainMenuBar, "LEFT", 0, 0);
-    MainMenuBarTexture1:SetPoint("RIGHT", MainMenuBar, "RIGHT", 0, 0);
+  MainMenuBarTexture1:SetPoint("RIGHT", MainMenuBar, "RIGHT", 0, 0);
  	MainMenuBarLeftEndCap:SetPoint("RIGHT", MainMenuBar, "LEFT", 32, 0);
-    MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBar, "RIGHT", -32, 0);
+  MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBar, "RIGHT", -32, 0);
 
 	-- Hide 'ring' around the stance/shapeshift buttons
 	for i = 1, 10 do
@@ -514,4 +438,3 @@ end;
 
 SLASH_MFRAME1 = '/mframe'
 SlashCmdList['mframe'] = GetMouseoverFrame
-
