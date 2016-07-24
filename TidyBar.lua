@@ -396,8 +396,8 @@ end
 --
 do
   -- Keyring etc
-  for i, name in pairs(BagButtonFrameList) do
-    name:SetParent(CornerMenuFrame.BagButtonFrame)
+  for i, name in pairs( BagButtonFrameList ) do
+    name:SetParent( CornerMenuFrame.BagButtonFrame )
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
