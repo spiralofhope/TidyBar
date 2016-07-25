@@ -268,6 +268,9 @@ local function RefreshExperienceBars()
   ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
 
+  -- The nagging talent popup
+  TalentMicroButtonAlert:Hide()
+
 
   --
   --  Other actions
