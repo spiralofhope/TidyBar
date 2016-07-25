@@ -333,8 +333,9 @@ for eventname in pairs( events ) do
 end
 
 
------------------------------------------------------------------------------
--- Menu Menu and Artwork
+--
+--  Menu Menu and Artwork
+--
 do
   -- Call Update Function when the default UI makes changes
   hooksecurefunc( 'UIParent_ManageFramePositions', RefreshPositions )
