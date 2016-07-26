@@ -231,9 +231,6 @@ local function RefreshExperienceBars()
   -- TODO - a grey background
   -- TODO - an alternate texture
 
-  -- The top-right GM ticket window
-  TicketStatusFrame:Hide()
-
   if HideGryphons == true then
     --print( 'TidyBar:  Gryphons Hidden' )
     MainMenuBarLeftEndCap:Hide()
