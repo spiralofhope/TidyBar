@@ -1,6 +1,7 @@
 # TidyBar
 
-https://github.com/spiralofhope/TidyBar
+https://github.com/spiralofhope/TidyBar \\
+http://blog.spiralofhope.com/?p=19242
 
 A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar](http://wow.curseforge.com/addons/tidy-bar/)
 

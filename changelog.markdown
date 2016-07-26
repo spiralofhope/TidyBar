@@ -1,19 +1,40 @@
 # Changelog
 
-## working
+`git log` is another good way to peer into the innards of this repository.
+
+
+## 7.0.3 series
+
+### 7.0.3.3 working
+
+- Updated `TidyBar.toc`
+  -  It lists the author as "Binny".  Curious.
+
+### 7.0.3.2
 
 - Implemented an option to automatically/always show the right sidebar.
+
+### 7.0.3.1
+
 - Implemented an option to show/hide the gryphons on either side the bars.
 
-## 7.0.3
+### 7.0.3
+
+- 7.0.3 compatibility changes.
+- A major style rewrite.  Thanks, Cynbe.
+- Removed old comments.
+
 
 ## Earlier
 
-- Various compatibilty changees
+I had hacked on TidyBar here and there.
+
 
 # Earlier authors' notes
 
-The following were the original authors' notes.
+The following notes were by the original author.
+
+Note that these old releases may or may not be buried in this git repository.  I (spiralofhope) have kept those old archives if anyone is *that* interested.
 
 ## 5.2
 
