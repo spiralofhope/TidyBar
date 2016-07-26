@@ -1,13 +1,8 @@
-﻿--TODO - have a hidden frame underneath the sidebar, and reference that for the mousein/mouseout, and not the buttons.  I hate having my mouse between buttons and not showing them.
-
---[[
-Tidy Bar
-for WoW 7.0.3 WoD final patch.
---]]
-
-
-local TidyBarScale = 1
+﻿local TidyBarScale = 1
 local HideExperienceBar = false
+local HideGryphons = true
+
+
 
 local MenuButtonFrames = {
   CharacterMicroButton,     -- Character Info
@@ -88,7 +83,7 @@ local function RefreshMainActionBars()
   local initialOffset = 32
   
   if HideExperienceBar == true then
-    print( 'XP Bar Hidden' )
+    print( 'TidyBar:  XP Bar Hidden' )
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
     ReputationWatchBar:Hide()
@@ -237,10 +232,12 @@ local function RefreshExperienceBars()
 
   -- The top-right GM ticket window
   TicketStatusFrame:Hide()
-  
-  -- The gryphons
-  MainMenuBarLeftEndCap:Hide()
-  MainMenuBarRightEndCap:Hide()
+
+  if HideGryphons == true then
+    print( 'TidyBar:  Gryphons Hidden' )
+    MainMenuBarLeftEndCap:Hide()
+    MainMenuBarRightEndCap:Hide()
+  end
   
   -- The XP bar
   MainMenuBarTexture2:SetTexture( Empty_Art )
