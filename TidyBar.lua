@@ -1,6 +1,7 @@
 ﻿local TidyBarScale = 1
 local HideExperienceBar = false
 local HideGryphons = true
+local AutoHideSideBar = true
 
 
 
@@ -83,7 +84,7 @@ local function RefreshMainActionBars()
   local initialOffset = 32
   
   if HideExperienceBar == true then
-    print( 'TidyBar:  XP Bar Hidden' )
+    --print( 'TidyBar:  XP Bar Hidden' )
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
     ReputationWatchBar:Hide()
@@ -142,7 +143,7 @@ end
 
 function SetSidebarAlpha()
   local Alpha = 0
-  if MouseInSidebar or ButtonGridIsShown then Alpha = 1 end
+  if MouseInSidebar or ButtonGridIsShown or not AutoHideSideBar then Alpha = 1 end
   if SpellFlyout:IsShown() then
     DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
   else
@@ -234,7 +235,7 @@ local function RefreshExperienceBars()
   TicketStatusFrame:Hide()
 
   if HideGryphons == true then
-    print( 'TidyBar:  Gryphons Hidden' )
+    --print( 'TidyBar:  Gryphons Hidden' )
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
