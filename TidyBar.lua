@@ -1,8 +1,9 @@
 ﻿local TidyBarScale = 1
+-- Set these to either true or false
 local HideExperienceBar = false
 local HideGryphons = true
 local AutoHideSideBar = true
-
+local HideActionBarButtonsTexturedBackground = false
 
 
 local MenuButtonFrames = {
@@ -82,26 +83,30 @@ local function RefreshMainActionBars()
   local anchorOffset = 8
   local reputationBarOffset = 16
   local initialOffset = 32
-  
+
   if HideExperienceBar == true then
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
     ReputationWatchBar:Hide()
     ReputationWatchBar:SetHeight( .001 )
   end
- 
+
   if MainMenuExpBar:IsShown() then
-    --reputationBarOffset = 9
+    reputationBarOffset = 9
+    anchorOffset = 0
+    MainMenuExpBar:SetHeight( 8 )
     anchorOffset = 16
     MainMenuExpBar:SetHeight( 6 )
   end
+
   if ReputationWatchBar:IsShown() then
-    --reputationBarOffset = reputationBarOffset + 9
-    anchorOffset = 25
+    reputationBarOffset = reputationBarOffset + 9
+    anchorOffset = 22
+    --anchorOffset = 25
   end
-  
+
   reputationBarOffset = anchorOffset
-  
+
   if MultiBarBottomLeft:IsShown() then
     MultiBarBottomLeft:ClearAllPoints()
     MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
@@ -111,7 +116,7 @@ local function RefreshMainActionBars()
     anchor = ActionButton1
     anchorOffset = 8 + reputationBarOffset
   end
-  
+
   if MultiBarBottomRight:IsShown() then
     --print( 'MultiBarBottomRight' )
     MultiBarBottomRight:ClearAllPoints()
@@ -119,7 +124,7 @@ local function RefreshMainActionBars()
     anchor = MultiBarBottomRight
     anchorOffset = 4
   end
-  
+
   if PetActionBarFrame:IsShown() then
     --print( 'PetActionBarFrame' )
     PetActionButton1:ClearAllPoints()
@@ -134,7 +139,7 @@ local function RefreshMainActionBars()
     anchor = StanceButton1
     anchorOffset = 4
   end
-  
+
   PossessBarFrame:ClearAllPoints()
   PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
 end
@@ -275,6 +280,15 @@ local function RefreshExperienceBars()
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
 
+  if HideActionBarButtonsTexturedBackground == true then
+    MainMenuBarTexture0:SetAlpha( 0 )
+    MainMenuBarTexture1:SetAlpha( 0 )
+
+    -- Show them initially
+    for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
+    -- Keep them updated
+    MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
+  end
 
   --
   --  Other actions
@@ -288,10 +302,28 @@ end
 local function RefreshPositions()
   if InCombatLockdown() then return end
   -- Change the size of the central button and status bars
-  MainMenuExpBar:SetWidth( 512 )
-  MainMenuBar:SetWidth( 512 )
-  ReputationWatchBar:SetWidth( 512 )
-  ReputationWatchBar.StatusBar:SetWidth( 512 )
+
+  -- This is the right-hand side.
+  if HideActionBarButtonsTexturedBackground == true then
+    MainMenuExpBar:SetWidth( 500 )
+    MainMenuBar:SetWidth( 500 )
+    ReputationWatchBar:SetWidth( 500 )
+    ReputationWatchBar.StatusBar:SetWidth( 500 )
+
+    -- This is probably the wrong way to do it.
+    MainMenuExpBar:ClearAllPoints()
+    MainMenuExpBar:SetPoint( 'TOPLEFT',MainMenuBar,6,-3 )
+
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'TOPLEFT',MainMenuExpBar,0,8 )
+  else
+    -- Original code
+    MainMenuExpBar:SetWidth( 512 )
+    MainMenuBar:SetWidth( 512 )
+    ReputationWatchBar:SetWidth( 512 )
+    ReputationWatchBar.StatusBar:SetWidth( 512 )
+  end
+
   ConfigureSideBars()
   RefreshMainActionBars()
   ConfigureCornerBars()
@@ -390,7 +422,6 @@ do
   SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true; SetSidebarAlpha() end )
   SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false;SetSidebarAlpha() end )
   SideMouseoverFrame:EnableMouse()
-  
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end

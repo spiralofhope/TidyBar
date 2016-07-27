@@ -25,6 +25,8 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 
 # TODO
 
+- Max level does not show an experience bar; move the upper bars down.
+  -  What happens when xp is turned off?
 - Test `TidyBarScale`
 - Import existing documentation
   -  Beginning with the main description pages

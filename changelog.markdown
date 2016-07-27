@@ -5,7 +5,16 @@
 
 ## 7.0.3 series
 
-### 7.0.3.3 working
+### 7.0.3.5
+
+- Option to remove the background texture of the main buttons.
+
+### 7.0.3.4
+
+- Fix the reputation bar hanging off of the right-hand side.  Again.
+- Fix the experience bar hanging off of the right-hand side.
+
+### 7.0.3.3
 
 - Fix the reputation bar hanging off of the right-hand side.
 - Updated `TidyBar.toc`
