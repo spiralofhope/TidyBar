@@ -84,7 +84,6 @@ local function RefreshMainActionBars()
   local initialOffset = 32
   
   if HideExperienceBar == true then
-    --print( 'TidyBar:  XP Bar Hidden' )
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
     ReputationWatchBar:Hide()
@@ -196,8 +195,8 @@ local function ConfigureSideBars()
     -- Right Bar 2
     if MultiBarLeft:IsShown() then
       MultiBarLeft:EnableMouse()
-         SideMouseoverFrame:SetPoint('TOPLEFT', MultiBarLeft,  'TOPLEFT', -6,0 )
-    else SideMouseoverFrame:SetPoint('TOPLEFT', MultiBarRight, 'TOPLEFT', -6,0 ) end
+         SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarLeft,  'TOPLEFT', -6,0 )
+    else SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarRight, 'TOPLEFT', -6,0 ) end
   else
     SideMouseoverFrame:Hide()
     -- Move it to the right
@@ -232,7 +231,6 @@ local function RefreshExperienceBars()
   -- TODO - an alternate texture
 
   if HideGryphons == true then
-    --print( 'TidyBar:  Gryphons Hidden' )
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
@@ -368,7 +366,7 @@ do
   end
   
   MainMenuBar:HookScript( 'OnShow', function()
-    --print('Showing')
+    --print( 'Showing' )
     RefreshPositions()
   end)
 end
