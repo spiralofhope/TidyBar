@@ -236,12 +236,33 @@ local function RefreshExperienceBars()
   end
   
   -- The XP bar
+  --MainMenuBarTexture1:SetTexture( Empty_Art )
+  --MainMenuBarTexture0:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
+  for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
+  -- The experience bar 'bubbles' texture that hangs off of the right.
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
+  -- Hiding the grey background
+  --ReputationWatchBar.StatusBar.Background:Hide()
+
+  -- The reputation bar bubbles
+  -- .. in the middle of the screen
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+  -- .. which would hang off the right
+  ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
   ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
-  for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
-  
+  -- Hiding the grey background
+  --ReputationWatchBar.StatusBar.Background:Hide()
+
   -- The border around the XP bar
        MainMenuXPBarTextureMid:SetAlpha( 0 )
    MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
@@ -250,16 +271,6 @@ local function RefreshExperienceBars()
   -- The rested state
   ExhaustionLevelFillBar:SetTexture( Empty_Art )
   ExhaustionTick:SetAlpha( 0 )
-  
-  -- The reputation bar 'bubbles' texture that hangs off of the right.
-  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-
-  -- Hide the reputation bar bubbles entirely:
-  --ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
-  --ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
-  --ReputationWatchBar.StatusBar.Background:Hide()
-
 
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
