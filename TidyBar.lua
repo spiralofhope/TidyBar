@@ -260,8 +260,10 @@ local function RefreshExperienceBars()
   MainMenuMaxLevelBar3:SetAlpha( 0 )
   
   -- The reputation bar bubbles
-  ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  --ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
+  --ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
 
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
