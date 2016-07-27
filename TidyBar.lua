@@ -3,7 +3,7 @@
 local HideExperienceBar = false
 local HideGryphons = true
 local AutoHideSideBar = true
-local HideActionBarButtonsTexturedBackground = false
+local HideActionBarButtonsTexturedBackground = true
 
 
 local MenuButtonFrames = {
