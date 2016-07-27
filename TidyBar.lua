@@ -253,17 +253,15 @@ local function RefreshExperienceBars()
   ExhaustionLevelFillBar:SetTexture( Empty_Art )
   ExhaustionTick:SetAlpha( 0 )
   
-  -- Max-level reputation bar
-  MainMenuMaxLevelBar0:SetAlpha( 0 )
-  MainMenuMaxLevelBar1:SetAlpha( 0 )
-  MainMenuMaxLevelBar2:SetAlpha( 0 )
-  MainMenuMaxLevelBar3:SetAlpha( 0 )
-  
-  -- The reputation bar bubbles
-  --ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-  --ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  -- The reputation bar 'bubbles' texture that hangs off of the right.
   ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
+
+  -- Hide the reputation bar bubbles entirely:
+  --ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
+  --ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
+  --ReputationWatchBar.StatusBar.Background:Hide()
+
 
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
