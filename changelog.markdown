@@ -7,6 +7,7 @@
 
 ### 7.0.3.3 working
 
+- Fix the reputation bar hanging off of the right-hand side.
 - Updated `TidyBar.toc`
   -  It lists the author as "Binny".  Curious.
 
