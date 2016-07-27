@@ -238,8 +238,8 @@ local function RefreshExperienceBars()
   -- The XP bar
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
-  MainMenuBarTexture2:SetAlpha( 0 )
-  MainMenuBarTexture3:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
   for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
   
   -- The border around the XP bar
