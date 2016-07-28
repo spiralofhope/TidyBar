@@ -18,11 +18,11 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 - `/tidybar` will force an update.
 
 
-# Bugs
+# Known Bugs
 
 - When the XP bar lights up, when getting XP, its bar is offset.
-- Max XP and no reputation being tracked is messed up.
 - Max XP and a reputation being tracked shows a too-tall reputation bar.
+- `HideActionBarButtonsTexturedBackground = true` might still be mucked up while in combat.
 
 
 # TODO

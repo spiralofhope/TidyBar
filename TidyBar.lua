@@ -1,6 +1,4 @@
-﻿-- fix the xp bar lighting up - it's in the wrong place!
-
-local TidyBarScale = 1
+﻿local TidyBarScale = 1
 -- Set these to either true or false
 local HideExperienceBar = false
 local HideGryphons = true
@@ -281,6 +279,8 @@ local function RefreshExperienceBars()
 
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
+
+  MainMenuBarMaxLevelBar:Hide()
 
   if HideActionBarButtonsTexturedBackground == true then
     MainMenuBarTexture0:SetAlpha( 0 )
