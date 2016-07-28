@@ -20,7 +20,9 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 
 # Bugs
 
-- When the bottom left bar is disabled, a bit of a bar's texture is shown.
+- When the XP bar lights up, when getting XP, its bar is offset.
+- Max XP and no reputation being tracked is messed up.
+- Max XP and a reputation being tracked shows a too-tall reputation bar.
 
 
 # TODO

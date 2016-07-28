@@ -1,4 +1,6 @@
-﻿local TidyBarScale = 1
+﻿-- fix the xp bar lighting up - it's in the wrong place!
+
+local TidyBarScale = 1
 -- Set these to either true or false
 local HideExperienceBar = false
 local HideGryphons = true
