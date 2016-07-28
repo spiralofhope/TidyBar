@@ -1,6 +1,6 @@
 # TidyBar
 
-https://github.com/spiralofhope/TidyBar \\
+https://github.com/spiralofhope/TidyBar \
 http://blog.spiralofhope.com/?p=19242
 
 A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar](http://wow.curseforge.com/addons/tidy-bar/)
@@ -22,7 +22,12 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 
 - When the XP bar lights up, when getting XP, its bar is offset.
 - Max XP and a reputation being tracked shows a too-tall reputation bar.
-- `HideActionBarButtonsTexturedBackground = true` might still be mucked up while in combat.
+- `HideActionBarButtonsTexturedBackground = true` is a big buggy
+  - It might be mucked up while in combat.  I can't really reproduce this, and it might have already been fixed without me realising it.
+  - There isn't proper grey behind the main actionbar buttons.
+  - Mouse over main buttons hides them for a moment.
+  - As soon as a spell is dragged from anywhere, the bottom bar's button-border texture messes up.
+- With xp but no reputation being tracked, there is too much empty space between the xp bar and upper button bars.
 
 
 # TODO
@@ -37,3 +42,5 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 - Create a hidden frame underneath the sidebar, and reference that for the mousein/mouseout, and not the buttons.
   -  Can I steal code from the corner frame?
   -  I hate having my mouse between buttons and not showing them.
+- Test with various bars enabled/disabled.
+- The only internal functionality should be xp bar hiding.  The reputation bar hiding should be up to the user using the regular reputation list.

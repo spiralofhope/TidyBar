@@ -225,16 +225,6 @@ local function RefreshExperienceBars()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
-  -- Some options for the main row of buttons:
-  -- .. hide the textured background entirely.
-  --MainMenuBarTexture0:Hide()
-  --MainMenuBarTexture1:Hide()
-  -- .. make them transparent
-  --MainMenuBarTexture0:SetAlpha( 0.8 )
-  --MainMenuBarTexture1:SetAlpha( 0.8 )
-  -- TODO - a grey background
-  -- TODO - an alternate texture
-
   if HideGryphons == true then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
@@ -279,18 +269,65 @@ local function RefreshExperienceBars()
 
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
+  TalentMicroButtonAlert:SetAlpha( 0 )
 
   MainMenuBarMaxLevelBar:Hide()
+  MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
   if HideActionBarButtonsTexturedBackground == true then
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
-
+    MainMenuBarTexture0:Hide()
+    MainMenuBarTexture1:Hide()
     -- Show them initially
-    for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
+    --for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
     -- Keep them updated
     MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
+
+
+-- FIXME - When the mouse enters an empty button, it is hidden.  I have no idea how to fix this..
+
+--ActionButton3:SetTexture( Empty_Art )
+--ActionButton3:SetTexture( MultiBarBottomLeftButton1FloatingBG:GetTexture() )
+
+--function showthemall()
+  --for i=1,12 do
+    --_G[ 'ActionButton' .. i ]:Show()
+  --end
+--end
+--MainMenuBar:SetScript( 'OnUpdate', showthemall )
+--MainMenuBarOverlayFrame:SetScript( 'OnUpdate', showthemall )
+--MainMenuBarArtFrame:SetScript( 'OnUpdate', showthemall )
+--MainMenuBar:SetScript( 'OnEnter', showthemall )
+--MainMenuBar:SetScript( 'OnLeave', showthemall )
+--MainMenuBar:SetScript( 'OnShow', showthemall )
+--MainMenuBar:SetScript( 'OnHide', showthemall )
+
+--WorldFrame:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
+
+--OnChar (self,text)
+--OnDragStart (self,button)
+--OnDragStop (self)
+--OnEnter (self, motion)
+--OnEvent (self,event,...)
+--OnHide (self)
+--OnKeyDown (self,key)
+--OnKeyUp (self,key)
+--OnLeave (self, motion)
+--OnLoad (self)
+--OnMouseDown (self,button)
+--OnMouseUp (self,button)
+--OnMouseWheel (self,delta)
+--OnReceiveDrag (self)
+--OnShow (self)
+--OnSizeChanged (self,w,h)
+--OnUpdate (self,elapsed) 
+
+--ActionButton3NormalTexture:SetScript( 'OnUpdate', showthemall )
+
+
   end
+
 
   --
   --  Other actions
