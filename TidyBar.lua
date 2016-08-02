@@ -80,41 +80,47 @@ end
 
 local function RefreshMainActionBars()
   local anchor = ActionButton1
-  local anchorOffset = 8
-  local reputationBarOffset = 16
+  local anchorOffset = 14
   local initialOffset = 32
 
   if HideExperienceBar == true then
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
+  end
+
+  if MainMenuExpBar:IsShown() then
+    MainMenuExpBar:ClearAllPoints()
+    MainMenuExpBar:SetPoint( 'TOPLEFT', MainMenuBar, 6, 0 )
+    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    MainMenuExpBar.SparkBurstMove:SetPoint( 'TOPLEFT', MainMenuExpBar, 0, 0 )
+    MainMenuExpBar:SetHeight( 8 )
+    anchorOffset = 8
+    anchor = MainMenuExpBar
+  end
+
+  if ReputationWatchBar:IsShown() then
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'TOPLEFT', anchor, 0, anchorOffset )
+    ReputationWatchBar:SetHeight( 8 )
+    anchor = ReputationWatchBar
+    anchorOffset = 6
+  else
+    anchorOffset = 4
     ReputationWatchBar:Hide()
     ReputationWatchBar:SetHeight( .001 )
   end
 
-  if MainMenuExpBar:IsShown() then
-    reputationBarOffset = 9
-    anchorOffset = 0
-    MainMenuExpBar:SetHeight( 8 )
-    anchorOffset = 16
-    MainMenuExpBar:SetHeight( 6 )
-  end
-
-  if ReputationWatchBar:IsShown() then
-    reputationBarOffset = reputationBarOffset + 9
-    anchorOffset = 22
-    --anchorOffset = 25
-  end
-
-  reputationBarOffset = anchorOffset
-
   if MultiBarBottomLeft:IsShown() then
     MultiBarBottomLeft:ClearAllPoints()
-    MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
+    if ReputationWatchBar:IsShown() then
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 6, anchorOffset )
+    else
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
+    end
     anchor = MultiBarBottomLeft
     anchorOffset = 4
   else
     anchor = ActionButton1
-    anchorOffset = 8 + reputationBarOffset
   end
 
   if MultiBarBottomRight:IsShown() then
@@ -335,8 +341,10 @@ local function RefreshExperienceBars()
   --
 
   -- Repositions the bubbles for the Rep Watch bar
-  ReputationWatchBar.StatusBar.WatchBarTexture0:ClearAllPoints()
-  ReputationWatchBar.StatusBar.WatchBarTexture0:SetPoint( 'LEFT', ReputationWatchBar, 'LEFT', 0, 2 )
+  if ReputationWatchBar:IsShown() then
+    ReputationWatchBar.StatusBar.WatchBarTexture0:ClearAllPoints()
+    ReputationWatchBar.StatusBar.WatchBarTexture0:SetPoint( 'LEFT', ReputationWatchBar, 'LEFT', 0, 2 )
+  end
 end
 
 local function RefreshPositions()
@@ -349,13 +357,6 @@ local function RefreshPositions()
     MainMenuBar:SetWidth( 500 )
     ReputationWatchBar:SetWidth( 500 )
     ReputationWatchBar.StatusBar:SetWidth( 500 )
-
-    -- This is probably the wrong way to do it.
-    MainMenuExpBar:ClearAllPoints()
-    MainMenuExpBar:SetPoint( 'TOPLEFT',MainMenuBar,6,-3 )
-
-    ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'TOPLEFT',MainMenuExpBar,0,8 )
   else
     -- Original code
     MainMenuExpBar:SetWidth( 512 )

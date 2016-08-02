@@ -7,6 +7,7 @@
 
 ### 7.0.3.6
 
+- Fix the height and separation of the experience and reputation bars.
 - Fix the objectives tracker only showing a few items.
 
 ### 7.0.3.5
