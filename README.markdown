@@ -20,6 +20,8 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 
 # Known Bugs
 
+([bugs list](https://github.com/spiralofhope/TidyBar/issues))
+
 *These are things I investigated but simply don't know how to fix.*
 
 - `HideActionBarButtonsTexturedBackground = true` is all manner of buggy.
@@ -34,6 +36,8 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
 
 
 # TODO
+
+([todo list](https://github.com/spiralofhope/TidyBar/issues))
 
 *These are things I doubt I can do.*
 
