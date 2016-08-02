@@ -30,8 +30,8 @@ local BagButtonFrameList = {
 }
 
 local ButtonGridIsShown = false
-local Corner_Artwork_Texture = "Interface\\Addons\\TidyBar\\Empty"
-local Empty_Art              = "Interface\\Addons\\TidyBar\\Empty"
+local Corner_Artwork_Texture = "Interface\\Addons\\TidyBar\\empty"
+local Empty_Art              = "Interface\\Addons\\TidyBar\\empty"
 local MouseInSidebar, MouseInCorner = false
 
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
