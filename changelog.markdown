@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.7 UNRELEASED
+
+- Fixed objectives positioning when TidyBar scaling is used.
+- Renamed `Empty.tga` to `empty.tga`.
+
 ### 7.0.3.6
 
 - Fix the height and separation of the experience and reputation bars.

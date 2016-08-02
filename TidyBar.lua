@@ -1,9 +1,24 @@
-﻿local TidyBarScale = 1
--- Set these to either true or false
+﻿--
+--  User preferences
+--
+--    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
+--
+-- Set the following to either true or false
 local HideExperienceBar = false
 local HideGryphons = true
 local AutoHideSideBar = true
 local HideActionBarButtonsTexturedBackground = true
+
+
+-- The size of all of the buttons.
+--   1 is normal
+--   Something like 0.8 is smaller
+--   Something like 1.2 is larger
+--   Note that anything over will risk having some buttons on the sidebar off of the bottom of your screen.
+local TidyBarScale = 1
+
+
+----------------------------------------------------------------------
 
 
 local MenuButtonFrames = {
@@ -194,7 +209,7 @@ local function ConfigureSideBars()
   l:ClearAllPoints()
   r:ClearAllPoints()
   --r:SetPoint( 'BOTTOMRIGHT', WorldFrame, 'BOTTOMRIGHT' )
-  r:SetPoint( 'BOTTOMRIGHT', TidyBar_CornerBarMouseoverFrame, 'TOPRIGHT', 0, -10 )
+  r:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
   l:SetPoint( 'BOTTOMRIGHT', r, 'BOTTOMLEFT' )
   -- Right Bar
   if MultiBarRight:IsShown() then
@@ -214,10 +229,6 @@ local function ConfigureSideBars()
     -- Move it to the right
     _G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', Minimap, 'BOTTOMRIGHT' )
-    
-    -- Also move the frame header minimize/maximize button
-    _G[ 'ObjectiveTrackerFrame' ].HeaderMenu.MinimizeButton:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ].HeaderMenu.MinimizeButton:SetPoint( 'TOPRIGHT', TidyBar_SideBarMouseoverFrame, 'TOPLEFT' )
   end
 end
 
