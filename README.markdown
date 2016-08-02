@@ -15,6 +15,7 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
   -  Change TidyBar's scale (untested)
   -  Show/hide the experience bar
   -  Show/hide the Gryphons
+  -  Show/hide the texture behind the main buttons.
 - `/tidybar` will force an update.
 
 
@@ -28,6 +29,10 @@ A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar]
   - Mouse over main buttons hides them for a moment.
   - As soon as a spell is dragged from anywhere, the bottom bar's button-border texture messes up.
 - With xp but no reputation being tracked, there is too much empty space between the xp bar and upper button bars.
+- When dragging a spell from the spellbook to the right-side bar, it does not always become visible.
+  -  I can't always reproduce this.
+  -  Only from the spellbook.
+  -  The tooltips for existing items appears.
 
 
 # TODO
