@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.6
+
+- Fix the objectives tracker only showing a few items.
+
 ### 7.0.3.5
 
 - Option to remove the background texture of the main buttons.

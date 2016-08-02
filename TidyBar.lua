@@ -192,7 +192,8 @@ local function ConfigureSideBars()
   l:SetPoint( 'BOTTOMRIGHT', r, 'BOTTOMLEFT' )
   -- Right Bar
   if MultiBarRight:IsShown() then
-    _G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
+    -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
+    --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', TidyBar_SideBarMouseoverFrame, 'TOPLEFT' )
     SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
