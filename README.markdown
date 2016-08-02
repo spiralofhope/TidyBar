@@ -5,7 +5,7 @@ http://blog.spiralofhope.com/?p=19242
 
 A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar](http://wow.curseforge.com/addons/tidy-bar/)
 
-([releases](https://github.com/spiralofhope/TidyBar/releases))
+([releases](https://github.com/spiralofhope/TidyBar/releases) · [latest beta](https://github.com/spiralofhope/TidyBar/archive/master.zip))
 
 
 # Configuration / Usage
