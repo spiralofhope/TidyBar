@@ -1,11 +1,11 @@
 # TidyBar
 
-https://github.com/spiralofhope/TidyBar  
-http://blog.spiralofhope.com/?p=19242
+A [World of Warcraft](http://blog.spiralofhope.com/?p=2987) [addon](http://blog.spiralofhope.com/?p=17845) which simplifies the game buttons, giving much more screen space.  A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar](http://wow.curseforge.com/addons/tidy-bar/).
 
-A fork of [danltiger](http://wow.curseforge.com/profiles/danltiger/)'s [TidyBar](http://wow.curseforge.com/addons/tidy-bar/)
-
-([releases](https://github.com/spiralofhope/TidyBar/releases) · [latest beta](https://github.com/spiralofhope/TidyBar/archive/master.zip))
+[source code](https://github.com/spiralofhope/TidyBar)
+ · [home page](http://blog.spiralofhope.com/?p=19242)
+ · [releases](https://github.com/spiralofhope/TidyBar/releases)
+ · [latest beta](https://github.com/spiralofhope/TidyBar/archive/master.zip)
 
 
 # Configuration / Usage
