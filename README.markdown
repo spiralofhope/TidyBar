@@ -31,14 +31,7 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 
 *These are things I investigated but simply don't know how to fix.*
 
-- `HideActionBarButtonsTexturedBackground = true` is all manner of buggy.
-  - There isn't proper grey behind the main actionbar buttons.
-  - Mouse over main buttons hides them for a moment.
-  - As soon as a spell is dragged from anywhere, the bottom bar's button-border texture messes up.
-- When dragging a spell from the spellbook to the right-side bar, it does not always become visible.
-  -  I can't always reproduce this.
-  -  Only from the spellbook.
-  -  The tooltips for existing items appears.
+- `HideActionBarButtonsTexturedBackground = true` doesn't have a proper grey background behind the main actionbar buttons.
 
 
 # TODO
@@ -50,5 +43,3 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 - Create a hidden frame underneath the sidebar, and reference that for the mousein/mouseout, and not the buttons.
   -  Can I steal code from the corner frame?
   -  I hate having my mouse between buttons and not showing them.
-- Implement a account-wide options using the regular GUI.
-  -  This is a waste of time to learn if it's not really easy.

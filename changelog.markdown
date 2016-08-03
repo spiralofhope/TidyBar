@@ -5,9 +5,10 @@
 
 ## 7.0.3 series
 
-### 7.0.3.8 WORKING
+### 7.0.3.8
 
-- Style changes.
+- Fix the reputation/etc bars jumping around when entering/exiting rested (city), and world.
+- Code style changes.
 
 ### 7.0.3.7
 
@@ -48,7 +49,7 @@
 ### 7.0.3
 
 - 7.0.3 compatibility changes.
-- A major style rewrite.  Thanks, Cynbe.
+- A major code style rewrite.  Thanks, Cynbe.
 - Removed old comments.
 
 

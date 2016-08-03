@@ -320,51 +320,15 @@ local function RefreshExperienceBars()
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
-    -- Show them initially
-    --for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
-    -- Keep them updated
+    -- Show the action buttons
     MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
+    -- When mousing over a button, keep it shown.
+    for i=1,12 do
+      _G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function()
+      -- do nothing
+      end )
+    end
   end
-
--- FIXME - When the mouse enters an empty button, it is hidden.  I have no idea how to fix this..
-
---ActionButton3:SetTexture( Empty_Art )
---ActionButton3:SetTexture( MultiBarBottomLeftButton1FloatingBG:GetTexture() )
-
---function showthemall()
-  --for i=1,12 do
-    --_G[ 'ActionButton' .. i ]:Show()
-  --end
---end
---MainMenuBar:SetScript( 'OnUpdate', showthemall )
---MainMenuBarOverlayFrame:SetScript( 'OnUpdate', showthemall )
---MainMenuBarArtFrame:SetScript( 'OnUpdate', showthemall )
---MainMenuBar:SetScript( 'OnEnter', showthemall )
---MainMenuBar:SetScript( 'OnLeave', showthemall )
---MainMenuBar:SetScript( 'OnShow', showthemall )
---MainMenuBar:SetScript( 'OnHide', showthemall )
-
---WorldFrame:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
-
---OnChar (self,text)
---OnDragStart (self,button)
---OnDragStop (self)
---OnEnter (self, motion)
---OnEvent (self,event,...)
---OnHide (self)
---OnKeyDown (self,key)
---OnKeyUp (self,key)
---OnLeave (self, motion)
---OnLoad (self)
---OnMouseDown (self,button)
---OnMouseUp (self,button)
---OnMouseWheel (self,delta)
---OnReceiveDrag (self)
---OnShow (self)
---OnSizeChanged (self,w,h)
---OnUpdate (self,elapsed) 
-
---ActionButton3NormalTexture:SetScript( 'OnUpdate', showthemall )
 end
 
 
@@ -378,9 +342,10 @@ function TidyBar_RefreshPositions()
   RefreshExperienceBars()
 
   -- While `local TidyBar_HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
-  --   It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
-  --   TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
-  --   The following seems to be the fix.
+  -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
+    -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
+    -- The following seems to be the fix.
+    -- Of course, this doesn't work dancing in and out of combat while dancing in and out of rested.  But.. who would test under those conditions?  Not.. me.  Nope.  No sir.
   ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
 end
 
@@ -541,7 +506,8 @@ local function TidyBar_OnLoad()
   TidyBar_corner_setup()
   TidyBar_sidebar_setup()
   TidyBar_corner_menu_setup()
-  TidyBar_create_options_pane()
+  --  Not production-ready
+  --TidyBar_create_options_pane()
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )
