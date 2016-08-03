@@ -5,9 +5,14 @@
 
 ## 7.0.3 series
 
+### 7.0.3.9 WORKING
+
+- Fixed alignment issues with the right bars.
+- Fixed the objective tracker placement with/without the right bars.
+
 ### 7.0.3.8
 
-- Fix the reputation/etc bars jumping around when entering/exiting rested (city), and world.
+- Fixed the reputation/etc bars jumping around when entering/exiting rested (city), and world.
 - Code style changes.
 
 ### 7.0.3.7

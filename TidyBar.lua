@@ -209,25 +209,30 @@ local function ConfigureSideBars()
   --r:SetPoint( 'BOTTOMRIGHT', WorldFrame, 'BOTTOMRIGHT' )
   r:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
   l:SetPoint( 'BOTTOMRIGHT', r, 'BOTTOMLEFT' )
-  -- Right Bar
+
   if MultiBarRight:IsShown() then
-    -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
-    --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', TidyBar_SideBarMouseoverFrame, 'TOPLEFT' )
     SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
-    SideMouseoverFrame:SetPoint( 'BOTTOMRIGHT', MultiBarRight, 'BOTTOMRIGHT', 0,0 )
+    SideMouseoverFrame:SetPoint( 'BOTTOMRIGHT', MultiBarRight, 'BOTTOMRIGHT' )
     -- Right Bar 2
     if MultiBarLeft:IsShown() then
       MultiBarLeft:EnableMouse()
-         SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarLeft,  'TOPLEFT', -6,0 )
-    else SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarRight, 'TOPLEFT', -6,0 ) end
+      SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarLeft,  'TOPLEFT' )
+    else
+      SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarRight, 'TOPLEFT' )
+    end
   else
     SideMouseoverFrame:Hide()
-    -- Move it to the right
-    _G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', Minimap, 'BOTTOMRIGHT' )
   end
+
+  if TidyBar_SideBarMouseoverFrame:IsShown() then
+    -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
+    --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', TidyBar_SideBarMouseoverFrame, 'TOPLEFT' )
+  else
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
+  end
+
 end
 
 
