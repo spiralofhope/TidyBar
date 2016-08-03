@@ -32,7 +32,6 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 *These are things I investigated but simply don't know how to fix.*
 
 - `HideActionBarButtonsTexturedBackground = true` is all manner of buggy.
-  - It might be mucked up while in combat.  I can't really reproduce this, and it might have already been fixed without me realising it.
   - There isn't proper grey behind the main actionbar buttons.
   - Mouse over main buttons hides them for a moment.
   - As soon as a spell is dragged from anywhere, the bottom bar's button-border texture messes up.

@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.8 WORKING
+
+- Style changes.
+
 ### 7.0.3.7
 
 - Reworked the button/bar alignment, so they line up properly in all cases.

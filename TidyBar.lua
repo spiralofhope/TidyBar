@@ -3,10 +3,10 @@
 --
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
-local HideExperienceBar = false
-local HideGryphons = true
-local AutoHideSideBar = true
-local HideActionBarButtonsTexturedBackground = true
+TidyBar_HideExperienceBar = false
+TidyBar_HideGryphons = true
+TidyBar_AutoHideSideBar = true
+TidyBar_HideActionBarButtonsTexturedBackground = true
 
 
 -- The size of all of the buttons.
@@ -14,7 +14,7 @@ local HideActionBarButtonsTexturedBackground = true
 --   Something like 0.8 is smaller
 --   Something like 1.2 is larger
 --   Note that anything over will risk having some buttons on the sidebar off of the bottom of your screen.
-local TidyBarScale = 1
+TidyBar_Scale = 1
 
 
 ----------------------------------------------------------------------
@@ -55,20 +55,6 @@ local CornerMouseoverFrame = CreateFrame( 'Frame', 'TidyBar_CornerBarMouseoverFr
 
 local SetSidebarAlpha
 
-CornerMenuFrame:SetFrameStrata( 'LOW' )
-CornerMenuFrame:SetWidth( 300 )
-CornerMenuFrame:SetHeight( 128 )
-CornerMenuFrame:SetPoint( 'BOTTOMRIGHT' )
-CornerMenuFrame:SetScale( TidyBarScale )
-
-CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
-CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
-CornerMenuFrame.Texture:SetPoint( 'BOTTOMRIGHT' )
-CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
-CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
-
-CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, CornerMenuFrame )
-CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
 
 -- Event Delay
 -- FIXME? - This doesn't seem to work..
@@ -94,7 +80,7 @@ end
 
 local function RefreshMainActionBars()
   local anchor = ActionButton1
-  local bar_spacing = ( 4 * TidyBarScale )
+  local bar_spacing = ( 4 * TidyBar_Scale )
 
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetHeight( 8 )
@@ -171,7 +157,7 @@ end
 
 function SetSidebarAlpha()
   local Alpha = 0
-  if MouseInSidebar or ButtonGridIsShown or not AutoHideSideBar then Alpha = 1 end
+  if MouseInSidebar or ButtonGridIsShown or not TidyBar_AutoHideSideBar then Alpha = 1 end
   if SpellFlyout:IsShown() then
     DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
   else
@@ -183,20 +169,27 @@ function SetSidebarAlpha()
 end
 
 
+
 local function HookFrame_Microbuttons( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then CornerMenuFrame:SetAlpha( 1 ) end end )
   frameTarget:HookScript( 'OnLeave', function()                                          CornerMenuFrame:SetAlpha( 0 ) end )
 end
+
+
 
 local function HookFrame_CornerBar( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
   frameTarget:HookScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
+
+
 local function HookFrame_SideBar( frameTarget )
   frameTarget:HookScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
   frameTarget:HookScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
 end
+
+
 
 local function ConfigureCornerBars()
   if not UnitHasVehicleUI( 'player' ) then
@@ -205,6 +198,8 @@ local function ConfigureCornerBars()
     for i, name in pairs( MenuButtonFrames ) do name:SetParent( CornerMenuFrame.MicroButtons ) end
   end
 end
+
+
 
 local function ConfigureSideBars()
   local l=MultiBarLeft
@@ -236,6 +231,7 @@ local function ConfigureSideBars()
 end
 
 
+
 local function RefreshExperienceBars()
   --
   --  Hiding bits
@@ -246,7 +242,7 @@ local function RefreshExperienceBars()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
-  if HideGryphons then
+  if TidyBar_HideGryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
@@ -258,7 +254,7 @@ local function RefreshExperienceBars()
   -- The 'bubbles' which hang off of the right.
   ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-  if HideExperienceBar then
+  if TidyBar_HideExperienceBar then
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
   else
@@ -313,7 +309,7 @@ local function RefreshExperienceBars()
   MainMenuBarMaxLevelBar:Hide()
   MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
-  if HideActionBarButtonsTexturedBackground then
+  if TidyBar_HideActionBarButtonsTexturedBackground then
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
@@ -368,7 +364,9 @@ local function RefreshExperienceBars()
   end
 end
 
-local function RefreshPositions()
+
+
+function TidyBar_RefreshPositions()
   if InCombatLockdown() then return end
   -- Change the size of the central button and status bars
 
@@ -385,50 +383,66 @@ local function RefreshPositions()
 end
 
 
--- Event Handlers
-local events = {}
 
-function events:ACTIONBAR_SHOWGRID() ButtonGridIsShown = true;  SetSidebarAlpha() end
-function events:ACTIONBAR_HIDEGRID() ButtonGridIsShown = false; SetSidebarAlpha() end
-function events:UNIT_EXITED_VEHICLE()  RefreshPositions(); DelayEvent( ConfigureCornerBars, GetTime() + 1 ) end    -- Echos the event to verify positions
-events.PLAYER_ENTERING_WORLD       = RefreshPositions
-events.UPDATE_INSTANCE_INFO        = RefreshPositions
-events.PLAYER_TALENT_UPDATE        = RefreshPositions
-events.ACTIVE_TALENT_GROUP_CHANGED = RefreshPositions
-events.SPELL_UPDATE_USEABLE        = RefreshPositions
-events.PET_BAR_UPDATE              = RefreshPositions
-events.UNIT_ENTERED_VEHICLE        = RefreshPositions
-events.UPDATE_BONUS_ACTIONBAR      = RefreshPositions
-events.UPDATE_MULTI_CAST_ACTIONBAR = RefreshPositions
-events.PLAYER_LEVEL_UP             = RefreshPositions
-events.UPDATE_SHAPESHIFT_FORM      = RefreshPositions
-events.PLAYER_GAINS_VEHICLE_DATA   = RefreshPositions
-events.PLAYER_LOSES_VEHICLE_DATA   = RefreshPositions
-events.UPDATE_VEHICLE_ACTIONBAR    = RefreshPositions
-events.QUEST_WATCH_UPDATE          = RefreshPositions
-events.UNIT_AURA                   = RefreshPositions
+local function TidyBar_event_handler_setup()
+  -- Event Handlers
+  local events = {}
+
+  function events:ACTIONBAR_SHOWGRID() ButtonGridIsShown = true;  SetSidebarAlpha() end
+  function events:ACTIONBAR_HIDEGRID() ButtonGridIsShown = false; SetSidebarAlpha() end
+  function events:UNIT_EXITED_VEHICLE()  TidyBar_RefreshPositions(); DelayEvent( ConfigureCornerBars, GetTime() + 1 ) end    -- Echos the event to verify positions
+  events.PLAYER_ENTERING_WORLD       = TidyBar_RefreshPositions
+  events.UPDATE_INSTANCE_INFO        = TidyBar_RefreshPositions
+  events.PLAYER_TALENT_UPDATE        = TidyBar_RefreshPositions
+  events.ACTIVE_TALENT_GROUP_CHANGED = TidyBar_RefreshPositions
+  events.SPELL_UPDATE_USEABLE        = TidyBar_RefreshPositions
+  events.PET_BAR_UPDATE              = TidyBar_RefreshPositions
+  events.UNIT_ENTERED_VEHICLE        = TidyBar_RefreshPositions
+  events.UPDATE_BONUS_ACTIONBAR      = TidyBar_RefreshPositions
+  events.UPDATE_MULTI_CAST_ACTIONBAR = TidyBar_RefreshPositions
+  events.PLAYER_LEVEL_UP             = TidyBar_RefreshPositions
+  events.UPDATE_SHAPESHIFT_FORM      = TidyBar_RefreshPositions
+  events.PLAYER_GAINS_VEHICLE_DATA   = TidyBar_RefreshPositions
+  events.PLAYER_LOSES_VEHICLE_DATA   = TidyBar_RefreshPositions
+  events.UPDATE_VEHICLE_ACTIONBAR    = TidyBar_RefreshPositions
+  events.QUEST_WATCH_UPDATE          = TidyBar_RefreshPositions
+  events.UNIT_AURA                   = TidyBar_RefreshPositions
 
 
-local function EventHandler( frame, event )
-  if events[ event ] then
-    -- NOTE - The following line is to debug:
-    --print( GetTime(), event )
-    events[ event ]()
+  local function EventHandler( frame, event )
+    if events[ event ] then
+      -- NOTE - The following line is to debug:
+      --print( GetTime(), event )
+      events[ event ]()
+    end
+  end
+
+  -- Set Event Monitoring
+  for eventname in pairs( events ) do
+    TidyBar:RegisterEvent( eventname )
   end
 end
 
--- Set Event Monitoring
-for eventname in pairs( events ) do
-  TidyBar:RegisterEvent( eventname )
-end
 
 
---
---  Menu Menu and Artwork
---
-do
+local function TidyBar_corner_setup()
+  CornerMenuFrame:SetFrameStrata( 'LOW' )
+  CornerMenuFrame:SetWidth( 300 )
+  CornerMenuFrame:SetHeight( 128 )
+  CornerMenuFrame:SetPoint( 'BOTTOMRIGHT' )
+  CornerMenuFrame:SetScale( TidyBar_Scale )
+
+  CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
+  CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
+  CornerMenuFrame.Texture:SetPoint( 'BOTTOMRIGHT' )
+  CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
+  CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
+
+  CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, CornerMenuFrame )
+  CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
+
   -- Call Update Function when the default UI makes changes
-  hooksecurefunc( 'UIParent_ManageFramePositions', RefreshPositions )
+  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
@@ -438,9 +452,9 @@ do
 
 
   -- Scaling
-    MainMenuBar:SetScale( TidyBarScale )
-  MultiBarRight:SetScale( TidyBarScale )
-   MultiBarLeft:SetScale( TidyBarScale )
+    MainMenuBar:SetScale( TidyBar_Scale )
+  MultiBarRight:SetScale( TidyBar_Scale )
+   MultiBarLeft:SetScale( TidyBar_Scale )
   
   MainMenuBarTexture0:SetPoint( 'LEFT',  MainMenuBar, 'LEFT',    0, 0 )
   MainMenuBarTexture1:SetPoint( 'RIGHT', MainMenuBar, 'RIGHT',   0, 0 )
@@ -464,14 +478,13 @@ do
   
   MainMenuBar:HookScript( 'OnShow', function()
     --print( 'Showing' )
-    RefreshPositions()
+    TidyBar_RefreshPositions()
   end)
 end
 
---
---  Side Action Bars
---
-do
+
+
+local function TidyBar_sidebar_setup()
   -- Setup the Side Action Bars
   SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true; SetSidebarAlpha() end )
   SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false;SetSidebarAlpha() end )
@@ -482,10 +495,9 @@ do
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
 
---
---  Corner Menu
---
-do
+
+
+local function TidyBar_corner_menu_setup()
   -- Keyring etc
   for i, name in pairs( BagButtonFrameList ) do
     name:SetParent( CornerMenuFrame.BagButtonFrame )
@@ -500,7 +512,7 @@ do
   for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
-  CornerMenuFrame:SetScale( TidyBarScale )
+  CornerMenuFrame:SetScale( TidyBar_Scale )
   CornerMenuFrame.MicroButtons:SetAllPoints( CornerMenuFrame )
   CornerMenuFrame.BagButtonFrame:SetPoint( 'TOPRIGHT', 2, -18 )
   CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
@@ -521,19 +533,29 @@ do
 end
 
 
-do
-  -- While `local HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
+
+local function TidyBar_OnLoad()
+  TidyBar_event_handler_setup()
+  TidyBar_corner_setup()
+  TidyBar_sidebar_setup()
+  TidyBar_corner_menu_setup()
+  TidyBar_create_options_pane()
+
+  -- While `local TidyBar_HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   --   It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
   --   TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
   --   The following seems to be the fix.
   ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
+
+  -- Start Tidy Bar
+  TidyBar:SetScript( 'OnEvent', EventHandler )
+  TidyBar:SetFrameStrata( 'TOOLTIP' )
+  TidyBar:Show()
+
+  SLASH_TIDYBAR1 = '/tidybar'
+  SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
 end
 
 
--- Start Tidy Bar
-TidyBar:SetScript( 'OnEvent', EventHandler )
-TidyBar:SetFrameStrata( 'TOOLTIP' )
-TidyBar:Show()
 
-SLASH_TIDYBAR1 = '/tidybar'
-SlashCmdList[ 'TIDYBAR' ] = RefreshPositions
+TidyBar_OnLoad()
