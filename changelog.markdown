@@ -5,7 +5,7 @@
 
 ## 7.0.3 series
 
-### 7.0.3.9 WORKING
+### 7.0.3.9
 
 - Fixed alignment issues with the right bars.
 - Fixed the objective tracker placement with/without the right bars.
