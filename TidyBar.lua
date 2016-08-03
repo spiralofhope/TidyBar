@@ -233,6 +233,12 @@ end
 
 
 local function RefreshExperienceBars()
+  MainMenuExpBar:SetWidth( 500 )
+  MainMenuBar:SetWidth( 500 )
+  ReputationWatchBar:SetWidth( 500 )
+  ReputationWatchBar.StatusBar:SetWidth( 500 )
+
+
   --
   --  Hiding bits
   --
@@ -318,7 +324,7 @@ local function RefreshExperienceBars()
     --for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
     -- Keep them updated
     MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
-
+  end
 
 -- FIXME - When the mouse enters an empty button, it is hidden.  I have no idea how to fix this..
 
@@ -359,9 +365,6 @@ local function RefreshExperienceBars()
 --OnUpdate (self,elapsed) 
 
 --ActionButton3NormalTexture:SetScript( 'OnUpdate', showthemall )
-
-
-  end
 end
 
 
@@ -369,17 +372,16 @@ end
 function TidyBar_RefreshPositions()
   if InCombatLockdown() then return end
   -- Change the size of the central button and status bars
-
-  -- This is the right-hand side.
-  MainMenuExpBar:SetWidth( 500 )
-  MainMenuBar:SetWidth( 500 )
-  ReputationWatchBar:SetWidth( 500 )
-  ReputationWatchBar.StatusBar:SetWidth( 500 )
-
   ConfigureSideBars()
   RefreshMainActionBars()
   ConfigureCornerBars()
   RefreshExperienceBars()
+
+  -- While `local TidyBar_HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
+  --   It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
+  --   TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
+  --   The following seems to be the fix.
+  ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
 end
 
 
@@ -540,12 +542,6 @@ local function TidyBar_OnLoad()
   TidyBar_sidebar_setup()
   TidyBar_corner_menu_setup()
   TidyBar_create_options_pane()
-
-  -- While `local TidyBar_HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
-  --   It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
-  --   TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
-  --   The following seems to be the fix.
-  ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )
