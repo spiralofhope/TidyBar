@@ -3,7 +3,6 @@
 --
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
--- Set the following to either true or false
 local HideExperienceBar = false
 local HideGryphons = true
 local AutoHideSideBar = true
@@ -95,75 +94,79 @@ end
 
 local function RefreshMainActionBars()
   local anchor = ActionButton1
-  local anchorOffset = 14
-  local initialOffset = 32
-
-  if HideExperienceBar == true then
-    MainMenuExpBar:Hide()
-    MainMenuExpBar:SetHeight( .001 )
-  end
+  local bar_spacing = ( 4 * TidyBarScale )
 
   if MainMenuExpBar:IsShown() then
-    MainMenuExpBar:ClearAllPoints()
-    MainMenuExpBar:SetPoint( 'TOPLEFT', MainMenuBar, 6, 0 )
-    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
-    MainMenuExpBar.SparkBurstMove:SetPoint( 'TOPLEFT', MainMenuExpBar, 0, 0 )
     MainMenuExpBar:SetHeight( 8 )
-    anchorOffset = 8
+    MainMenuExpBar:ClearAllPoints()
+    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT' )
+
+    MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
+    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    MainMenuExpBar.SparkBurstMove:SetPoint( 'TOP', MainMenuExpBar )
+
     anchor = MainMenuExpBar
   end
 
   if ReputationWatchBar:IsShown() then
-    ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'TOPLEFT', anchor, 0, anchorOffset )
     ReputationWatchBar:SetHeight( 8 )
+    ReputationWatchBar:ClearAllPoints()
+    if MainMenuExpBar:IsShown() then
+      ReputationWatchBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT' )
+    else
+      ReputationWatchBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
+    end
+
+    ReputationWatchBar:SetHeight( 8 )
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
+    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'TOP', ReputationWatchBar )
+
     anchor = ReputationWatchBar
-    anchorOffset = 6
-  else
-    anchorOffset = 4
-    ReputationWatchBar:Hide()
-    ReputationWatchBar:SetHeight( .001 )
   end
 
   if MultiBarBottomLeft:IsShown() then
     MultiBarBottomLeft:ClearAllPoints()
-    if ReputationWatchBar:IsShown() then
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 6, anchorOffset )
-    else
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
-    end
+    MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
     anchor = MultiBarBottomLeft
-    anchorOffset = 4
-  else
-    anchor = ActionButton1
   end
 
   if MultiBarBottomRight:IsShown() then
-    --print( 'MultiBarBottomRight' )
     MultiBarBottomRight:ClearAllPoints()
-    MultiBarBottomRight:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
+    MultiBarBottomRight:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
     anchor = MultiBarBottomRight
-    anchorOffset = 4
-  end
-
-  if PetActionBarFrame:IsShown() then
-    --print( 'PetActionBarFrame' )
-    PetActionButton1:ClearAllPoints()
-    PetActionButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT',  initialOffset, anchorOffset )
-    anchor = PetActionButton1
-    anchorOffset = 4
   end
 
   if StanceBarFrame:IsShown() then
     StanceButton1:ClearAllPoints()
-    StanceButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
+    StanceButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
     anchor = StanceButton1
-    anchorOffset = 4
   end
 
-  PossessBarFrame:ClearAllPoints()
-  PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, anchorOffset )
+  if PetActionBarFrame:IsShown() then
+    PetActionButton1:ClearAllPoints()
+    PetActionButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
+    anchor = PetActionButton1
+  end
+
+  -- Is this sort of thing still needed?
+  --if PossessBarFrame:IsShown() then
+    --PossessBarFrame:ClearAllPoints()
+    --PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
+  --end
 end
+
 
 
 function SetSidebarAlpha()
@@ -243,24 +246,29 @@ local function RefreshExperienceBars()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
-  if HideGryphons == true then
+  if HideGryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
   
   -- The XP bar
-  --MainMenuBarTexture1:SetTexture( Empty_Art )
-  --MainMenuBarTexture0:SetTexture( Empty_Art )
+  -- The 'bubbles'
   ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
-  for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
-  -- The experience bar 'bubbles' texture that hangs off of the right.
-  MainMenuBarTexture2:SetTexture( Empty_Art )
-  MainMenuBarTexture3:SetTexture( Empty_Art )
+  -- The 'bubbles' which hang off of the right.
   ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-  -- Hiding the grey background
-  --ReputationWatchBar.StatusBar.Background:Hide()
+  if HideExperienceBar then
+    MainMenuExpBar:Hide()
+    MainMenuExpBar:SetHeight( .001 )
+  else
+    --MainMenuBarTexture1:SetTexture( Empty_Art )
+    --MainMenuBarTexture0:SetTexture( Empty_Art )
+    -- The 'bubbles' which hang off of the right.
+    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
+  end
+  MainMenuBarTexture2:SetTexture( Empty_Art )
+  MainMenuBarTexture3:SetTexture( Empty_Art )
 
   -- The reputation bar bubbles
   -- .. in the middle of the screen
@@ -285,6 +293,19 @@ local function RefreshExperienceBars()
   ExhaustionLevelFillBar:SetTexture( Empty_Art )
   ExhaustionTick:SetAlpha( 0 )
 
+  if StanceBarLeft:IsShown() then
+    -- Hide the background behind the stance bar
+    StanceBarLeft:SetAlpha( 0 )
+    StanceBarRight:SetAlpha( 0 )
+    StanceBarLeft:Hide()
+    StanceBarRight:Hide()
+    -- Hide the border around buttons
+    for i=1,10 do
+      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
+      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
+    end
+  end
+
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
   TalentMicroButtonAlert:SetAlpha( 0 )
@@ -292,7 +313,7 @@ local function RefreshExperienceBars()
   MainMenuBarMaxLevelBar:Hide()
   MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
-  if HideActionBarButtonsTexturedBackground == true then
+  if HideActionBarButtonsTexturedBackground then
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
@@ -345,17 +366,6 @@ local function RefreshExperienceBars()
 
 
   end
-
-
-  --
-  --  Other actions
-  --
-
-  -- Repositions the bubbles for the Rep Watch bar
-  if ReputationWatchBar:IsShown() then
-    ReputationWatchBar.StatusBar.WatchBarTexture0:ClearAllPoints()
-    ReputationWatchBar.StatusBar.WatchBarTexture0:SetPoint( 'LEFT', ReputationWatchBar, 'LEFT', 0, 2 )
-  end
 end
 
 local function RefreshPositions()
@@ -363,18 +373,10 @@ local function RefreshPositions()
   -- Change the size of the central button and status bars
 
   -- This is the right-hand side.
-  if HideActionBarButtonsTexturedBackground == true then
-    MainMenuExpBar:SetWidth( 500 )
-    MainMenuBar:SetWidth( 500 )
-    ReputationWatchBar:SetWidth( 500 )
-    ReputationWatchBar.StatusBar:SetWidth( 500 )
-  else
-    -- Original code
-    MainMenuExpBar:SetWidth( 512 )
-    MainMenuBar:SetWidth( 512 )
-    ReputationWatchBar:SetWidth( 512 )
-    ReputationWatchBar.StatusBar:SetWidth( 512 )
-  end
+  MainMenuExpBar:SetWidth( 500 )
+  MainMenuBar:SetWidth( 500 )
+  ReputationWatchBar:SetWidth( 500 )
+  ReputationWatchBar.StatusBar:SetWidth( 500 )
 
   ConfigureSideBars()
   RefreshMainActionBars()
@@ -455,7 +457,7 @@ do
   ConfigureCornerBars()
   CornerMenuFrame:SetAlpha( 0 )
   
-  if HideMainButtonArt == true then
+  if HideMainButtonArt then
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
   end
@@ -517,6 +519,16 @@ do
   CornerMouseoverFrame:SetScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
   CornerMouseoverFrame:SetScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
 end
+
+
+do
+  -- While `local HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
+  --   It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
+  --   TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
+  --   The following seems to be the fix.
+  ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
+end
+
 
 -- Start Tidy Bar
 TidyBar:SetScript( 'OnEvent', EventHandler )

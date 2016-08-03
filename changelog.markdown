@@ -5,28 +5,31 @@
 
 ## 7.0.3 series
 
-### 7.0.3.7 UNRELEASED
+### 7.0.3.7
 
+- Reworked the button/bar alignment, so they line up properly in all cases.
+- Hide the button border around the stance buttons.
+- Hide the background behind the stance buttons.
 - Fixed objectives positioning when TidyBar scaling is used.
 - Renamed `Empty.tga` to `empty.tga`.
 
 ### 7.0.3.6
 
-- Fix the height and separation of the experience and reputation bars.
-- Fix the objectives tracker only showing a few items.
+- Fixed the height and separation of the experience and reputation bars.
+- Fixed the objectives tracker only showing a few items.
 
 ### 7.0.3.5
 
-- Option to remove the background texture of the main buttons.
+- Implemented an option to remove the background texture of the main buttons.
 
 ### 7.0.3.4
 
-- Fix the reputation bar hanging off of the right-hand side.  Again.
-- Fix the experience bar hanging off of the right-hand side.
+- Fixed the reputation bar hanging off of the right-hand side.  Again.
+- Fixed the experience bar hanging off of the right-hand side.
 
 ### 7.0.3.3
 
-- Fix the reputation bar hanging off of the right-hand side.
+- Fixed the reputation bar hanging off of the right-hand side.
 - Updated `TidyBar.toc`
   -  It lists the author as "Binny".  Curious.
 
