@@ -1,8 +1,6 @@
 -- TODO - be able to completely disable TidyBar?
 
 function TidyBar_create_options_pane()
-  return  -- None of this is production-ready.
-
   local Frame = CreateFrame( 'Frame', 'TidyBar_options' )
   local Text = Frame:CreateFontString( nil, 'BACKGROUND', 'GameFontHighlight' )
   Text:SetText( 'TidyBar simplifies the game buttons, giving much more screen space.' )
