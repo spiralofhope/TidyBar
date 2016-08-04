@@ -146,6 +146,19 @@ local function RefreshMainActionBars()
     anchor = PetActionButton1
   end
 
+  -- TODO - move the frame rate text up
+
+  --FrameRateText:SetScript( 'OnUpdate', function() FrameRateText:SetPoint( 'TOPMIDDLE', MultiBarBottomRight, 'BOTTOMMIDDLE', 0, 0 ) end )
+  --/run FrameRateText:SetPoint( 'TOPMIDDLE', MultiBarBottomRight, 'BOTTOMMIDDLE', 0, 0 )
+
+  --if FrameRateText:IsShown() then
+    --FrameRateLabel:ClearAllPoints()
+    --FrameRateLabel:SetPoint( 'TOPMIDDLE', anchor, 'BOTTOMMIDDLE', 0, bar_spacing )
+    --FrameRateText:ClearAllPoints()
+    --FrameRateText:SetPoint( 'TOPRIGHT', FrameRateLabel, 'TOPLEFT' )
+  --end
+
+
   -- Is this sort of thing still needed?
   --if PossessBarFrame:IsShown() then
     --PossessBarFrame:ClearAllPoints()
@@ -350,7 +363,7 @@ function TidyBar_RefreshPositions()
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
-    -- Of course, this doesn't work dancing in and out of combat while dancing in and out of rested.  But.. who would test under those conditions?  Not.. me.  Nope.  No sir.
+    -- However, this doesn't work dancing in and out of combat while dancing in and out of rested.  But.. who would test under those conditions?  Not.. me.  Nope.  No sir.
   ReputationWatchBar:SetScript( 'OnUpdate', RefreshMainActionBars )
 end
 

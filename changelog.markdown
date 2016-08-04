@@ -5,6 +5,8 @@
 
 ## 7.0.3 series
 
+### 7.0.3.10 WORKING
+
 ### 7.0.3.9
 
 - Fixed alignment issues with the right bars.
