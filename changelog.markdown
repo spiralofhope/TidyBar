@@ -7,6 +7,8 @@
 
 ### 7.0.3.10 WORKING
 
+- Option to hide macro text
+
 ### 7.0.3.9
 
 - Fixed alignment issues with the right bars.

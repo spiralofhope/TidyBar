@@ -92,6 +92,25 @@ function TidyBar_create_options_pane()
   end)
 
 
+  -- TidyBar_hide_macro_text
+  Button = CreateFrame( 'CheckButton', 'TidyBar_option5', Frame, 'OptionsCheckButtonTemplate' )
+  Button:SetPoint( 'TOPLEFT', TidyBar_option4, 'BottomLeft', 0, -25 )
+  --Button:SetText( 'option1' )
+  getglobal( Button:GetName() .. 'Text' ):SetText( 'Hide Macro Text' )
+  Button.tooltipText = 'If a button on a bar is a macro, hide its text'
+  Button:SetScript( 'OnClick', function( self )
+    if self:GetChecked()then
+      PlaySound( 'igMainMenuOptionCheckBoxOff' )
+      TidyBar_hide_macro_text = true
+    else
+      PlaySound( 'igMainMenuOptionCheckBoxOn' )
+      TidyBar_hide_macro_text = false
+    end
+
+    TidyBar_update()
+  end)
+
+
 
   ----TODO - TidyBarScale
   --Slider = CreateFrame( 'Slider', 'TidyBar_TidyBarScale', Frame, 'OptionsCheckButtonTemplate' )

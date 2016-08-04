@@ -7,6 +7,7 @@ TidyBar_HideExperienceBar = false
 TidyBar_HideGryphons = true
 TidyBar_AutoHideSideBar = true
 TidyBar_HideActionBarButtonsTexturedBackground = true
+TidyBar_hide_macro_text = true
 
 
 -- The size of all of the buttons.
@@ -478,6 +479,24 @@ local function TidyBar_sidebar_setup()
   HookFrame_SideBar( MultiBarLeft )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
+
+
+  -- Remove macro text from bars.
+  -- /run local r={"MultiBarBottomLeft", "MultiBarBottomRight", "Action", "MultiBarLeft", "MultiBarRight"} for b=1,#r do for i=1,12 do _G[r[b].."Button"..i.."Name"]:SetAlpha(0) end end
+  if TidyBar_hide_macro_text then
+    local r={
+      "MultiBarBottomLeft",
+      "MultiBarBottomRight",
+      "Action",
+      "MultiBarLeft",
+      "MultiBarRight"
+    }
+    for b=1, #r do
+      for i=1,12 do
+        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha(0)
+      end
+    end
+  end
 end
 
 
