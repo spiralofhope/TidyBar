@@ -11,7 +11,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- 1  -  Experience Bar
+  -- 1 - TidyBar_HideExperienceBar
   local Button,editbox
   Button = CreateFrame( 'CheckButton', 'TidyBar_option1', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_options, 20, -50 )
@@ -31,7 +31,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- HideGryphons
+  -- 2 - TidyBar_HideGryphons
   Button = CreateFrame( 'CheckButton', 'TidyBar_option2', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT',TidyBar_option1, 'BottomLeft', 0, -25 )
 
@@ -53,7 +53,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- AutoHideSideBar
+  -- 3 - TidyBar_AutoHideSideBar
   Button = CreateFrame( 'CheckButton', 'TidyBar_option3', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_option2, 'BottomLeft', 0, -25 )
   --Button:SetText( 'option1' )
@@ -73,7 +73,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- HideActionBarButtonsTexturedBackground
+  -- 4 - TidyBar_HideActionBarButtonsTexturedBackground
   Button = CreateFrame( 'CheckButton', 'TidyBar_option4', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_option3, 'BottomLeft', 0, -25 )
   --Button:SetText( 'option1' )
@@ -92,7 +92,7 @@ function TidyBar_create_options_pane()
   end)
 
 
-  -- TidyBar_hide_macro_text
+  -- 5 - TidyBar_hide_macro_text
   Button = CreateFrame( 'CheckButton', 'TidyBar_option5', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_option4, 'BottomLeft', 0, -25 )
   --Button:SetText( 'option1' )
@@ -112,9 +112,9 @@ function TidyBar_create_options_pane()
 
 
 
-  ----TODO - TidyBarScale
-  --Slider = CreateFrame( 'Slider', 'TidyBar_TidyBarScale', Frame, 'OptionsCheckButtonTemplate' )
-  --Slider:SetPoint( 'TOPLEFT', TidyBar_HideActionBarButtonsTexturedBackground, 'BottomLeft', 0, -25 )
+  ----TODO - TidyBar_Scale
+  --Slider = CreateFrame( 'Slider', 'TODO', Frame, 'OptionsCheckButtonTemplate' )
+  --Slider:SetPoint( 'TOPLEFT', TODO, 'BottomLeft', 0, -25 )
   ----Button:SetText( 'option1' )
   --getglobal( Slider:GetName() .. 'Text' ):SetText( 'Scale' )
   --Slider.tooltipText = 'The scale of the various buttons.'
