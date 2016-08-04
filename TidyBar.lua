@@ -147,19 +147,6 @@ local function RefreshMainActionBars()
     anchor = PetActionButton1
   end
 
-  -- TODO - move the frame rate text up
-
-  --FrameRateText:SetScript( 'OnUpdate', function() FrameRateText:SetPoint( 'TOPMIDDLE', MultiBarBottomRight, 'BOTTOMMIDDLE', 0, 0 ) end )
-  --/run FrameRateText:SetPoint( 'TOPMIDDLE', MultiBarBottomRight, 'BOTTOMMIDDLE', 0, 0 )
-
-  --if FrameRateText:IsShown() then
-    --FrameRateLabel:ClearAllPoints()
-    --FrameRateLabel:SetPoint( 'TOPMIDDLE', anchor, 'BOTTOMMIDDLE', 0, bar_spacing )
-    --FrameRateText:ClearAllPoints()
-    --FrameRateText:SetPoint( 'TOPRIGHT', FrameRateLabel, 'TOPLEFT' )
-  --end
-
-
   -- Is this sort of thing still needed?
   --if PossessBarFrame:IsShown() then
     --PossessBarFrame:ClearAllPoints()
@@ -246,7 +233,6 @@ local function ConfigureSideBars()
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
   end
-
 end
 
 
@@ -469,7 +455,6 @@ local function TidyBar_corner_setup()
 end
 
 
-
 local function TidyBar_sidebar_setup()
   -- Setup the Side Action Bars
   SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true; SetSidebarAlpha() end )
@@ -479,24 +464,6 @@ local function TidyBar_sidebar_setup()
   HookFrame_SideBar( MultiBarLeft )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
-
-
-  -- Remove macro text from bars.
-  -- /run local r={"MultiBarBottomLeft", "MultiBarBottomRight", "Action", "MultiBarLeft", "MultiBarRight"} for b=1,#r do for i=1,12 do _G[r[b].."Button"..i.."Name"]:SetAlpha(0) end end
-  if TidyBar_hide_macro_text then
-    local r={
-      "MultiBarBottomLeft",
-      "MultiBarBottomRight",
-      "Action",
-      "MultiBarLeft",
-      "MultiBarRight"
-    }
-    for b=1, #r do
-      for i=1,12 do
-        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha(0)
-      end
-    end
-  end
 end
 
 
@@ -538,11 +505,32 @@ end
 
 
 
+local function TidyBar_bars_setup()
+  -- Remove macro text from bars.
+  if TidyBar_hide_macro_text then
+    local r={
+      'MultiBarBottomLeft',
+      'MultiBarBottomRight',
+      'Action',
+      'MultiBarLeft',
+      'MultiBarRight',
+    }
+    for b=1, #r do
+      for i=1,12 do
+        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha(0)
+      end
+    end
+  end
+end
+
+
+
 local function TidyBar_OnLoad()
   TidyBar_event_handler_setup()
   TidyBar_corner_setup()
-  TidyBar_sidebar_setup()
   TidyBar_corner_menu_setup()
+  TidyBar_sidebar_setup()
+  TidyBar_bars_setup()
   --  Not production-ready
   --TidyBar_create_options_pane()
 
