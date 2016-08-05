@@ -5,12 +5,14 @@
 
 ## 7.0.3 series
 
-### 7.0.3.10 WORKING
+### 7.0.3.10
 
+- Fixed alignment issues with the right bars.  Again.
 - Corrections to the background when `TidyBar_HideActionBarButtonsTexturedBackground = false`
 - Created an `extras` folder.
   -  Added notes and a solution regarding the missing hotkey text for empty mainbar buttons when `TidyBar_HideActionBarButtonsTexturedBackground = true`
-- Option to hide macro text.
+- Implemented an option to hide macro text.
+  -  Default `true`
 
 ### 7.0.3.9
 
@@ -38,6 +40,8 @@
 ### 7.0.3.5
 
 - Implemented an option to remove the background texture of the main buttons.
+  -  `TidyBar_HideActionBarButtonsTexturedBackground`
+  -  Default `true`
 
 ### 7.0.3.4
 
