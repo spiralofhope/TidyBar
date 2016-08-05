@@ -18,10 +18,20 @@ TidyBar_hide_macro_text = true
 TidyBar_Scale = 1
 
 
-
 -- The amount of vertical space between bars.
 --   Note that the experience bar(if shown) and reputation bar are not separated.
 TidyBar_bar_spacing = ( 4 * TidyBar_Scale )
+
+
+-- The position of the middle buttons.
+--   Default 500
+--   On a 1920 x 1080 screen:
+--       500 is the middle
+--      1375 is the left side
+--         1 is more to the right.
+--         0 crosses the streams.
+--         (I have no idea to right-align it, and I won't bother to code something)
+TidyBar_main_area_positioning = 500
 
 
 ----------------------------------------------------------------------
@@ -199,6 +209,12 @@ end
 
 
 local function TidyBar_refresh_main_area()
+  -- The position of the middle buttons, from the left side.
+  MainMenuBar:SetWidth( TidyBar_main_area_positioning )
+  -- Scaling
+  MainMenuBar:SetScale( TidyBar_Scale )
+
+
   if TidyBar_HideGryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
@@ -279,14 +295,10 @@ local function TidyBar_refresh_main_area()
   end
 
 
-
-
-  MainMenuExpBar:SetWidth( 500 )
-  MainMenuBar:SetWidth( 500 )
-
   local anchor = ActionButton1
 
   if MainMenuExpBar:IsShown() then
+    MainMenuExpBar:SetWidth( 500 )
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar:ClearAllPoints()
     MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
@@ -413,10 +425,6 @@ local function TidyBar_corner_setup()
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PossessBarFrame' ]         = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiCastActionBarFrame' ] = nil
 
-
-  -- Scaling
-    MainMenuBar:SetScale( TidyBar_Scale )
-  
   -- Set Pet Bars
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
   RegisterUnitWatch( PetActionBarFrame )
@@ -426,11 +434,6 @@ local function TidyBar_corner_setup()
   SetSidebarAlpha()
   ConfigureCornerBars()
   CornerMenuFrame:SetAlpha( 0 )
-  
-  MainMenuBar:HookScript( 'OnShow', function()
-    --print( 'Showing' )
-    TidyBar_RefreshPositions()
-  end)
 end
 
 
@@ -491,7 +494,11 @@ local function TidyBar_bars_setup()
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
-  ReputationWatchBar:SetScript( 'OnUpdate', TidyBar_refresh_reputation_bar )
+  ReputationWatchBar:HookScript( 'OnUpdate', TidyBar_refresh_reputation_bar )
+  MainMenuBar:HookScript( 'OnShow', function()
+    --print( 'Showing' )
+    TidyBar_RefreshPositions()
+  end)
 
   if TidyBar_hide_macro_text then
     local r={
@@ -507,6 +514,7 @@ local function TidyBar_bars_setup()
       end
     end
   end
+
 end
 
 
