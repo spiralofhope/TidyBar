@@ -7,6 +7,8 @@
 
 ### 7.0.3.11 WORKING
 
+- Implemented `TidyBar_main_area_positioning` to move the main area around somewhat.
+  -  Default 500.
 - Fixed the reputation bar height.
   -  It's easy when focus is on code clarity.
 
