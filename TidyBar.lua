@@ -104,7 +104,7 @@ local function RefreshMainActionBars()
       ReputationWatchBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
     end
 
-    ReputationWatchBar:SetHeight( 8 )
+    ReputationWatchBar.StatusBar:SetHeight( 8 )
     ReputationWatchBar.StatusBar:ClearAllPoints()
     ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
 
