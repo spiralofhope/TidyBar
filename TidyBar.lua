@@ -203,20 +203,17 @@ end
 
 
 local function ConfigureSideBars()
-  local l=MultiBarLeft
-  local r=MultiBarRight
-  l:ClearAllPoints()
-  r:ClearAllPoints()
-  --r:SetPoint( 'BOTTOMRIGHT', WorldFrame, 'BOTTOMRIGHT' )
-  r:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
-  l:SetPoint( 'BOTTOMRIGHT', r, 'BOTTOMLEFT' )
-
   if MultiBarRight:IsShown() then
+    MultiBarRight:ClearAllPoints()
+    MultiBarRight:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
     SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
     SideMouseoverFrame:SetPoint( 'BOTTOMRIGHT', MultiBarRight, 'BOTTOMRIGHT' )
     -- Right Bar 2
+    -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
     if MultiBarLeft:IsShown() then
+      MultiBarLeft:ClearAllPoints()
+      MultiBarLeft:SetPoint( 'TOPRIGHT', MultiBarRight, 'TOPLEFT' )
       MultiBarLeft:EnableMouse()
       SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarLeft,  'TOPLEFT' )
     else
@@ -233,7 +230,7 @@ local function ConfigureSideBars()
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
   end
-  end
+end
 
 
 
@@ -418,8 +415,6 @@ local function TidyBar_corner_setup()
 
   -- Scaling
     MainMenuBar:SetScale( TidyBar_Scale )
-  MultiBarRight:SetScale( TidyBar_Scale )
-   MultiBarLeft:SetScale( TidyBar_Scale )
   
   -- Set Pet Bars
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
@@ -445,6 +440,8 @@ local function TidyBar_sidebar_setup()
   SideMouseoverFrame:EnableMouse()
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
+  MultiBarRight:SetScale( TidyBar_Scale )
+  MultiBarLeft:SetScale(  TidyBar_Scale )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
