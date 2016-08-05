@@ -6,7 +6,7 @@
 TidyBar_HideExperienceBar = false
 TidyBar_HideGryphons = true
 TidyBar_AutoHideSideBar = true
-TidyBar_HideActionBarButtonsTexturedBackground = true
+TidyBar_HideActionBarButtonsTexturedBackground = false
 TidyBar_hide_macro_text = true
 
 
@@ -269,8 +269,6 @@ local function RefreshExperienceBars()
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
   else
-    --MainMenuBarTexture1:SetTexture( Empty_Art )
-    --MainMenuBarTexture0:SetTexture( Empty_Art )
     -- The 'bubbles' which hang off of the right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
   end
@@ -420,8 +418,8 @@ local function TidyBar_corner_setup()
   MultiBarRight:SetScale( TidyBar_Scale )
    MultiBarLeft:SetScale( TidyBar_Scale )
   
-  MainMenuBarTexture0:SetPoint( 'LEFT',  MainMenuBar, 'LEFT',    0, 0 )
-  MainMenuBarTexture1:SetPoint( 'RIGHT', MainMenuBar, 'RIGHT',   0, 0 )
+  MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
+  MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
 
   RefreshExperienceBars()
   
