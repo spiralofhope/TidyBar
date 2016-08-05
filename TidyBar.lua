@@ -6,7 +6,7 @@
 TidyBar_HideExperienceBar = false
 TidyBar_HideGryphons = true
 TidyBar_AutoHideSideBar = true
-TidyBar_HideActionBarButtonsTexturedBackground = false
+TidyBar_HideActionBarButtonsTexturedBackground = true
 TidyBar_hide_macro_text = true
 
 
@@ -323,6 +323,9 @@ local function RefreshExperienceBars()
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
+  else
+    MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
+    MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
   end
 end
 
@@ -418,11 +421,6 @@ local function TidyBar_corner_setup()
   MultiBarRight:SetScale( TidyBar_Scale )
    MultiBarLeft:SetScale( TidyBar_Scale )
   
-  MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
-  MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
-
-  RefreshExperienceBars()
-  
   -- Set Pet Bars
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
   RegisterUnitWatch( PetActionBarFrame )
@@ -432,11 +430,6 @@ local function TidyBar_corner_setup()
   SetSidebarAlpha()
   ConfigureCornerBars()
   CornerMenuFrame:SetAlpha( 0 )
-  
-  if HideMainButtonArt then
-    MainMenuBarTexture0:Hide()
-    MainMenuBarTexture1:Hide()
-  end
   
   MainMenuBar:HookScript( 'OnShow', function()
     --print( 'Showing' )
