@@ -325,50 +325,44 @@ local function RefreshExperienceBars()
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
+  --for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
 
+--MenuMenuBar:SetScript( 'OnUpdate', function() 
+--for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
+--end )
 
-----v
---local lastCompanionType, lastCompanionIndex; -- (1)
---local function postHook(typeID, index, ...) -- (2)
-  --lastCompanionType, lastCompanionIndex = typeID, index; -- (3)
-  --return ...; -- (4)
---end
---local oldPickupCompanion = PickupCompanion; -- (5)
---function PickupCompanion(...) -- (6)
-  --local typeID, index = ...; -- (7)
-  --return postHook(typeID, index, oldPickupCompanion(typeID, index, ...)); --(8)
---end
-----^
+  --ActionButton1:SetScript( 'OnEnter', function() ActionButton1:Show() end )
 
-
---1  Define two local variables to keep track of the last companion picked up. An addon could then use those variables to determine which companion is on the cursor.
---2  Define the post-hook function body. The signature is the two known arguments, followed by the original function's return values in a vararg expression.
---3  Set the local up-values to the arguments passed to the function
---4  Return all of the original function's return values.
---5  Save a reference to the original function value
---6  Change the value of the global PickupCompanion variable to a new function
---7  Read the two known (expected by the post-hook) arguments from the vararg expression to local variables
---8  Call the postHook function and the original function.
-
-
--- Ugh, this sort of thing doesn't make sense and doesn't work..
---local function foo()
-
-  --local oldActionButton1 = ActionButton1;
-
-  --local function postHook( ... )
-    --ActionButton1:Show()
-    --return ...
+-- Don't perma-hide unused action bar slots.
+--for i=1,12 do
+  --if not _G[ 'ActionButton' .. i .. 'Icon' ]:IsShown() then
+    --_G[ 'ActionButton' .. i ]:Show()
   --end
-
-  --function ActionButton1( ... )
-    --return postHook( oldActionButton1( ... ) )
-  --end
-
 --end
 
---ActionButton1:SetScript( 'OnEnter', foo() )
 
+--for i=1,12 do
+  --if not _G[ 'ActionButton' .. i .. 'Icon' ]:IsShown() then
+    --_G[ 'ActionButton' .. i ]:Show()
+  --end
+--end
+
+ --_G[ 'ActionButton' .. i ]:Show()
+ 
+--end
+
+   --_G[ 'ActionButton' .. i ]:Show() end
+
+    ---- Show the action buttons
+    --MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
+    ---- When mousing over a button, keep it shown.
+    --for i=1,12 do
+      ----_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function() _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' ) end )
+      ----_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter',            _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' )     )
+      --_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function()
+      ---- do nothing
+      --end )
+    --end
 
 
 -- This used to work, but would disable tooltips.
