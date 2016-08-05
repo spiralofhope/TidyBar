@@ -325,60 +325,6 @@ local function RefreshExperienceBars()
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
-  --for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
-
---MenuMenuBar:SetScript( 'OnUpdate', function() 
---for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end
---end )
-
-  --ActionButton1:SetScript( 'OnEnter', function() ActionButton1:Show() end )
-
--- Don't perma-hide unused action bar slots.
---for i=1,12 do
-  --if not _G[ 'ActionButton' .. i .. 'Icon' ]:IsShown() then
-    --_G[ 'ActionButton' .. i ]:Show()
-  --end
---end
-
-
---for i=1,12 do
-  --if not _G[ 'ActionButton' .. i .. 'Icon' ]:IsShown() then
-    --_G[ 'ActionButton' .. i ]:Show()
-  --end
---end
-
- --_G[ 'ActionButton' .. i ]:Show()
- 
---end
-
-   --_G[ 'ActionButton' .. i ]:Show() end
-
-    ---- Show the action buttons
-    --MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
-    ---- When mousing over a button, keep it shown.
-    --for i=1,12 do
-      ----_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function() _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' ) end )
-      ----_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter',            _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' )     )
-      --_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function()
-      ---- do nothing
-      --end )
-    --end
-
-
--- This used to work, but would disable tooltips.
---[=[
-    -- Show the action buttons
-    MainMenuBar:SetScript( 'OnUpdate', function() for i=1,12 do _G[ 'ActionButton' .. i ]:Show() end end )
-    -- When mousing over a button, keep it shown.
-    for i=1,12 do
-      --_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function() _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' ) end )
-      --_G[ 'ActionButton' .. i ]:SetScript( 'OnEnter',            _G[ 'ActionButton' .. i ]:GetScript( 'OnEnter' )     )
-      _G[ 'ActionButton' .. i ]:SetScript( 'OnEnter', function()
-      -- do nothing
-      end )
-    end
-]=]
-
   end
 end
 
