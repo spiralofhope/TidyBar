@@ -7,7 +7,10 @@
 
 ### 7.0.3.10 WORKING
 
-- Option to hide macro text
+- Corrections to the background when `TidyBar_HideActionBarButtonsTexturedBackground = false`
+- Created an `extras` folder.
+  -  Added notes and a solution regarding the missing hotkey text for empty mainbar buttons when `TidyBar_HideActionBarButtonsTexturedBackground = true`
+- Option to hide macro text.
 
 ### 7.0.3.9
 
