@@ -86,7 +86,7 @@ local function RefreshMainActionBars()
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar:ClearAllPoints()
-    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT' )
+    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, bar_spacing )
 
     MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:ClearAllPoints()
