@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.11 WORKING
+
+- Fixed the reputation bar height.
+  -  It's easy when focus is on code clarity.
+
 ### 7.0.3.10
 
 - Fixed alignment issues with the right bars.  Again.

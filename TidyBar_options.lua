@@ -1,5 +1,8 @@
 -- TODO - be able to completely disable TidyBar?
 
+-- TODO
+--TidyBar_bar_spacing
+
 function TidyBar_create_options_pane()
   local Frame = CreateFrame( 'Frame', 'TidyBar_options' )
   local Text = Frame:CreateFontString( nil, 'BACKGROUND', 'GameFontHighlight' )
