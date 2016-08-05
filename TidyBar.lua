@@ -169,6 +169,7 @@ end
 
 
 local function TidyBar_refresh_reputation_bar()
+  ReputationWatchBar:SetWidth( 500 )
   ReputationWatchBar:SetHeight( 8 )
   ReputationWatchBar:ClearAllPoints()
   if MainMenuExpBar:IsShown() then
@@ -177,6 +178,7 @@ local function TidyBar_refresh_reputation_bar()
     ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', TidyBar_bar_spacing )
   end
 
+  ReputationWatchBar.StatusBar:SetWidth( 500 )
   ReputationWatchBar.StatusBar:SetHeight( 8 )
   ReputationWatchBar.StatusBar:ClearAllPoints()
   ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
@@ -281,8 +283,6 @@ local function TidyBar_refresh_main_area()
 
   MainMenuExpBar:SetWidth( 500 )
   MainMenuBar:SetWidth( 500 )
-  ReputationWatchBar:SetWidth( 500 )
-  ReputationWatchBar.StatusBar:SetWidth( 500 )
 
   local anchor = ActionButton1
 
