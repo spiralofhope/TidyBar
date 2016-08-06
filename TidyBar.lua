@@ -229,6 +229,7 @@ local function TidyBar_refresh_main_area()
   end
 
   -- Hide the fiddly bits on the main bar
+  MainMenuBarPageNumber:Hide()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
@@ -357,17 +358,6 @@ function TidyBar_RefreshPositions()
   ConfigureSideBars()
 end
 
-
-local function TidyBar_page_changing()
-  TidyBar_RefreshPositions()
-  MainMenuBarPageNumber:Show()
-  MainMenuBarPageNumber:ClearAllPoints()
-  --MainMenuBarPageNumber:SetPoint( 'TOPRIGHT', ActionButton12 )
-  local function hideme()
-    MainMenuBarPageNumber:Hide()
-  end
-  DelayEvent( hideme, GetTime() + 0.5 )
-end
 
 local function TidyBar_event_handler_setup()
   local events = {}
