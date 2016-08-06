@@ -7,7 +7,7 @@ TidyBar_ShowExperienceBar = true
 TidyBar_ShowGryphons = true
 TidyBar_AutoHideSideBar = true
 TidyBar_HideActionBarButtonsTexturedBackground = true
-TidyBar_hide_macro_text = true
+TidyBar_show_macro_text = true
 
 
 -- The size of all of the buttons.
@@ -515,7 +515,7 @@ local function TidyBar_bars_setup()
     TidyBar_RefreshPositions()
   end)
 
-  if TidyBar_hide_macro_text then
+  if not TidyBar_show_macro_text then
     local r={
       'MultiBarBottomLeft',
       'MultiBarBottomRight',
