@@ -1,13 +1,15 @@
-﻿--
+﻿TidyBar_options = {}
+
+--
 --  User preferences
 --
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
-TidyBar_ShowExperienceBar = true
-TidyBar_ShowGryphons = false
-TidyBar_AutoHideSideBar = true
-TidyBar_show_MainMenuBar_textured_background = false
-TidyBar_show_macro_text = false
+TidyBar_options.show_experience_bar = true
+TidyBar_options.show_gryphons = false
+TidyBar_options.hide_sidebar_on_mouseout = true
+TidyBar_options.show_MainMenuBar_textured_background = false
+TidyBar_options.show_macro_text = false
 
 
 -- The size of all of the buttons.
@@ -15,12 +17,12 @@ TidyBar_show_macro_text = false
 --   Something like 0.8 is smaller
 --   Something like 1.2 is larger
 --   Note that anything over will risk having some buttons on the sidebar off of the bottom of your screen.
-TidyBar_Scale = 1
+TidyBar_options.scale = 1
 
 
 -- The amount of vertical space between bars.
 --   Note that the experience bar(if shown) and reputation bar are not separated.
-TidyBar_bar_spacing = ( 4 * TidyBar_Scale )
+TidyBar_options.bar_spacing = ( 4 * TidyBar_options.scale )
 
 
 -- The position of the middle buttons.
@@ -31,10 +33,11 @@ TidyBar_bar_spacing = ( 4 * TidyBar_Scale )
 --         1 is more to the right.
 --         0 crosses the streams.
 --         (I have no idea to right-align it, and I won't bother to code something)
-TidyBar_main_area_positioning = 500
-
+TidyBar_options.main_area_positioning = 500
 
 ----------------------------------------------------------------------
+
+--GLOBALS: TidyBar_options
 
 
 local MenuButtonFrames = {
@@ -99,7 +102,7 @@ end
 
 function SetSidebarAlpha()
   local Alpha = 0
-  if MouseInSidebar or ButtonGridIsShown or not TidyBar_AutoHideSideBar then Alpha = 1 end
+  if MouseInSidebar or ButtonGridIsShown or not TidyBar_options.hide_sidebar_on_mouseout then Alpha = 1 end
   if SpellFlyout:IsShown() then
     DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
   else
@@ -208,7 +211,7 @@ local function TidyBar_refresh_reputation_bar()
   if MainMenuExpBar:IsShown() then
     ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'MainMenuExpBar', 'TOPLEFT' )
   else
-    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', 0, TidyBar_bar_spacing )
+    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', 0, TidyBar_options.bar_spacing )
   end
 
 end
@@ -219,11 +222,11 @@ local function TidyBar_refresh_main_area()
   -- Note that the reputation bar is refreshed via an OnUpdate HookScript
 
   -- The position of the middle buttons, from the left side.
-  MainMenuBar:SetWidth( TidyBar_main_area_positioning )
+  MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
   -- Scaling
-  MainMenuBar:SetScale( TidyBar_Scale )
+  MainMenuBar:SetScale( TidyBar_options.scale )
 
-  if not TidyBar_HideGryphons then
+  if not TidyBar_options.show_gryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
@@ -284,7 +287,7 @@ local function TidyBar_refresh_main_area()
   MainMenuBarMaxLevelBar:Hide()
   MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
-  if TidyBar_show_MainMenuBar_textured_background then
+  if TidyBar_options.show_MainMenuBar_textured_background then
     MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
     MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
   else
@@ -296,7 +299,7 @@ local function TidyBar_refresh_main_area()
 
 
   MainMenuExpBar:SetWidth( 500 )
-  if TidyBar_ShowExperienceBar then
+  if TidyBar_options.show_experience_bar then
     -- The 'bubbles' which hang off of the right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
   else
@@ -312,7 +315,7 @@ local function TidyBar_refresh_main_area()
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar:ClearAllPoints()
-    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
 
     MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:ClearAllPoints()
@@ -329,35 +332,35 @@ local function TidyBar_refresh_main_area()
     MultiBarBottomLeft:ClearAllPoints()
     if anchor == ActionButton1 then
       -- FIXME? - I'm not sure what's going on that would need this, but whatever.
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing * 1.5 )
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing * 1.5 )
     else
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
     end
     anchor = MultiBarBottomLeft
   end
 
   if MultiBarBottomRight:IsShown() then
     MultiBarBottomRight:ClearAllPoints()
-    MultiBarBottomRight:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    MultiBarBottomRight:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
     anchor = MultiBarBottomRight
   end
 
   if StanceBarFrame:IsShown() then
     StanceButton1:ClearAllPoints()
-    StanceButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    StanceButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
     anchor = StanceButton1
   end
 
   if PetActionBarFrame:IsShown() then
     PetActionButton1:ClearAllPoints()
-    PetActionButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    PetActionButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
     anchor = PetActionButton1
   end
 
   -- Is this sort of thing still needed?
   --if PossessBarFrame:IsShown() then
     --PossessBarFrame:ClearAllPoints()
-    --PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    --PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
   --end
 
 
@@ -420,7 +423,7 @@ local function TidyBar_corner_setup()
   CornerMenuFrame:SetWidth( 300 )
   CornerMenuFrame:SetHeight( 128 )
   CornerMenuFrame:SetPoint( 'BOTTOMRIGHT' )
-  CornerMenuFrame:SetScale( TidyBar_Scale )
+  CornerMenuFrame:SetScale( TidyBar_options.scale )
 
   CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
   CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
@@ -459,8 +462,8 @@ local function TidyBar_sidebar_setup()
   SideMouseoverFrame:EnableMouse()
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
-  MultiBarRight:SetScale( TidyBar_Scale )
-  MultiBarLeft:SetScale(  TidyBar_Scale )
+  MultiBarRight:SetScale( TidyBar_options.scale )
+  MultiBarLeft:SetScale(  TidyBar_options.scale )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
@@ -482,7 +485,7 @@ local function TidyBar_corner_menu_setup()
   for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
-  CornerMenuFrame:SetScale( TidyBar_Scale )
+  CornerMenuFrame:SetScale( TidyBar_options.scale )
   CornerMenuFrame.MicroButtons:SetAllPoints( CornerMenuFrame )
   CornerMenuFrame.BagButtonFrame:SetPoint( 'TOPRIGHT', 2, -18 )
   CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
@@ -505,7 +508,7 @@ end
 
 
 local function TidyBar_bars_setup()
-  -- While `local TidyBar_ShowExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
+  -- While `local TidyBar_options.show_experience_bar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
@@ -515,7 +518,7 @@ local function TidyBar_bars_setup()
     TidyBar_RefreshPositions()
   end)
 
-  if not TidyBar_show_macro_text then
+  if not TidyBar_options.show_macro_text then
     local r={
       'MultiBarBottomLeft',
       'MultiBarBottomRight',
