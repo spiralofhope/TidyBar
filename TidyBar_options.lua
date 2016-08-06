@@ -34,7 +34,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- 2 - TidyBar_HideGryphons
+  -- 2 - TidyBar_ShowGryphons
   Button = CreateFrame( 'CheckButton', 'TidyBar_option2', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT',TidyBar_option1, 'BottomLeft', 0, -25 )
 
@@ -45,10 +45,10 @@ function TidyBar_create_options_pane()
   Button:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
       PlaySound( 'igMainMenuOptionCheckBoxOff' )
-      TidyBar_HideGryphons = true
+      TidyBar_ShowGryphons = true
     else
       PlaySound( 'igMainMenuOptionCheckBoxOn' )
-      TidyBar_HideGryphons = false
+      TidyBar_ShowGryphons = false
     end
 
     TidyBar_update()

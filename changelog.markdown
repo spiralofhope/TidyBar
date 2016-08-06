@@ -7,6 +7,7 @@
 
 ### 7.0.3.11 WORKING
 
+- `TidyBar_HideGryphons` renamed to `TidyBar_ShowGryphons`
 -  Fixed #20 - Fix the bar separation between the top two bars and the main bars, when no exp/rep displayed
 - `TidyBar_HideExperienceBar` renamed to `TidyBar_ShowExperienceBar`
 - Implemented `TidyBar_main_area_positioning` to move the main area around somewhat.

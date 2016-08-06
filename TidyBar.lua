@@ -4,7 +4,7 @@
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
 TidyBar_ShowExperienceBar = true
-TidyBar_HideGryphons = true
+TidyBar_ShowGryphons = true
 TidyBar_AutoHideSideBar = true
 TidyBar_HideActionBarButtonsTexturedBackground = true
 TidyBar_hide_macro_text = true
@@ -223,7 +223,7 @@ local function TidyBar_refresh_main_area()
   -- Scaling
   MainMenuBar:SetScale( TidyBar_Scale )
 
-  if TidyBar_HideGryphons then
+  if not TidyBar_HideGryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
