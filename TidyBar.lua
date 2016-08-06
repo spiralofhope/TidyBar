@@ -4,10 +4,10 @@
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
 TidyBar_ShowExperienceBar = true
-TidyBar_ShowGryphons = true
+TidyBar_ShowGryphons = false
 TidyBar_AutoHideSideBar = true
-TidyBar_show_MainMenuBar_textured_background = true
-TidyBar_show_macro_text = true
+TidyBar_show_MainMenuBar_textured_background = false
+TidyBar_show_macro_text = false
 
 
 -- The size of all of the buttons.
