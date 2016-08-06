@@ -76,7 +76,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- 4 - TidyBar_HideActionBarButtonsTexturedBackground
+  -- 4 - TidyBar_show_MainMenuBar_textured_background
   Button = CreateFrame( 'CheckButton', 'TidyBar_option4', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_option3, 'BottomLeft', 0, -25 )
   --Button:SetText( 'option1' )
@@ -85,10 +85,10 @@ function TidyBar_create_options_pane()
   Button:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
       PlaySound( 'igMainMenuOptionCheckBoxOff' )
-      TidyBar_HideActionBarButtonsTexturedBackground = true
+      TidyBar_show_MainMenuBar_textured_background = true
     else
       PlaySound( 'igMainMenuOptionCheckBoxOn' )
-      TidyBar_HideActionBarButtonsTexturedBackground = false
+      TidyBar_show_MainMenuBar_textured_background = false
     end
 
     TidyBar_update()

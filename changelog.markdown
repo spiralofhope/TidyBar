@@ -7,6 +7,7 @@
 
 ### 7.0.3.11 WORKING
 
+- `TidyBar_HideActionBarButtonsTexturedBackground` renamed to `TidyBar_show_MainMenuBar_textured_background`
 - `TidyBar_hide_macro_text` renamed to `TidyBar_show_macro_text`
 - `TidyBar_HideGryphons` renamed to `TidyBar_ShowGryphons`
 -  Fixed #20 - Fix the bar separation between the top two bars and the main bars, when no exp/rep displayed

@@ -6,7 +6,7 @@
 TidyBar_ShowExperienceBar = true
 TidyBar_ShowGryphons = true
 TidyBar_AutoHideSideBar = true
-TidyBar_HideActionBarButtonsTexturedBackground = true
+TidyBar_show_MainMenuBar_textured_background = true
 TidyBar_show_macro_text = true
 
 
@@ -284,14 +284,14 @@ local function TidyBar_refresh_main_area()
   MainMenuBarMaxLevelBar:Hide()
   MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
-  if TidyBar_HideActionBarButtonsTexturedBackground then
+  if TidyBar_show_MainMenuBar_textured_background then
+    MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
+    MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
+  else
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
     MainMenuBarTexture0:Hide()
     MainMenuBarTexture1:Hide()
-  else
-    MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
-    MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
   end
 
 
