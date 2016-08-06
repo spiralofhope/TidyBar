@@ -3,7 +3,7 @@
 --
 --    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
 --
-TidyBar_HideExperienceBar = false
+TidyBar_ShowExperienceBar = true
 TidyBar_HideGryphons = true
 TidyBar_AutoHideSideBar = true
 TidyBar_HideActionBarButtonsTexturedBackground = true
@@ -179,53 +179,53 @@ end
 
 
 local function TidyBar_refresh_reputation_bar()
-  ReputationWatchBar:SetWidth( 500 )
-  ReputationWatchBar:SetHeight( 8 )
-  ReputationWatchBar:ClearAllPoints()
+  if ReputationWatchBar:IsShown() then
+    ReputationWatchBar:SetWidth( 500 )
+    ReputationWatchBar:SetHeight( 8 )
+    ReputationWatchBar:ClearAllPoints()
+
+    ReputationWatchBar.StatusBar:SetWidth( 500 )
+    ReputationWatchBar.StatusBar:SetHeight( 8 )
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
+    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame:SetPoint( 'TOP', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'TOP', ReputationWatchBar )
+  else
+    ReputationWatchBar:Hide()
+    ReputationWatchBar:SetHeight( .001 )
+  end
+
   if MainMenuExpBar:IsShown() then
     ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'MainMenuExpBar', 'TOPLEFT' )
   else
-    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', TidyBar_bar_spacing )
+    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', 0, TidyBar_bar_spacing )
   end
 
-  ReputationWatchBar.StatusBar:SetWidth( 500 )
-  ReputationWatchBar.StatusBar:SetHeight( 8 )
-  ReputationWatchBar.StatusBar:ClearAllPoints()
-  ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
-
-  ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
-  ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-  ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'TOP', ReputationWatchBar )
-
-  ReputationWatchBar.OverlayFrame:SetHeight( 8 )
-  ReputationWatchBar.OverlayFrame:ClearAllPoints()
-  ReputationWatchBar.OverlayFrame:SetPoint( 'TOP', ReputationWatchBar )
-
-  ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
-  ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-  ReputationWatchBar.OverlayFrame.Text:SetPoint( 'TOP', ReputationWatchBar )
 end
 
 
 
 local function TidyBar_refresh_main_area()
+  -- Note that the reputation bar is refreshed via an OnUpdate HookScript
+
   -- The position of the middle buttons, from the left side.
   MainMenuBar:SetWidth( TidyBar_main_area_positioning )
   -- Scaling
   MainMenuBar:SetScale( TidyBar_Scale )
 
-
   if TidyBar_HideGryphons then
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
-  end
-
-  if TidyBar_HideExperienceBar then
-    MainMenuExpBar:Hide()
-    MainMenuExpBar:SetHeight( .001 )
-  else
-    -- The 'bubbles' which hang off of the right.
-    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
   end
 
   -- Hide the fiddly bits on the main bar
@@ -295,10 +295,21 @@ local function TidyBar_refresh_main_area()
   end
 
 
+  MainMenuExpBar:SetWidth( 500 )
+  if TidyBar_ShowExperienceBar then
+    -- The 'bubbles' which hang off of the right.
+    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
+  else
+    MainMenuExpBar:Hide()
+    MainMenuExpBar:SetHeight( .001 )
+    MainMenuExpBar.SparkBurstMove:Hide()
+    MainMenuExpBar.SparkBurstMove:SetHeight( .001 )
+  end
+
+
   local anchor = ActionButton1
 
   if MainMenuExpBar:IsShown() then
-    MainMenuExpBar:SetWidth( 500 )
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar:ClearAllPoints()
     MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
@@ -311,13 +322,17 @@ local function TidyBar_refresh_main_area()
   end
 
   if ReputationWatchBar:IsShown() then
-
     anchor = ReputationWatchBar
   end
 
   if MultiBarBottomLeft:IsShown() then
     MultiBarBottomLeft:ClearAllPoints()
-    MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    if anchor == ActionButton1 then
+      -- FIXME? - I'm not sure what's going on that would need this, but whatever.
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing * 1.5 )
+    else
+      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_bar_spacing )
+    end
     anchor = MultiBarBottomLeft
   end
 
@@ -490,7 +505,7 @@ end
 
 
 local function TidyBar_bars_setup()
-  -- While `local TidyBar_HideExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
+  -- While `local TidyBar_ShowExperienceBar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
@@ -527,6 +542,7 @@ local function TidyBar_OnLoad()
   TidyBar_bars_setup()
   --  Not production-ready
   --TidyBar_create_options_pane()
+  TidyBar_refresh_reputation_bar()
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )

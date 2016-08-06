@@ -7,10 +7,12 @@
 
 ### 7.0.3.11 WORKING
 
+-  Fixed #20 - Fix the bar separation between the top two bars and the main bars, when no exp/rep displayed
+- `TidyBar_HideExperienceBar` renamed to `TidyBar_ShowExperienceBar`
 - Implemented `TidyBar_main_area_positioning` to move the main area around somewhat.
   -  Default 500.
-- Fixed the reputation bar height.
-  -  It's easy when focus is on code clarity.
+- Fixed #21 - Fix reputation bar height when max experience
+  -  It's easy to fix these sorts of things, when focus is on code clarity.
 
 ### 7.0.3.10
 

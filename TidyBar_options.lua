@@ -14,7 +14,7 @@ function TidyBar_create_options_pane()
 
 
 
-  -- 1 - TidyBar_HideExperienceBar
+  -- 1 - TidyBar_ShowExperienceBar
   local Button,editbox
   Button = CreateFrame( 'CheckButton', 'TidyBar_option1', Frame, 'OptionsCheckButtonTemplate' )
   Button:SetPoint( 'TOPLEFT', TidyBar_options, 20, -50 )
@@ -24,10 +24,10 @@ function TidyBar_create_options_pane()
   Button:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
       PlaySound( 'igMainMenuOptionCheckBoxOff' )
-      TidyBar_HideExperienceBar = true
+      TidyBar_ShowExperienceBar = true
     else
       PlaySound( 'igMainMenuOptionCheckBoxOn' )
-      TidyBar_HideExperienceBar = false
+      TidyBar_ShowExperienceBar = false
     end
     TidyBar_RefreshPositions()
   end)
