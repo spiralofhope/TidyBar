@@ -5,9 +5,10 @@ TidyBar.panel = CreateFrame( 'Frame', 'TidyBarPanel', UIParent )
 TidyBar.panel.name = 'TidyBar'
 InterfaceOptions_AddCategory( TidyBar.panel )
 
-local position
+local position = 0
 
 local function space()
+  position = position + 1
   Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormalSmall' )
   Text:SetPoint( 'TOPLEFT', 20, -25  )
   Text:SetText( '' )
@@ -15,50 +16,47 @@ end
 
 
 
-position = 1
+position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormal' )
 Text:SetPoint( 'TOPLEFT', 20, -25 * position )
 Text:SetText( 'TidyBar' )
 
 
 
-position = 2
+position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormalSmall' )
 Text:SetPoint( 'TOPLEFT', 20, -25 * position )
 Text:SetText( 'Version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) )
 
 
 
-position = 3
+position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormal' )
 Text:SetPoint( 'TOPLEFT', 20, -25 * position )
 Text:SetText( tostring( GetAddOnMetadata( 'TidyBar', 'Notes' ) ) )
 
 
 
-position = 4
 space()
 
 
 
-position = 5
+position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormalSmall' )
 Text:SetPoint( 'TOPLEFT', 20, -25 * position )
 Text:SetText( 'With great thanks to danltiger for the original TidyBar.' )
 
 
 
-position = 6
 space()
 
 
 
-position = 7
 space()
 
 
 
-position = 8
+position = position + 1
 local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_experience_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -76,7 +74,7 @@ end)
 
 
 
-position = 9
+position = position + 1
 local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_sidebar_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -95,7 +93,7 @@ end)
 
 
 
-position = 10
+position = position + 1
 local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_gryphons', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -113,7 +111,7 @@ end)
 
 
 
-position = 11
+position = position + 1
 local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_MainMenuBar_textured_background', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -131,7 +129,7 @@ end)
 
 
 
-position = 12
+position = position + 1
 local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_macro_text', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -149,12 +147,11 @@ end)
 
 
 
-position = 13
 space()
 
 
 
-position = 14
+position = position + 1
 local scale_slider
 scale_slider = CreateFrame( 'Slider', 'TidyBar_options.scale', TidyBarPanel, 'OptionsSliderTemplate' )
 scale_slider:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -170,7 +167,7 @@ end)
 
 
 
-position = 15
+position = position + 1
 local Button
 Button = CreateFrame( 'Button', 'TidyBar_options.scale2', TidyBarPanel, 'OptionsButtonTemplate' )
 Button:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -184,12 +181,11 @@ end)
 
 
 
-position = 16
 space()
 
 
 
-position = 17
+position = position + 1
 local bar_spacing_slider
 bar_spacing_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_spacing', TidyBarPanel, 'OptionsSliderTemplate' )
 bar_spacing_slider:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -205,7 +201,7 @@ end)
 
 
 
-position = 18
+position = position + 1
 local Button
 Button = CreateFrame( 'Button', 'TidyBar_options.bar_spacing2', TidyBarPanel, 'OptionsButtonTemplate' )
 Button:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -219,7 +215,6 @@ end)
 
 
 
-position = 19
 space()
 
 
@@ -230,7 +225,7 @@ space()
 --      1375 is the left side
 --         1 is more to the right.
 --         0 crosses the streams.
-position = 20
+position = position + 1
 local main_area_positioning_slider
 main_area_positioning_slider = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning', TidyBarPanel, 'OptionsSliderTemplate' )
 main_area_positioning_slider:SetPoint( 'TOPLEFT', 20, -20 * position )
@@ -249,7 +244,7 @@ end)
 
 
 
-position = 21
+position = position + 1
 local Button
 Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning2', TidyBarPanel, 'OptionsButtonTemplate' )
 Button:SetPoint( 'TOPLEFT', 20, -20 * position )
