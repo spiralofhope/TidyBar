@@ -219,6 +219,10 @@ local function TidyBar_refresh_main_area()
   if TidyBar_options.show_gryphons then
     MainMenuBarLeftEndCap:Show()
     MainMenuBarRightEndCap:Show()
+    MainMenuBarLeftEndCap:ClearAllPoints()
+    MainMenuBarRightEndCap:ClearAllPoints()
+    MainMenuBarLeftEndCap:SetPoint( 'BOTTOMRIGHT', ActionButton1,  'BOTTOMLEFT', -4, 0 )
+    MainMenuBarRightEndCap:SetPoint( 'BOTTOMLEFT', ActionButton12, 'BOTTOMRIGHT', 4, 0 )
   else
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
