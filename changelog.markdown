@@ -7,6 +7,7 @@
 
 ### 7.0.3.13 WORKING
 
+- Fixed #26 - Fix the sidebar scale after user-changes
 - Fixed #28 - Immediately hide the sidebar when the option is enabled
 - Fixed #29 - Improve sidebar mousein showing
 - Fixed #22 - Reposition 'request stop' when on a taxi
