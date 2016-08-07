@@ -362,11 +362,18 @@ local function TidyBar_refresh_main_area()
     anchor = PetActionButton1
   end
 
-  -- Is this sort of thing still needed?
+  if MainMenuBarVehicleLeaveButton:IsShown() then
+    MainMenuBarVehicleLeaveButton:ClearAllPoints()
+    MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
+    anchor = MainMenuBarVehicleLeaveButton
+  end
+
+    -- Is this sort of thing still needed?
   --if PossessBarFrame:IsShown() then
     --PossessBarFrame:ClearAllPoints()
     --PossessBarFrame:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
   --end
+
 
 
 
