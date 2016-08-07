@@ -154,32 +154,6 @@ end
 
 
 local function TidyBar_refresh_reputation_bar()
-  if ReputationWatchBar:IsShown() then
-    ReputationWatchBar:SetWidth( 500 )
-    ReputationWatchBar:SetHeight( 8 )
-    ReputationWatchBar:ClearAllPoints()
-
-    ReputationWatchBar.StatusBar:SetWidth( 500 )
-    ReputationWatchBar.StatusBar:SetHeight( 8 )
-    ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
-
-    ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
-    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
-
-    ReputationWatchBar.OverlayFrame:SetHeight( 8 )
-    ReputationWatchBar.OverlayFrame:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
-
-    ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
-    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
-  else
-    ReputationWatchBar:Hide()
-    ReputationWatchBar:SetHeight( .001 )
-  end
-
   if MainMenuExpBar:IsShown() then
     ReputationWatchBar:SetPoint( 'BottomLeft', 'MainMenuExpBar', 'TopLeft' )
   else
@@ -486,10 +460,28 @@ end
 
 
 local function TidyBar_bars_setup()
-
-
-
   MainMenuExpBar:SetWidth( 500 )
+
+    ReputationWatchBar:SetWidth( 500 )
+    ReputationWatchBar:SetHeight( 8 )
+    ReputationWatchBar:ClearAllPoints()
+
+    ReputationWatchBar.StatusBar:SetWidth( 500 )
+    ReputationWatchBar.StatusBar:SetHeight( 8 )
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
+    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
+    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
 
   -- Hide the fiddly bits on the main bar
   MainMenuBarPageNumber:Hide()
