@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.13 WORKING
+
+- Fixed the gryphon placement.
+
 ### 7.0.3.12
 
 - Implemented an options panel.
