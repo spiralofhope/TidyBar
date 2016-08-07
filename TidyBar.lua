@@ -71,7 +71,7 @@ end
 
 
 
-function SetSidebarAlpha()
+local function SetSidebarAlpha()
   local Alpha = 0
   if MouseInSidebar or ButtonGridIsShown or not TidyBar_options.hide_sidebar_on_mouseout then Alpha = 1 end
   if SpellFlyout:IsShown() then
@@ -472,8 +472,8 @@ end
 
 local function TidyBar_sidebar_setup()
   SideMouseoverFrame:EnableMouse()
-  SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true; SetSidebarAlpha() end )
-  SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false;SetSidebarAlpha() end )
+  SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
+  SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
   MultiBarRight:SetScale( TidyBar_options.scale )

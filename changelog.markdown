@@ -7,13 +7,16 @@
 
 ### 7.0.3.13 WORKING
 
-- Fixed the position of the taxi 'leave' button.
-- Fixed the gryphon placement.
+- Fixed #28 - Immediately hide the sidebar when the option is enabled
+- Fixed #29 - Improve sidebar mousein showing
+- Fixed #22 - Reposition 'request stop' when on a taxi
+- Fixed #25 - Reposition the gryphons
 
 ### 7.0.3.12
 
-- Implemented an options panel.
-- Implemented a SavedVariables feature.  No more editing `TidyBar.lua` !
+- Implemented #14 - Implement global configuration
+  -  Implemented an options panel.
+  -  No more editing `TidyBar.lua` !
 - Fixed an issue with the gryphon hiding option.
 
 ### 7.0.3.11

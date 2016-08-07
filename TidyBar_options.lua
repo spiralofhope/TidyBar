@@ -82,12 +82,18 @@ getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Autohide sidebar' )
 CheckButton.tooltipText = 'Hide the Right-hand bar(s) when the mouse is not over them.'
 CheckButton:SetChecked( TidyBar_options.hide_sidebar_on_mouseout )
 CheckButton:SetScript( 'OnClick', function( self )
+  local alpha
   if self:GetChecked()then
     TidyBar_options.hide_sidebar_on_mouseout = true
+    alpha = 0
   else
     TidyBar_options.hide_sidebar_on_mouseout = false
+    alpha = 1
   end
-  -- TODO - Immediately hide the sidebar when the option is enabled.
+  for i = 1, 12 do
+    _G[ 'MultiBarRightButton'..i ]:SetAlpha( alpha )
+    _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( alpha )
+  end
   TidyBar_RefreshPositions()
 end)
 
