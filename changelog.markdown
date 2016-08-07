@@ -5,6 +5,12 @@
 
 ## 7.0.3 series
 
+### 7.0.3.12
+
+- Implemented an options panel.
+- Implemented a SavedVariables feature.  No more editing `TidyBar.lua` !
+- Fixed an issue with the gryphon hiding option.
+
 ### 7.0.3.11
 
 - `TidyBar_HideActionBarButtonsTexturedBackground` renamed to `TidyBar_show_MainMenuBar_textured_background`

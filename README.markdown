@@ -17,11 +17,7 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 
 # Configuration / Usage
 
-- There is no GUI configure tool.  Edit `TidyBar.lua` directly.  Easy things to do:
-  -  Change TidyBar's scale (untested)
-  -  Show/hide the experience bar
-  -  Show/hide the Gryphons
-  -  Show/hide the texture behind the main buttons.
+- `Interface > Addons > TidyBar` will give a number of options.
 - `/tidybar` will force an update.
 
 
@@ -31,15 +27,4 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 
 *These are things I investigated but simply don't know how to fix.*
 
-- `HideActionBarButtonsTexturedBackground = true` doesn't have a proper grey background behind the main actionbar buttons.
-
-
-# TODO
-
-([todo list](https://github.com/spiralofhope/TidyBar/issues))
-
-*These are things I doubt I can do.*
-
-- Create a hidden frame underneath the sidebar, and reference that for the mousein/mouseout, and not the buttons.
-  -  Can I steal code from the corner frame?
-  -  I hate having my mouse between buttons and not showing them.
+- `TidyBar_options.show_MainMenuBar_textured_background = true` doesn't have a proper grey background behind the main actionbar buttons.

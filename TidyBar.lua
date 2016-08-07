@@ -1,43 +1,14 @@
-﻿TidyBar_options = {}
-
---
---  User preferences
---
---    Yes, you're expected to edit TidyBar.lua every time you update it.  Sorry.
---
+﻿--  Defaults
+TidyBar_options = {}
 TidyBar_options.show_experience_bar = true
 TidyBar_options.show_gryphons = false
 TidyBar_options.hide_sidebar_on_mouseout = true
 TidyBar_options.show_MainMenuBar_textured_background = false
 TidyBar_options.show_macro_text = false
-
-
--- The size of all of the buttons.
---   1 is normal
---   Something like 0.8 is smaller
---   Something like 1.2 is larger
---   Note that anything over will risk having some buttons on the sidebar off of the bottom of your screen.
 TidyBar_options.scale = 1
-
-
--- The amount of vertical space between bars.
---   Note that the experience bar(if shown) and reputation bar are not separated.
-TidyBar_options.bar_spacing = ( 4 * TidyBar_options.scale )
-
-
--- The position of the middle buttons.
---   Default 500
---   On a 1920 x 1080 screen:
---       500 is the middle
---      1375 is the left side
---         1 is more to the right.
---         0 crosses the streams.
---         (I have no idea to right-align it, and I won't bother to code something)
+TidyBar_options.bar_spacing = ( 4 )
 TidyBar_options.main_area_positioning = 500
 
-----------------------------------------------------------------------
-
---GLOBALS: TidyBar_options
 
 
 local MenuButtonFrames = {
@@ -221,12 +192,34 @@ end
 local function TidyBar_refresh_main_area()
   -- Note that the reputation bar is refreshed via an OnUpdate HookScript
 
+  -- Macro Text
+  local r={
+    'MultiBarBottomLeft',
+    'MultiBarBottomRight',
+    'Action',
+    'MultiBarLeft',
+    'MultiBarRight',
+  }
+  for b=1, #r do
+    for i=1,12 do
+      if TidyBar_options.show_macro_text then
+        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha( 1 )
+      else
+        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha( 0 )
+      end
+    end
+  end
+  --/
+
   -- The position of the middle buttons, from the left side.
   MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
   -- Scaling
   MainMenuBar:SetScale( TidyBar_options.scale )
 
-  if not TidyBar_options.show_gryphons then
+  if TidyBar_options.show_gryphons then
+    MainMenuBarLeftEndCap:Show()
+    MainMenuBarRightEndCap:Show()
+  else
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
@@ -288,6 +281,10 @@ local function TidyBar_refresh_main_area()
   MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
   if TidyBar_options.show_MainMenuBar_textured_background then
+    MainMenuBarTexture0:SetAlpha( 1 )
+    MainMenuBarTexture1:SetAlpha( 1 )
+    MainMenuBarTexture0:Show()
+    MainMenuBarTexture1:Show()
     MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
     MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
   else
@@ -302,6 +299,10 @@ local function TidyBar_refresh_main_area()
   if TidyBar_options.show_experience_bar then
     -- The 'bubbles' which hang off of the right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
+    MainMenuExpBar:Show()
+    MainMenuExpBar:SetHeight( 8 )
+    MainMenuExpBar.SparkBurstMove:Show()
+    MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
   else
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
@@ -375,6 +376,7 @@ function TidyBar_RefreshPositions()
   ConfigureCornerBars()
   ConfigureSideBars()
 end
+
 
 
 local function TidyBar_event_handler_setup()
@@ -517,22 +519,6 @@ local function TidyBar_bars_setup()
     --print( 'Showing' )
     TidyBar_RefreshPositions()
   end)
-
-  if not TidyBar_options.show_macro_text then
-    local r={
-      'MultiBarBottomLeft',
-      'MultiBarBottomRight',
-      'Action',
-      'MultiBarLeft',
-      'MultiBarRight',
-    }
-    for b=1, #r do
-      for i=1,12 do
-        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha( 0 )
-      end
-    end
-  end
-
 end
 
 
@@ -544,7 +530,7 @@ local function TidyBar_OnLoad()
   TidyBar_sidebar_setup()
   TidyBar_bars_setup()
   --  Not production-ready
-  --TidyBar_create_options_pane()
+  TidyBar_create_options_pane()
   TidyBar_refresh_reputation_bar()
 
   -- Start Tidy Bar
@@ -555,7 +541,5 @@ local function TidyBar_OnLoad()
   SLASH_TIDYBAR1 = '/tidybar'
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
 end
-
-
-
-TidyBar_OnLoad()
+TidyBar:RegisterEvent( 'ADDON_LOADED' )
+TidyBar:SetScript( 'OnEvent', TidyBar_OnLoad )
