@@ -159,7 +159,6 @@ local function TidyBar_refresh_reputation_bar()
   else
     ReputationWatchBar:SetPoint( 'BottomLeft', 'ActionButton1',  'TopLeft', 0, TidyBar_options.bar_spacing )
   end
-
 end
 
 
@@ -221,11 +220,15 @@ local function TidyBar_refresh_main_area()
   if TidyBar_options.show_experience_bar then
     -- The 'bubbles' which hang off of the Right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
+    MainMenuBarExpText:Show()
+    MainMenuBarExpText:SetHeight( 8 )
     MainMenuExpBar:Show()
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:Show()
     MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
   else
+    MainMenuBarExpText:Hide()
+    MainMenuBarExpText:SetHeight( .001 )
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( .001 )
     MainMenuExpBar.SparkBurstMove:Hide()
@@ -460,28 +463,31 @@ end
 
 
 local function TidyBar_bars_setup()
-  MainMenuExpBar:SetWidth( 500 )
+  local width = 500
+  local height = 8
 
-    ReputationWatchBar:SetWidth( 500 )
-    ReputationWatchBar:SetHeight( 8 )
-    ReputationWatchBar:ClearAllPoints()
+  MainMenuExpBar:SetWidth( width )
 
-    ReputationWatchBar.StatusBar:SetWidth( 500 )
-    ReputationWatchBar.StatusBar:SetHeight( 8 )
-    ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
+  ReputationWatchBar:SetWidth( width )
+  ReputationWatchBar:SetHeight( height )
+  ReputationWatchBar:ClearAllPoints()
 
-    ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
-    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
+  ReputationWatchBar.StatusBar:SetWidth( width )
+  ReputationWatchBar.StatusBar:SetHeight( height )
+  ReputationWatchBar.StatusBar:ClearAllPoints()
+  ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
 
-    ReputationWatchBar.OverlayFrame:SetHeight( 8 )
-    ReputationWatchBar.OverlayFrame:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
+  ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
+  ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
+  ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
 
-    ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
-    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
+  ReputationWatchBar.OverlayFrame:SetHeight( height )
+  ReputationWatchBar.OverlayFrame:ClearAllPoints()
+  ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
+
+  ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
+  ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
+  ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
 
   -- Hide the fiddly bits on the main bar
   MainMenuBarPageNumber:Hide()
@@ -545,10 +551,18 @@ local function TidyBar_bars_setup()
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
   ReputationWatchBar:HookScript( 'OnUpdate', TidyBar_refresh_reputation_bar )
-  MainMenuBar:HookScript( 'OnShow', function()
-    --print( 'Showing' )
-    TidyBar_RefreshPositions()
-  end)
+  MainMenuBar:HookScript( 'OnShow', TidyBar_RefreshPositions )
+
+  CharacterFrame:HookScript( 'OnShow', function()
+    if TidyBar_options.show_experience_bar then
+      MainMenuBarExpText:Show()
+      MainMenuBarExpText:SetHeight( 8 )
+    else
+      MainMenuBarExpText:Hide()
+      MainMenuBarExpText:SetHeight( .001 )
+    end
+  end )
+
 end
 
 
