@@ -193,6 +193,11 @@ end
 local function TidyBar_refresh_main_area()
   -- Note that the reputation bar is refreshed via an OnUpdate HookScript
 
+  -- The position of the middle buttons, from the left side.
+  MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
+  -- Scaling
+  MainMenuBar:SetScale( TidyBar_options.scale )
+
   -- Macro Text
   local r={
     'MultiBarBottomLeft',
@@ -212,11 +217,6 @@ local function TidyBar_refresh_main_area()
   end
   --/
 
-  -- The position of the middle buttons, from the left side.
-  MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
-  -- Scaling
-  MainMenuBar:SetScale( TidyBar_options.scale )
-
   if TidyBar_options.show_gryphons then
     MainMenuBarLeftEndCap:Show()
     MainMenuBarRightEndCap:Show()
@@ -228,62 +228,6 @@ local function TidyBar_refresh_main_area()
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
   end
-
-  -- Hide the fiddly bits on the main bar
-  MainMenuBarPageNumber:Hide()
-  ActionBarUpButton:Hide()
-  ActionBarDownButton:Hide()
-
-  -- The XP bar
-  -- The 'bubbles'
-  ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
-  -- The 'bubbles' which hang off of the Right.
-  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-
-  -- The reputation bar bubbles
-  -- .. in the middle of the screen
-  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
-  -- .. which would hang off the Right
-  ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
-  -- Hiding the grey background
-  --ReputationWatchBar.StatusBar.Background:Hide()
-
-  -- The border around the XP bar
-       MainMenuXPBarTextureMid:SetAlpha( 0 )
-   MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
-  MainMenuXPBarTextureRightCap:SetAlpha( 0 )
-
-  -- The rested state
-  ExhaustionLevelFillBar:SetTexture( Empty_Art )
-  ExhaustionTick:SetAlpha( 0 )
-
-  if StanceBarLeft:IsShown() then
-    -- Hide the background behind the stance bar
-    StanceBarLeft:SetAlpha( 0 )
-    StanceBarRight:SetAlpha( 0 )
-    StanceBarLeft:Hide()
-    StanceBarRight:Hide()
-    -- Hide the border around buttons
-    for i=1,10 do
-      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
-      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
-    end
-  end
-
-  -- The nagging talent popup
-  TalentMicroButtonAlert:Hide()
-  TalentMicroButtonAlert:SetAlpha( 0 )
-
-  MainMenuBarMaxLevelBar:Hide()
-  MainMenuBarMaxLevelBar:SetAlpha( 0 )
 
   if TidyBar_options.show_MainMenuBar_textured_background then
     MainMenuBarTexture0:SetAlpha( 1 )
@@ -300,7 +244,6 @@ local function TidyBar_refresh_main_area()
   end
 
 
-  MainMenuExpBar:SetWidth( 500 )
   if TidyBar_options.show_experience_bar then
     -- The 'bubbles' which hang off of the Right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
@@ -314,6 +257,27 @@ local function TidyBar_refresh_main_area()
     MainMenuExpBar.SparkBurstMove:Hide()
     MainMenuExpBar.SparkBurstMove:SetHeight( .001 )
   end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------
+--------------------------------
+--------------------------------
+--------------------------------
 
 
   local anchor = ActionButton1
@@ -522,6 +486,68 @@ end
 
 
 local function TidyBar_bars_setup()
+
+
+
+  MainMenuExpBar:SetWidth( 500 )
+
+  -- Hide the fiddly bits on the main bar
+  MainMenuBarPageNumber:Hide()
+  ActionBarUpButton:Hide()
+  ActionBarDownButton:Hide()
+
+  -- The XP bar
+  -- The 'bubbles'
+  ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
+  -- The 'bubbles' which hang off of the Right.
+  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
+
+  -- The reputation bar bubbles
+  -- .. in the middle of the screen
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+  -- .. which would hang off the Right
+  ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+  ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
+  ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  -- Hiding the grey background
+  --ReputationWatchBar.StatusBar.Background:Hide()
+
+  -- The border around the XP bar
+       MainMenuXPBarTextureMid:SetAlpha( 0 )
+   MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
+  MainMenuXPBarTextureRightCap:SetAlpha( 0 )
+
+  -- The rested state
+  ExhaustionLevelFillBar:SetTexture( Empty_Art )
+  ExhaustionTick:SetAlpha( 0 )
+
+  if StanceBarLeft:IsShown() then
+    -- Hide the background behind the stance bar
+    StanceBarLeft:SetAlpha( 0 )
+    StanceBarRight:SetAlpha( 0 )
+    StanceBarLeft:Hide()
+    StanceBarRight:Hide()
+    -- Hide the border around buttons
+    for i=1,10 do
+      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
+      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
+    end
+  end
+
+  -- The nagging talent popup
+  TalentMicroButtonAlert:Hide()
+  TalentMicroButtonAlert:SetAlpha( 0 )
+
+  MainMenuBarMaxLevelBar:Hide()
+  MainMenuBarMaxLevelBar:SetAlpha( 0 )
+
+
   -- While `local TidyBar_options.show_experience_bar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.

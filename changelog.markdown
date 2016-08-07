@@ -7,6 +7,8 @@
 
 ### 7.0.3.13 WORKING
 
+- Fixed #21 - Fix reputation bar height when max experience
+  -  Okay, so maybe it's not so easy to fix these things..
 - Fixed #26 - Fix the sidebar scale after user-changes
 - Fixed #28 - Immediately hide the sidebar when the option is enabled
 - Fixed #29 - Improve sidebar mousein showing

@@ -195,7 +195,7 @@ position = position + 1
 local bar_spacing_slider
 bar_spacing_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_spacing', TidyBarPanel, 'OptionsSliderTemplate' )
 bar_spacing_slider:SetPoint( 'TopLeft', 20, -20 * position )
-getglobal( bar_spacing_slider:GetName() .. 'Text' ):SetText( 'Scale' )
+getglobal( bar_spacing_slider:GetName() .. 'Text' ):SetText( 'Bar spacing' )
 bar_spacing_slider.tooltipText = 'The vertical spacing between the bars.  Default 4.  Note that the experience bar(if shown) and reputation bar are not separated.'
 bar_spacing_slider:SetMinMaxValues( 0.1, 10 )
 bar_spacing_slider:SetValueStep( 0.1 )
