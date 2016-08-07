@@ -113,7 +113,7 @@ local function ConfigureCornerBars()
 
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BOTTOMRIGHT', CornerMenuFrame.MicroButtons, 'BOTTOMRIGHT', -270, 0 )
+    CharacterMicroButton:SetPoint( 'BottomRight', CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
     for i, name in pairs( MenuButtonFrames ) do name:SetParent( CornerMenuFrame.MicroButtons ) end
   end
 end
@@ -123,19 +123,19 @@ end
 local function ConfigureSideBars()
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
-    MultiBarRight:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
+    MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
     SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
-    SideMouseoverFrame:SetPoint( 'BOTTOMRIGHT', MultiBarRight, 'BOTTOMRIGHT' )
+    SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
     -- Right Bar 2
     -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
     if MultiBarLeft:IsShown() then
       MultiBarLeft:ClearAllPoints()
-      MultiBarLeft:SetPoint( 'TOPRIGHT', MultiBarRight, 'TOPLEFT' )
+      MultiBarLeft:SetPoint( 'TopRight', MultiBarRight, 'TopLeft' )
       MultiBarLeft:EnableMouse()
-      SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarLeft,  'TOPLEFT' )
+      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
     else
-      SideMouseoverFrame:SetPoint( 'TOPLEFT', MultiBarRight, 'TOPLEFT' )
+      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
     end
   else
     SideMouseoverFrame:Hide()
@@ -144,9 +144,9 @@ local function ConfigureSideBars()
   if TidyBar_SideBarMouseoverFrame:IsShown() then
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', TidyBar_SideBarMouseoverFrame, 'TOPLEFT' )
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_SideBarMouseoverFrame, 'TopLeft' )
   else
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TOPRIGHT', MinimapCluster, 'BOTTOMRIGHT', 0, -10 )
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
 end
 
@@ -161,28 +161,28 @@ local function TidyBar_refresh_reputation_bar()
     ReputationWatchBar.StatusBar:SetWidth( 500 )
     ReputationWatchBar.StatusBar:SetHeight( 8 )
     ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'TOP', ReputationWatchBar )
+    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.StatusBar.BarGlow:SetHeight( 8 )
     ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'TOP', ReputationWatchBar )
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.OverlayFrame:SetHeight( 8 )
     ReputationWatchBar.OverlayFrame:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame:SetPoint( 'TOP', ReputationWatchBar )
+    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.OverlayFrame.Text:SetHeight( 8 )
     ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'TOP', ReputationWatchBar )
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
   else
     ReputationWatchBar:Hide()
     ReputationWatchBar:SetHeight( .001 )
   end
 
   if MainMenuExpBar:IsShown() then
-    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'MainMenuExpBar', 'TOPLEFT' )
+    ReputationWatchBar:SetPoint( 'BottomLeft', 'MainMenuExpBar', 'TopLeft' )
   else
-    ReputationWatchBar:SetPoint( 'BOTTOMLEFT', 'ActionButton1',  'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    ReputationWatchBar:SetPoint( 'BottomLeft', 'ActionButton1',  'TopLeft', 0, TidyBar_options.bar_spacing )
   end
 
 end
@@ -221,8 +221,8 @@ local function TidyBar_refresh_main_area()
     MainMenuBarRightEndCap:Show()
     MainMenuBarLeftEndCap:ClearAllPoints()
     MainMenuBarRightEndCap:ClearAllPoints()
-    MainMenuBarLeftEndCap:SetPoint( 'BOTTOMRIGHT', ActionButton1,  'BOTTOMLEFT', -4, 0 )
-    MainMenuBarRightEndCap:SetPoint( 'BOTTOMLEFT', ActionButton12, 'BOTTOMRIGHT', 4, 0 )
+    MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
+    MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
   else
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
@@ -237,7 +237,7 @@ local function TidyBar_refresh_main_area()
   -- The 'bubbles'
   ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
-  -- The 'bubbles' which hang off of the right.
+  -- The 'bubbles' which hang off of the Right.
   ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
 
@@ -247,7 +247,7 @@ local function TidyBar_refresh_main_area()
   ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
   ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
   ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
-  -- .. which would hang off the right
+  -- .. which would hang off the Right
   ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
   ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
   ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
@@ -289,8 +289,8 @@ local function TidyBar_refresh_main_area()
     MainMenuBarTexture1:SetAlpha( 1 )
     MainMenuBarTexture0:Show()
     MainMenuBarTexture1:Show()
-    MainMenuBarTexture0:SetPoint( 'LEFT', MainMenuBar,         'LEFT'  )
-    MainMenuBarTexture1:SetPoint( 'LEFT', MainMenuBarTexture0, 'RIGHT' )
+    MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left'  )
+    MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
   else
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
@@ -301,7 +301,7 @@ local function TidyBar_refresh_main_area()
 
   MainMenuExpBar:SetWidth( 500 )
   if TidyBar_options.show_experience_bar then
-    -- The 'bubbles' which hang off of the right.
+    -- The 'bubbles' which hang off of the Right.
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
     MainMenuExpBar:Show()
     MainMenuExpBar:SetHeight( 8 )
@@ -320,11 +320,11 @@ local function TidyBar_refresh_main_area()
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar:ClearAllPoints()
-    MainMenuExpBar:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
 
     MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:ClearAllPoints()
-    MainMenuExpBar.SparkBurstMove:SetPoint( 'TOP', MainMenuExpBar )
+    MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
 
     anchor = MainMenuExpBar
   end
@@ -337,35 +337,35 @@ local function TidyBar_refresh_main_area()
     MultiBarBottomLeft:ClearAllPoints()
     if anchor == ActionButton1 then
       -- FIXME? - I'm not sure what's going on that would need this, but whatever.
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing * 1.5 )
+      MultiBarBottomLeft:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing * 1.5 )
     else
-      MultiBarBottomLeft:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+      MultiBarBottomLeft:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     end
     anchor = MultiBarBottomLeft
   end
 
   if MultiBarBottomRight:IsShown() then
     MultiBarBottomRight:ClearAllPoints()
-    MultiBarBottomRight:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    MultiBarBottomRight:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = MultiBarBottomRight
   end
 
   if StanceBarFrame:IsShown() then
     StanceButton1:ClearAllPoints()
-    StanceButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = StanceButton1
   end
 
   if PetActionBarFrame:IsShown() then
     PetActionButton1:ClearAllPoints()
-    PetActionButton1:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    PetActionButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = PetActionButton1
   end
 
   -- Is this sort of thing still needed?
   --if PossessBarFrame:IsShown() then
     --PossessBarFrame:ClearAllPoints()
-    --PossessBarFrame:SetPoint( 'BOTTOMLEFT', anchor, 'TOPLEFT', 0, TidyBar_options.bar_spacing )
+    --PossessBarFrame:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
   --end
 
 
@@ -428,12 +428,12 @@ local function TidyBar_corner_setup()
   CornerMenuFrame:SetFrameStrata( 'LOW' )
   CornerMenuFrame:SetWidth( 300 )
   CornerMenuFrame:SetHeight( 128 )
-  CornerMenuFrame:SetPoint( 'BOTTOMRIGHT' )
+  CornerMenuFrame:SetPoint( 'BottomRight' )
   CornerMenuFrame:SetScale( TidyBar_options.scale )
 
   CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
   CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
-  CornerMenuFrame.Texture:SetPoint( 'BOTTOMRIGHT' )
+  CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
   CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
   CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
 
@@ -483,8 +483,8 @@ local function TidyBar_corner_menu_setup()
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
-  MainMenuBarBackpackButton:SetPoint( 'BOTTOM' )
-  MainMenuBarBackpackButton:SetPoint( 'RIGHT', -60, 0 )
+  MainMenuBarBackpackButton:SetPoint( 'Bottom' )
+  MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
   
   -- Setup the Corner Buttons
   for i, name in pairs( BagButtonFrameList ) do HookFrame_CornerBar(    name ) end
@@ -493,7 +493,7 @@ local function TidyBar_corner_menu_setup()
   -- Setup the Corner Menu Artwork
   CornerMenuFrame:SetScale( TidyBar_options.scale )
   CornerMenuFrame.MicroButtons:SetAllPoints( CornerMenuFrame )
-  CornerMenuFrame.BagButtonFrame:SetPoint( 'TOPRIGHT', 2, -18 )
+  CornerMenuFrame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
   CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
   CornerMenuFrame.BagButtonFrame:SetWidth( 256 )
   CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
@@ -502,9 +502,9 @@ local function TidyBar_corner_menu_setup()
   CornerMouseoverFrame:EnableMouse()
   CornerMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
   
-  CornerMouseoverFrame:SetPoint( 'TOP', MainMenuBarBackpackButton, 'TOP', 0, 10 )
-  CornerMouseoverFrame:SetPoint( 'RIGHT',  UIParent, 'RIGHT' )
-  CornerMouseoverFrame:SetPoint( 'BOTTOM', UIParent, 'BOTTOM' )
+  CornerMouseoverFrame:SetPoint( 'Top', MainMenuBarBackpackButton, 'Top', 0, 10 )
+  CornerMouseoverFrame:SetPoint( 'Right',  UIParent, 'Right' )
+  CornerMouseoverFrame:SetPoint( 'Bottom', UIParent, 'Bottom' )
   CornerMouseoverFrame:SetWidth( 322 )
   
   CornerMouseoverFrame:SetScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
