@@ -141,6 +141,7 @@ local function ConfigureSideBars()
     SideMouseoverFrame:Hide()
   end
 
+
   if TidyBar_SideBarMouseoverFrame:IsShown() then
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
@@ -468,11 +469,11 @@ local function TidyBar_corner_setup()
 end
 
 
+
 local function TidyBar_sidebar_setup()
-  -- Setup the Side Action Bars
+  SideMouseoverFrame:EnableMouse()
   SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true; SetSidebarAlpha() end )
   SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false;SetSidebarAlpha() end )
-  SideMouseoverFrame:EnableMouse()
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
   MultiBarRight:SetScale( TidyBar_options.scale )
