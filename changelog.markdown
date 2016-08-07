@@ -7,6 +7,7 @@
 
 ### 7.0.3.13 WORKING
 
+- Fixed the position of the taxi 'leave' button.
 - Fixed the gryphon placement.
 
 ### 7.0.3.12
