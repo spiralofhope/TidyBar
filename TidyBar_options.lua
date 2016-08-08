@@ -153,6 +153,27 @@ end)
 
 
 
+-- Forces the reputation bar height, even when changing them
+-- The alternative to the below code is to un-check the tracked reputation, then re-check it.
+-- See also 'the reputation bar.markdown'
+position = position + 1
+local CheckButton
+CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.force_ReputationWatchBar_height', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
+getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Force reputation bar height' )
+CheckButton.tooltipText = "For max-level characters, when changing tracked reputation, the reputation bar's height is reset by Blizzard.  This forces a workaround, but uses an 'OnUpdate' script, which I don't personally like."
+CheckButton:SetChecked( TidyBar_options.force_ReputationWatchBar_height )
+CheckButton:SetScript( 'OnClick', function( self )
+  if self:GetChecked()then
+    TidyBar_options.force_ReputationWatchBar_height = true
+  else
+    TidyBar_options.force_ReputationWatchBar_height = false
+  end
+  TidyBar_RefreshPositions()
+end)
+
+
+
 space()
 
 

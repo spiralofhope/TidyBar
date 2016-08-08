@@ -8,6 +8,7 @@ TidyBar_options.show_macro_text = false
 TidyBar_options.scale = 1
 TidyBar_options.bar_spacing = 4
 TidyBar_options.main_area_positioning = 500
+TidyBar_options.force_ReputationWatchBar_height = false
 
 
 
@@ -227,6 +228,8 @@ local function TidyBar_refresh_main_area()
   end
 
   if ReputationWatchBar:IsShown() then
+    ReputationWatchBar.StatusBar:SetHeight( 8 )
+
     if TidyBar_options.show_experience_bar then
       ReputationWatchBar_bar_spacing = 0
     else
@@ -527,6 +530,15 @@ local function TidyBar_bars_setup()
   MainMenuBarRightEndCap:ClearAllPoints()
   MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
   MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
+
+  if TidyBar_options.force_ReputationWatchBar_height then
+    if UnitXP( 'player' ) == 0
+    or IsXPUserDisabled()
+    then
+      ReputationWatchBar:HookScript( 'OnUpdate', function() ReputationWatchBar.StatusBar:SetHeight( 8 ) end )
+    end
+  end
+
 end
 
 

@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.14
+
+- Implemented an option to force the reputation bar height, even when changing them.
+  -  This uses 'OnUpdate', which I hate.
+
 ### 7.0.3.13
 
 - Rework bar alignment for style and speed.
