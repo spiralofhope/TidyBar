@@ -550,7 +550,6 @@ local function TidyBar_OnLoad()
   TidyBar_corner_menu_setup()
   TidyBar_sidebar_setup()
   TidyBar_bars_setup()
-  --  Not production-ready
   TidyBar_create_options_pane()
   TidyBar_refresh_reputation_bar()
 
