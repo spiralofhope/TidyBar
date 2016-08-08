@@ -28,5 +28,5 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 *These are things I investigated but simply don't know how to fix.*
 
 - `TidyBar_options.show_MainMenuBar_textured_background = true` doesn't have a proper grey background behind the main actionbar buttons.
-- There is separation between the upper and lower bars, when fiddling with tracked reputations in combat. ([issue 23](https://github.com/spiralofhope/TidyBar/issues/23))
-
+- [issue 23](https://github.com/spiralofhope/TidyBar/issues/23) - There is separation between the upper and lower bars, when fiddling with tracked reputations in combat.
+- [issue 27](https://github.com/spiralofhope/TidyBar/issues/27) - The main area cannot be aligned fully to the right.
