@@ -7,7 +7,8 @@
 
 ### 7.0.3.15 WORKING
 
-- Fixed the mainbar texture when `TidyBar_options.show_MainMenuBar_textured_background = true`
+- Fixed the sidebar scaling.
+- Fixed the mainbar texture, when `TidyBar_options.show_MainMenuBar_textured_background = true`
 
 ### 7.0.3.14
 
