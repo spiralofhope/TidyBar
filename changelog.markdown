@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.16
+
+- Hid the overly-loud spark that appears when experience is gained.
+
 ### 7.0.3.15
 
 - Fixed the sidebar scaling.

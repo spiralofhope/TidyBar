@@ -153,13 +153,11 @@ local function ConfigureSideBars()
 end
 
 
-
 local function TidyBar_refresh_main_area()
   -- The position of the middle buttons, from the left side.
   MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
   -- Scaling
   MainMenuBar:SetScale( TidyBar_options.scale )
-
 
   local function show_macro_text( alpha )
     local bars={
@@ -206,13 +204,11 @@ local function TidyBar_refresh_main_area()
   then
     MainMenuExpBar:Show()
     MainMenuExpBar:SetHeight( 8 )
-    MainMenuExpBar.SparkBurstMove:Show()
     MainMenuBarExpText:Show()
     MainMenuBarExpText:SetHeight( 8 )
   else
     MainMenuExpBar:Hide()
     MainMenuExpBar:SetHeight( 0.001 )
-    MainMenuExpBar.SparkBurstMove:Hide()
     MainMenuBarExpText:Hide()
     MainMenuBarExpText:SetHeight( 0.001 )
   end
@@ -222,7 +218,6 @@ local function TidyBar_refresh_main_area()
 
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
     MainMenuBarExpText:SetPoint(            'Top', MainMenuExpBar )
     anchor = MainMenuExpBar
   end
@@ -441,9 +436,11 @@ local function TidyBar_bars_setup()
     MainMenuBarExpText:SetHeight( height )
     MainMenuBarExpText:ClearAllPoints()
 
-    MainMenuExpBar.SparkBurstMove:SetWidth( width )
-    MainMenuExpBar.SparkBurstMove:SetHeight( height )
-    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    --MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar.BarGain, 'Top' )
+    --MainMenuExpBar.SparkBurstMove:SetWidth( width )
+    --MainMenuExpBar.SparkBurstMove:SetHeight( height )
+    --MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    MainMenuExpBar.SparkBurstMove:Hide()
 
     -- The XP bar
     -- The 'bubbles'
