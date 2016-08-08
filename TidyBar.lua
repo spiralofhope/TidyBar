@@ -154,11 +154,11 @@ end
 
 
 local function TidyBar_refresh_reputation_bar()
-  if MainMenuExpBar:IsShown() then
-    ReputationWatchBar:SetPoint( 'BottomLeft', 'MainMenuExpBar', 'TopLeft' )
-  else
-    ReputationWatchBar:SetPoint( 'BottomLeft', 'ActionButton1',  'TopLeft', 0, TidyBar_options.bar_spacing )
-  end
+  --if MainMenuExpBar:IsShown() then
+    --ReputationWatchBar:SetPoint( 'BottomLeft', 'MainMenuExpBar', 'TopLeft' )
+  --else
+    --ReputationWatchBar:SetPoint( 'BottomLeft', 'ActionButton1',  'TopLeft', 0, TidyBar_options.bar_spacing )
+  --end
 end
 
 
@@ -235,11 +235,12 @@ local function TidyBar_refresh_main_area()
   end
 
   if ReputationWatchBar:IsShown() then
-    anchor = ReputationWatchBar
+    ReputationWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
     ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
     ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
     ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
+    anchor = ReputationWatchBar
   end
 
   if MultiBarBottomLeft:IsShown() then
