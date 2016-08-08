@@ -171,32 +171,29 @@ local function TidyBar_refresh_main_area()
   -- Scaling
   MainMenuBar:SetScale( TidyBar_options.scale )
 
-  -- Macro Text
-  local r={
-    'MultiBarBottomLeft',
-    'MultiBarBottomRight',
-    'Action',
-    'MultiBarLeft',
-    'MultiBarRight',
-  }
-  for b=1, #r do
-    for i=1,12 do
-      if TidyBar_options.show_macro_text then
-        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha( 1 )
-      else
-        _G[ r[b] .. 'Button' .. i .. 'Name' ]:SetAlpha( 0 )
+  local function show_macro_text( alpha )
+    local bars={
+      'MultiBarBottomLeft',
+      'MultiBarBottomRight',
+      'Action',
+      'MultiBarLeft',
+      'MultiBarRight',
+    }
+    for button=1, #bars do
+      for i=1,12 do
+        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:SetAlpha( alpha )
       end
     end
   end
-  --/
+  if TidyBar_options.show_macro_text then
+    show_macro_text( 1 )
+  else
+    show_macro_text( 0 )
+  end
 
   if TidyBar_options.show_gryphons then
     MainMenuBarLeftEndCap:Show()
     MainMenuBarRightEndCap:Show()
-    MainMenuBarLeftEndCap:ClearAllPoints()
-    MainMenuBarRightEndCap:ClearAllPoints()
-    MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
-    MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
   else
     MainMenuBarLeftEndCap:Hide()
     MainMenuBarRightEndCap:Hide()
@@ -205,49 +202,21 @@ local function TidyBar_refresh_main_area()
   if TidyBar_options.show_MainMenuBar_textured_background then
     MainMenuBarTexture0:SetAlpha( 1 )
     MainMenuBarTexture1:SetAlpha( 1 )
-    MainMenuBarTexture0:Show()
-    MainMenuBarTexture1:Show()
-    MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left'  )
-    MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
   else
     MainMenuBarTexture0:SetAlpha( 0 )
     MainMenuBarTexture1:SetAlpha( 0 )
-    MainMenuBarTexture0:Hide()
-    MainMenuBarTexture1:Hide()
   end
 
 
   if TidyBar_options.show_experience_bar then
-    -- The 'bubbles' which hang off of the Right.
-    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetTexture( Empty_Art ) end
-    MainMenuBarExpText:Show()
-    MainMenuBarExpText:SetHeight( 8 )
     MainMenuExpBar:Show()
-    MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:Show()
-    MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
+    MainMenuBarExpText:Show()
   else
-    MainMenuBarExpText:Hide()
-    MainMenuBarExpText:SetHeight( .001 )
     MainMenuExpBar:Hide()
-    MainMenuExpBar:SetHeight( .001 )
     MainMenuExpBar.SparkBurstMove:Hide()
-    MainMenuExpBar.SparkBurstMove:SetHeight( .001 )
+    MainMenuBarExpText:Hide()
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -315,9 +284,6 @@ local function TidyBar_refresh_main_area()
     --PossessBarFrame:ClearAllPoints()
     --PossessBarFrame:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
   --end
-
-
-
 
 end
 
@@ -463,8 +429,15 @@ end
 
 
 local function TidyBar_bars_setup()
+  -- This deals with positioning and permanent-hiding.
+  -- This does not deal with showing / hiding features.
+
   local width = 500
   local height = 8
+
+  -- MainMenuBar textured background
+  MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left'  )
+  MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
 
   local function MainMenuExpBar_setup()
     MainMenuExpBar:SetWidth( width )
@@ -483,6 +456,7 @@ local function TidyBar_bars_setup()
     -- The 'bubbles' which hang off of the Right.
     ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
     ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
+    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetAlpha( 0 ) end
 
     -- The border around the XP bar
          MainMenuXPBarTextureMid:SetAlpha( 0 )
@@ -555,6 +529,12 @@ local function TidyBar_bars_setup()
   -- The nagging talent popup
   TalentMicroButtonAlert:Hide()
   TalentMicroButtonAlert:SetAlpha( 0 )
+
+  -- Gryphons
+  MainMenuBarLeftEndCap:ClearAllPoints()
+  MainMenuBarRightEndCap:ClearAllPoints()
+  MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
+  MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
 
   -- While `local TidyBar_options.show_experience_bar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
