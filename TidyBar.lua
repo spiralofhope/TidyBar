@@ -310,7 +310,6 @@ local function TidyBar_event_handler_setup()
   events.UPDATE_VEHICLE_ACTIONBAR    = TidyBar_RefreshPositions
   events.QUEST_WATCH_UPDATE          = TidyBar_RefreshPositions
   events.UNIT_AURA                   = TidyBar_RefreshPositions
-  events.ACTIONBAR_PAGE_CHANGED      = TidyBar_page_changing
 
 
   local function EventHandler( frame, event )
