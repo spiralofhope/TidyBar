@@ -540,6 +540,30 @@ end
 
 
 
+local function TidyBar_vehicle_setup()
+  OverrideActionBarEndCapL:Hide()
+  OverrideActionBarEndCapR:Hide()
+
+  OverrideActionBarBG:Hide()
+  OverrideActionBarButtonBGL:Hide()
+  OverrideActionBarButtonBGMid:Hide()
+  OverrideActionBarButtonBGR:Hide()
+
+  OverrideActionBarDivider2:Hide()
+  OverrideActionBarBorder:Hide()
+  OverrideActionBarLeaveFrameDivider3:Hide()
+  OverrideActionBarLeaveFrameExitBG:Hide()
+
+  OverrideActionBarExpBarXpL:Hide()
+  OverrideActionBarExpBarXpMid:Hide()
+  OverrideActionBarExpBarXpR:Hide()
+
+  -- The XP 'bubbles'.
+  for i=1,19 do _G[ 'OverrideActionBarXpDiv' .. i ]:SetAlpha( 0 ) end
+end
+
+
+
 local function TidyBar_OnLoad()
   TidyBar_event_handler_setup()
   TidyBar_corner_setup()
@@ -547,6 +571,7 @@ local function TidyBar_OnLoad()
   TidyBar_sidebar_setup()
   TidyBar_bars_setup()
   TidyBar_create_options_pane()
+  TidyBar_vehicle_setup()
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )
