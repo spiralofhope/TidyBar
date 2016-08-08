@@ -284,6 +284,28 @@ local function TidyBar_refresh_vehicle()
   -- I don't know how to store/retrieve their positions so that things are back to normal when eciting the vehicle UI.
   --MainMenuMicroButton:ClearAllPoints()
   --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame, 'BottomRight' )
+
+  OverrideActionBar:SetWidth( 500 )
+
+  OverrideActionBarButton1:ClearAllPoints()
+  OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
+
+  OverrideActionBarHealthBar:ClearAllPoints()
+  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBarPowerBar, 'BottomLeft', -4, 0 )
+
+  OverrideActionBarPowerBar:ClearAllPoints()
+  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
+
+  OverrideActionBarExpBar:ClearAllPoints()
+  OverrideActionBarExpBar:SetHeight( 8 )
+  OverrideActionBarExpBar:SetWidth( 500 )
+  OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
+  --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
+  --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
+
+  OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
+  OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight' )
+
 end
 
 
@@ -577,7 +599,10 @@ local function TidyBar_vehicle_setup()
   OverrideActionBarExpBarXpR:Hide()
 
   -- The XP 'bubbles'.
-  for i=1,19 do _G[ 'OverrideActionBarXpDiv' .. i ]:SetAlpha( 0 ) end
+  for i=1,19 do
+    --_G[ 'OverrideActionBarXpDiv' .. i ]:SetAlpha( 0 )
+    _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
+  end
 end
 
 
