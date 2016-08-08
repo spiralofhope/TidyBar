@@ -429,7 +429,10 @@ local function TidyBar_bars_setup()
   local height = 8
 
   -- MainMenuBar textured background
-  MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left'  )
+  -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
+  MainMenuBarTexture0:ClearAllPoints()
+  MainMenuBarTexture1:ClearAllPoints()
+  MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left', -8, -5 )
   MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
 
   local function MainMenuExpBar_setup()

@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.15 WORKING
+
+- Fixed the mainbar texture when `TidyBar_options.show_MainMenuBar_textured_background = true`
+
 ### 7.0.3.14
 
 - Implemented an option to force the reputation bar height, even when changing them.
