@@ -199,7 +199,10 @@ local function TidyBar_refresh_main_area()
   end
 
 
-  if TidyBar_options.show_experience_bar then
+  if  TidyBar_options.show_experience_bar
+  and UnitXP( 'player' ) > 0
+  and not IsXPUserDisabled()
+  then
     MainMenuExpBar:Show()
     MainMenuExpBar:SetHeight( 8 )
     MainMenuExpBar.SparkBurstMove:Show()
