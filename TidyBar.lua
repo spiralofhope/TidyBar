@@ -274,11 +274,26 @@ end
 
 
 
+local function TidyBar_refresh_vehicle()
+  if not UnitHasVehicleUI( 'player' ) then return nil end
+  -- This works, but it's useless if I can't reposition them.
+  --LFDMicroButton:ClearAllPoints()
+  --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
+
+  -- Repositioning these here is a bad idea.
+  -- I don't know how to store/retrieve their positions so that things are back to normal when eciting the vehicle UI.
+  --MainMenuMicroButton:ClearAllPoints()
+  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame, 'BottomRight' )
+end
+
+
+
 function TidyBar_RefreshPositions()
   if InCombatLockdown() then return end
   TidyBar_refresh_main_area()
   ConfigureCornerBars()
   ConfigureSideBars()
+  TidyBar_refresh_vehicle()
 end
 
 
@@ -545,6 +560,9 @@ local function TidyBar_vehicle_setup()
   OverrideActionBarEndCapR:Hide()
 
   OverrideActionBarBG:Hide()
+  OverrideActionBarMicroBGL:Hide()
+  OverrideActionBarMicroBGMid:Hide()
+  OverrideActionBarMicroBGR:Hide()
   OverrideActionBarButtonBGL:Hide()
   OverrideActionBarButtonBGMid:Hide()
   OverrideActionBarButtonBGR:Hide()
