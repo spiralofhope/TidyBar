@@ -466,64 +466,78 @@ local function TidyBar_bars_setup()
   local width = 500
   local height = 8
 
-  MainMenuExpBar:SetWidth( width )
+  local function MainMenuExpBar_setup()
+    MainMenuExpBar:SetWidth( width )
+    MainMenuExpBar:SetHeight( height )
+    MainMenuExpBar:ClearAllPoints()
 
-  ReputationWatchBar:SetWidth( width )
-  ReputationWatchBar:SetHeight( height )
-  ReputationWatchBar:ClearAllPoints()
+    MainMenuBarExpText:SetWidth( width )
+    MainMenuBarExpText:SetHeight( height )
+    MainMenuBarExpText:ClearAllPoints()
+    MainMenuBarExpText:SetPoint( 'Top', MainMenuExpBar )
 
-  ReputationWatchBar.StatusBar:SetWidth( width )
-  ReputationWatchBar.StatusBar:SetHeight( height )
-  ReputationWatchBar.StatusBar:ClearAllPoints()
-  ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
+    -- The XP bar
+    -- The 'bubbles'
+    ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
+    -- The 'bubbles' which hang off of the Right.
+    ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
 
-  ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
-  ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-  ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
+    -- The border around the XP bar
+         MainMenuXPBarTextureMid:SetAlpha( 0 )
+     MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
+    MainMenuXPBarTextureRightCap:SetAlpha( 0 )
 
-  ReputationWatchBar.OverlayFrame:SetHeight( height )
-  ReputationWatchBar.OverlayFrame:ClearAllPoints()
-  ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
+    -- The rested state
+    ExhaustionLevelFillBar:SetTexture( Empty_Art )
+    ExhaustionTick:SetAlpha( 0 )
 
-  ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
-  ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-  ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
+    MainMenuBarMaxLevelBar:Hide()
+    MainMenuBarMaxLevelBar:SetAlpha( 0 )
+  end
+  MainMenuExpBar_setup()
+
+  local function ReputationWatchBar_setup()
+    ReputationWatchBar:SetWidth( width )
+    ReputationWatchBar:SetHeight( height )
+    ReputationWatchBar:ClearAllPoints()
+
+    ReputationWatchBar.StatusBar:SetWidth( width )
+    ReputationWatchBar.StatusBar:SetHeight( height )
+    ReputationWatchBar.StatusBar:ClearAllPoints()
+    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
+    ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame:SetHeight( height )
+    ReputationWatchBar.OverlayFrame:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
+
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
+    ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
+
+    -- The reputation bar bubbles
+    -- .. in the middle of the screen
+    ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
+    ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
+    ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+    -- .. which would hang off the Right
+    ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
+    ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+    ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  end
+  ReputationWatchBar_setup()
 
   -- Hide the fiddly bits on the main bar
   MainMenuBarPageNumber:Hide()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
-
-  -- The XP bar
-  -- The 'bubbles'
-  ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
-  -- The 'bubbles' which hang off of the Right.
-  ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-
-  -- The reputation bar bubbles
-  -- .. in the middle of the screen
-  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
-  -- .. which would hang off the Right
-  ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-  ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-  ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
-  -- Hiding the grey background
-  --ReputationWatchBar.StatusBar.Background:Hide()
-
-  -- The border around the XP bar
-       MainMenuXPBarTextureMid:SetAlpha( 0 )
-   MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
-  MainMenuXPBarTextureRightCap:SetAlpha( 0 )
-
-  -- The rested state
-  ExhaustionLevelFillBar:SetTexture( Empty_Art )
-  ExhaustionTick:SetAlpha( 0 )
 
   if StanceBarLeft:IsShown() then
     -- Hide the background behind the stance bar
@@ -542,27 +556,12 @@ local function TidyBar_bars_setup()
   TalentMicroButtonAlert:Hide()
   TalentMicroButtonAlert:SetAlpha( 0 )
 
-  MainMenuBarMaxLevelBar:Hide()
-  MainMenuBarMaxLevelBar:SetAlpha( 0 )
-
-
   -- While `local TidyBar_options.show_experience_bar = false`, when showing a reputation as an experience bar, disabling that reputation's experience bar will show the action bars "jump" before settling into their correct positions.
   -- It appears that Blizzard re-paints the reputation bar before deciding to hide it once and for all.
     -- TidyBar's `DelayEvent()` might be a solution, but I wasn't able to get it working.
     -- The following seems to be the fix.
+-- TODO - remove reliance on this!
   ReputationWatchBar:HookScript( 'OnUpdate', TidyBar_refresh_reputation_bar )
-  MainMenuBar:HookScript( 'OnShow', TidyBar_RefreshPositions )
-
-  CharacterFrame:HookScript( 'OnShow', function()
-    if TidyBar_options.show_experience_bar then
-      MainMenuBarExpText:Show()
-      MainMenuBarExpText:SetHeight( 8 )
-    else
-      MainMenuBarExpText:Hide()
-      MainMenuBarExpText:SetHeight( .001 )
-    end
-  end )
-
 end
 
 
