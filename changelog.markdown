@@ -7,6 +7,7 @@
 
 ### 7.0.3.13 WORKING
 
+- Rework bar alignment for style and speed.
 - When `TidyBar_options.show_experience_bar = true`, keep the experience text hidden (when various character interfaces are shown).
 - Fixed #21 - Fix reputation bar height when max experience
   -  Okay, so maybe it's not so easy to fix these things..
