@@ -6,7 +6,7 @@ TidyBar_options.hide_sidebar_on_mouseout = true
 TidyBar_options.show_MainMenuBar_textured_background = false
 TidyBar_options.show_macro_text = false
 TidyBar_options.scale = 1
-TidyBar_options.bar_spacing = ( 4 )
+TidyBar_options.bar_spacing = 4
 TidyBar_options.main_area_positioning = 500
 
 
