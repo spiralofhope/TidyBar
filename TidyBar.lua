@@ -373,8 +373,6 @@ local function TidyBar_sidebar_setup()
   SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
-  MultiBarRight:SetScale( TidyBar_options.scale )
-  MultiBarLeft:SetScale(  TidyBar_options.scale )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
