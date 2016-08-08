@@ -5,7 +5,7 @@
 
 ## 7.0.3 series
 
-### 7.0.3.16 WORKING
+### 7.0.3.16
 
 - Implemented a reasonable simplification of the vehicle UI.
 - Hid the overly-loud spark that appears when experience is gained.
