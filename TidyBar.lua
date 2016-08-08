@@ -219,7 +219,6 @@ local function TidyBar_refresh_main_area()
   end
 
 
-
 --------------------------------
 --------------------------------
 --------------------------------
@@ -231,11 +230,16 @@ local function TidyBar_refresh_main_area()
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
+    MainMenuBarExpText:SetPoint(            'Top', MainMenuExpBar )
     anchor = MainMenuExpBar
   end
 
   if ReputationWatchBar:IsShown() then
     anchor = ReputationWatchBar
+    ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
+    ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
   end
 
   if MultiBarBottomLeft:IsShown() then
@@ -437,12 +441,10 @@ local function TidyBar_bars_setup()
     MainMenuBarExpText:SetWidth( width )
     MainMenuBarExpText:SetHeight( height )
     MainMenuBarExpText:ClearAllPoints()
-    MainMenuBarExpText:SetPoint( 'Top', MainMenuExpBar )
 
     MainMenuExpBar.SparkBurstMove:SetWidth( width )
     MainMenuExpBar.SparkBurstMove:SetHeight( height )
     MainMenuExpBar.SparkBurstMove:ClearAllPoints()
-    MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
 
     -- The XP bar
     -- The 'bubbles'
@@ -475,19 +477,15 @@ local function TidyBar_bars_setup()
     ReputationWatchBar.StatusBar:SetWidth( width )
     ReputationWatchBar.StatusBar:SetHeight( height )
     ReputationWatchBar.StatusBar:ClearAllPoints()
-    ReputationWatchBar.StatusBar:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
     ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.OverlayFrame:SetHeight( height )
     ReputationWatchBar.OverlayFrame:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame:SetPoint( 'Top', ReputationWatchBar )
 
     ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
     ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
 
     -- The reputation bar bubbles
     -- .. in the middle of the screen
