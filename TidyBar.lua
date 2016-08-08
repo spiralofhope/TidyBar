@@ -229,14 +229,8 @@ local function TidyBar_refresh_main_area()
   local anchor = ActionButton1
 
   if MainMenuExpBar:IsShown() then
-    MainMenuExpBar:SetHeight( 8 )
-    MainMenuExpBar:ClearAllPoints()
     MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-
-    MainMenuExpBar.SparkBurstMove:SetHeight( 8 )
-    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
     MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
-
     anchor = MainMenuExpBar
   end
 
@@ -256,25 +250,21 @@ local function TidyBar_refresh_main_area()
   end
 
   if MultiBarBottomRight:IsShown() then
-    MultiBarBottomRight:ClearAllPoints()
     MultiBarBottomRight:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = MultiBarBottomRight
   end
 
   if StanceBarFrame:IsShown() then
-    StanceButton1:ClearAllPoints()
     StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = StanceButton1
   end
 
   if PetActionBarFrame:IsShown() then
-    PetActionButton1:ClearAllPoints()
     PetActionButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = PetActionButton1
   end
 
   if MainMenuBarVehicleLeaveButton:IsShown() then
-    MainMenuBarVehicleLeaveButton:ClearAllPoints()
     MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = MainMenuBarVehicleLeaveButton
   end
@@ -449,6 +439,11 @@ local function TidyBar_bars_setup()
     MainMenuBarExpText:ClearAllPoints()
     MainMenuBarExpText:SetPoint( 'Top', MainMenuExpBar )
 
+    MainMenuExpBar.SparkBurstMove:SetWidth( width )
+    MainMenuExpBar.SparkBurstMove:SetHeight( height )
+    MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar )
+
     -- The XP bar
     -- The 'bubbles'
     ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
@@ -513,17 +508,20 @@ local function TidyBar_bars_setup()
   ActionBarUpButton:Hide()
   ActionBarDownButton:Hide()
 
-  if StanceBarLeft:IsShown() then
-    -- Hide the background behind the stance bar
-    StanceBarLeft:SetAlpha( 0 )
-    StanceBarRight:SetAlpha( 0 )
-    StanceBarLeft:Hide()
-    StanceBarRight:Hide()
-    -- Hide the border around buttons
-    for i=1,10 do
-      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
-      _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
-    end
+  MultiBarBottomRight:ClearAllPoints()
+  PetActionButton1:ClearAllPoints()
+  MainMenuBarVehicleLeaveButton:ClearAllPoints()
+  StanceButton1:ClearAllPoints()
+
+  -- Hide the background behind the stance bar
+  StanceBarLeft:SetAlpha( 0 )
+  StanceBarRight:SetAlpha( 0 )
+  StanceBarLeft:Hide()
+  StanceBarRight:Hide()
+  -- Hide the border around buttons
+  for i=1,10 do
+    _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
+    _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
   end
 
   -- The nagging talent popup
