@@ -344,6 +344,7 @@ local function TidyBar_event_handler_setup()
   events.UNIT_AURA                   = TidyBar_RefreshPositions
 
 
+
   local function EventHandler( frame, event )
     if events[ event ] then
       -- NOTE - The following line is to debug:
@@ -487,6 +488,7 @@ local function TidyBar_bars_setup()
     ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
     ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetAlpha( 0 ) end
+    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:Hide() end
 
     -- The border around the XP bar
          MainMenuXPBarTextureMid:SetAlpha( 0 )
