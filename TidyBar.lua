@@ -343,6 +343,9 @@ local function TidyBar_event_handler_setup()
   events.QUEST_WATCH_UPDATE          = TidyBar_RefreshPositions
   events.UNIT_AURA                   = TidyBar_RefreshPositions
 
+  -- Possible battlegrounds fixes for issue 34:
+  --events.UPDATE_WORLD_STATES         = TidyBar_RefreshPositions         --  Fired within Battlefields when certain things occur such as a flag being captured. Also seen in the outdoor world occasionlly, but it's not clear what triggers it.
+  --events.WORLD_MAP_UPDATE            = TidyBar_RefreshPositions         --  Fired when the world map should be updated.  When entering a battleground, this event won't fire until the zone is changed (i.e. in WSG when you walk outside of Warsong Lumber Mill or Silverwing Hold
 
 
   local function EventHandler( frame, event )
