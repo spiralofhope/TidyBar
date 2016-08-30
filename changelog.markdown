@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.17 WORKING
+
+- ArtifactWatchBar support.
+
 ### 7.0.3.16
 
 - Implemented a reasonable simplification of the vehicle UI.

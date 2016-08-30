@@ -1,6 +1,7 @@
 ﻿--  Defaults
 TidyBar_options = {}
 TidyBar_options.show_experience_bar = true
+TidyBar_options.show_artifact_power_bar = true
 TidyBar_options.show_gryphons = false
 TidyBar_options.hide_sidebar_on_mouseout = true
 TidyBar_options.show_MainMenuBar_textured_background = false
@@ -153,6 +154,7 @@ local function ConfigureSideBars()
 end
 
 
+
 local function TidyBar_refresh_main_area()
   -- The position of the middle buttons, from the left side.
   MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
@@ -236,6 +238,27 @@ local function TidyBar_refresh_main_area()
     ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
     ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
     anchor = ReputationWatchBar
+  end
+
+  if TidyBar_options.show_artifact_power_bar then
+    ArtifactWatchBar:Show()
+    ArtifactWatchBar:SetHeight( 8 )
+    ArtifactWatchBar.OverlayFrame.Text:Show()
+    ArtifactWatchBar.OverlayFrame.Text:SetHeight( 8 )
+  else
+    ArtifactWatchBar:Hide()
+    ArtifactWatchBar:SetHeight( 0.001 )
+    ArtifactWatchBar.OverlayFrame.Text:Hide()
+    ArtifactWatchBar.OverlayFrame.Text:SetHeight( 0.001 )
+  end
+
+  if ArtifactWatchBar:IsShown() then
+    ArtifactWatchBar:ClearAllPoints()
+    ArtifactWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
+    ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
+    ArtifactWatchBar.OverlayFrame:SetPoint(      'Top', ArtifactWatchBar )
+    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'Top', ArtifactWatchBar )
+    anchor = ArtifactWatchBar
   end
 
   if MultiBarBottomLeft:IsShown() then
@@ -516,16 +539,18 @@ local function TidyBar_bars_setup()
     ReputationWatchBar.StatusBar:SetHeight( height )
     ReputationWatchBar.StatusBar:ClearAllPoints()
 
+    ReputationWatchBar.StatusBar.BarGlow:SetWidth( width )
     ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
     ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
 
+    ReputationWatchBar.OverlayFrame:SetWidth( width )
     ReputationWatchBar.OverlayFrame:SetHeight( height )
     ReputationWatchBar.OverlayFrame:ClearAllPoints()
 
     ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
     ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
 
-    -- The reputation bar bubbles
+    -- The ReputationWatchBar bubbles
     -- .. in the middle of the screen
     ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
@@ -538,6 +563,38 @@ local function TidyBar_bars_setup()
     ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
   end
   ReputationWatchBar_setup()
+
+  local function ArtifactWatchBar_setup()
+    ArtifactWatchBar:SetWidth( width )
+    ArtifactWatchBar:SetHeight( height )
+    ArtifactWatchBar:ClearAllPoints()
+
+    ArtifactWatchBar.StatusBar:SetWidth( width )
+    ArtifactWatchBar.StatusBar:SetHeight( height )
+    ArtifactWatchBar.StatusBar:ClearAllPoints()
+
+    ArtifactWatchBar.OverlayFrame:SetWidth( width )
+    ArtifactWatchBar.OverlayFrame:SetHeight( height )
+    ArtifactWatchBar.OverlayFrame:ClearAllPoints()
+
+    ArtifactWatchBar.OverlayFrame.Text:SetWidth( width )
+    ArtifactWatchBar.OverlayFrame.Text:SetHeight( height )
+    ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
+
+    -- The ArtifactWatchBar bubbles
+    -- .. in the middle of the screen
+    ArtifactWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
+    ArtifactWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+    -- .. which would hang off the Right
+    ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
+    ArtifactWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+  end
+  ArtifactWatchBar_setup()
+
 
   -- Hide the fiddly bits on the main bar
   MainMenuBarPageNumber:Hide()
