@@ -171,7 +171,7 @@ local function TidyBar_refresh_main_area()
     }
     for button=1, #bars do
       for i=1,12 do
-        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:SetAlpha( alpha )
+        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Hide()
       end
     end
   end
@@ -192,11 +192,11 @@ local function TidyBar_refresh_main_area()
 
 
   if TidyBar_options.show_MainMenuBar_textured_background then
-    MainMenuBarTexture0:SetAlpha( 1 )
-    MainMenuBarTexture1:SetAlpha( 1 )
+    MainMenuBarTexture0:Show()
+    MainMenuBarTexture1:Show()
   else
-    MainMenuBarTexture0:SetAlpha( 0 )
-    MainMenuBarTexture1:SetAlpha( 0 )
+    MainMenuBarTexture0:Hide()
+    MainMenuBarTexture1:Hide()
   end
 
 
@@ -220,7 +220,8 @@ local function TidyBar_refresh_main_area()
 
   if MainMenuExpBar:IsShown() then
     MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    MainMenuBarExpText:SetPoint(            'Top', MainMenuExpBar )
+    MainMenuBarExpText:SetPoint(      'Top', MainMenuExpBar )
+    MainMenuXPBarTextureMid:SetPoint( 'Top', MainMenuExpBar )
     anchor = MainMenuExpBar
   end
 
@@ -240,19 +241,23 @@ local function TidyBar_refresh_main_area()
     anchor = ReputationWatchBar
   end
 
-  if TidyBar_options.show_artifact_power_bar then
+  if  has_artifact_power_bar
+  and TidyBar_options.show_artifact_power_bar
+  then
     ArtifactWatchBar:Show()
     ArtifactWatchBar:SetHeight( 8 )
     ArtifactWatchBar.OverlayFrame.Text:Show()
     ArtifactWatchBar.OverlayFrame.Text:SetHeight( 8 )
-  else
+  end
+
+  if not TidyBar_options.show_artifact_power_bar then
     ArtifactWatchBar:Hide()
     ArtifactWatchBar:SetHeight( 0.001 )
     ArtifactWatchBar.OverlayFrame.Text:Hide()
     ArtifactWatchBar.OverlayFrame.Text:SetHeight( 0.001 )
   end
 
-  if ArtifactWatchBar:IsShown() then
+  if ArtifactWatchBar:IsShown() and TidyBar_options.show_artifact_power_bar then
     ArtifactWatchBar:ClearAllPoints()
     ArtifactWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
@@ -438,6 +443,9 @@ end
 
 
 local function TidyBar_corner_menu_setup()
+  -- The nagging talent popup
+  TalentMicroButtonAlert:SetAlpha( 0 )
+
   -- Keyring etc
   for i, name in pairs( BagButtonFrameList ) do
     name:SetParent( CornerMenuFrame.BagButtonFrame )
@@ -508,25 +516,24 @@ local function TidyBar_bars_setup()
 
     -- The XP bar
     -- The 'bubbles'
-    ReputationWatchBar.StatusBar.XPBarTexture0:SetAlpha( 0 )
-    ReputationWatchBar.StatusBar.XPBarTexture1:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.XPBarTexture0:Hide()
+    ReputationWatchBar.StatusBar.XPBarTexture1:Hide()
     -- The 'bubbles' which hang off of the Right.
-    ReputationWatchBar.StatusBar.XPBarTexture2:SetAlpha( 0 )
-    ReputationWatchBar.StatusBar.XPBarTexture3:SetAlpha( 0 )
-    for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:SetAlpha( 0 ) end
+    ReputationWatchBar.StatusBar.XPBarTexture2:Hide()
+    ReputationWatchBar.StatusBar.XPBarTexture3:Hide()
     for i=1,19 do _G[ 'MainMenuXPBarDiv' .. i ]:Hide() end
 
     -- The border around the XP bar
-         MainMenuXPBarTextureMid:SetAlpha( 0 )
-     MainMenuXPBarTextureLeftCap:SetAlpha( 0 )
-    MainMenuXPBarTextureRightCap:SetAlpha( 0 )
+    MainMenuXPBarTextureMid:Hide()
+    MainMenuXPBarTextureLeftCap:Hide()
+    MainMenuXPBarTextureRightCap:Hide()
 
     -- The rested state
     ExhaustionLevelFillBar:SetTexture( Empty_Art )
-    ExhaustionTick:SetAlpha( 0 )
+    ExhaustionTick:Hide()
+    ExhaustionTickNormal:Hide()
 
     MainMenuBarMaxLevelBar:Hide()
-    MainMenuBarMaxLevelBar:SetAlpha( 0 )
   end
   MainMenuExpBar_setup()
 
@@ -554,17 +561,21 @@ local function TidyBar_bars_setup()
     -- .. in the middle of the screen
     ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
-    ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.WatchBarTexture0:Hide()
+    ReputationWatchBar.StatusBar.WatchBarTexture1:Hide()
     -- .. which would hang off the Right
     ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
     ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-    ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-    ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.WatchBarTexture2:Hide()
+    ReputationWatchBar.StatusBar.WatchBarTexture3:Hide()
   end
   ReputationWatchBar_setup()
 
   local function ArtifactWatchBar_setup()
+    if ArtifactWatchBar:IsShown() then
+      has_artifact_power_bar = true
+    end
+
     ArtifactWatchBar:SetWidth( width )
     ArtifactWatchBar:SetHeight( height )
     ArtifactWatchBar:ClearAllPoints()
@@ -585,13 +596,16 @@ local function TidyBar_bars_setup()
     -- .. in the middle of the screen
     ArtifactWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
-    ArtifactWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
+    ArtifactWatchBar.StatusBar.WatchBarTexture0:Hide()
+    ArtifactWatchBar.StatusBar.WatchBarTexture1:Hide()
     -- .. which would hang off the Right
     ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
-    ArtifactWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
+    ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
+    ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
+    -- .. for level 100 characters TODO
+    ArtifactWatchBar.StatusBar.XPBarTexture2:Hide()
+    ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
   end
   ArtifactWatchBar_setup()
 
@@ -607,19 +621,12 @@ local function TidyBar_bars_setup()
   StanceButton1:ClearAllPoints()
 
   -- Hide the background behind the stance bar
-  StanceBarLeft:SetAlpha( 0 )
-  StanceBarRight:SetAlpha( 0 )
   StanceBarLeft:Hide()
   StanceBarRight:Hide()
   -- Hide the border around buttons
   for i=1,10 do
     _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
-    _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:SetAlpha( 0 )
   end
-
-  -- The nagging talent popup
-  TalentMicroButtonAlert:Hide()
-  TalentMicroButtonAlert:SetAlpha( 0 )
 
   -- Gryphons
   MainMenuBarLeftEndCap:ClearAllPoints()
@@ -635,6 +642,7 @@ local function TidyBar_bars_setup()
     end
   end
 
+  --TidyBar_refresh_main_area()
 end
 
 
@@ -662,7 +670,6 @@ local function TidyBar_vehicle_setup()
 
   -- The XP 'bubbles'.
   for i=1,19 do
-    --_G[ 'OverrideActionBarXpDiv' .. i ]:SetAlpha( 0 )
     _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
   end
 end
