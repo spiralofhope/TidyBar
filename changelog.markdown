@@ -5,7 +5,7 @@
 
 ## 7.0.3 series
 
-### 7.0.3.18 WORKING
+### 7.0.3.18
 
 - Fixed ArtifactWatchBar on characters with no legendary weapon.
 
