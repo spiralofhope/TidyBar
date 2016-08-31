@@ -592,6 +592,7 @@ local function TidyBar_bars_setup()
     ArtifactWatchBar.OverlayFrame.Text:SetHeight( height )
     ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
 
+    ArtifactWatchBar.Tick:SetAlpha( 0 )
     ArtifactWatchBar.Tick:Hide()
 
     -- The ArtifactWatchBar bubbles
