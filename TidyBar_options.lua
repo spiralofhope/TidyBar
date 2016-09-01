@@ -61,7 +61,7 @@ local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_experience_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Experience Bar' )
-CheckButton.tooltipText = 'The reputation bar can still be shown.'
+CheckButton.tooltipText = 'The artifact bar  still be shown.'
 CheckButton:SetChecked( TidyBar_options.show_experience_bar )
 CheckButton:SetScript( 'OnClick', function( self )
   if self:GetChecked()then
@@ -171,27 +171,6 @@ end)
 
 
 
--- Forces the reputation bar height, even when changing them
--- The alternative to the below code is to un-check the tracked reputation, then re-check it.
--- See also 'the reputation bar.markdown'
-position = position + 1
-local CheckButton
-CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.force_ReputationWatchBar_height', TidyBarPanel, 'OptionsCheckButtonTemplate' )
-CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Force reputation bar height' )
-CheckButton.tooltipText = "For max-level characters, when changing tracked reputation, the reputation bar's height is reset by Blizzard.  This forces a workaround, but uses an 'OnUpdate' script, which I don't personally like."
-CheckButton:SetChecked( TidyBar_options.force_ReputationWatchBar_height )
-CheckButton:SetScript( 'OnClick', function( self )
-  if self:GetChecked()then
-    TidyBar_options.force_ReputationWatchBar_height = true
-  else
-    TidyBar_options.force_ReputationWatchBar_height = false
-  end
-  TidyBar_RefreshPositions()
-end)
-
-
-
 space()
 
 
@@ -235,7 +214,7 @@ local bar_spacing_slider
 bar_spacing_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_spacing', TidyBarPanel, 'OptionsSliderTemplate' )
 bar_spacing_slider:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( bar_spacing_slider:GetName() .. 'Text' ):SetText( 'Bar spacing' )
-bar_spacing_slider.tooltipText = 'The vertical spacing between the bars.  Default 4.  Note that the experience bar(if shown) and reputation bar are not separated.'
+bar_spacing_slider.tooltipText = 'The vertical spacing between the bars.  Default 4.  Note that the experience bar (if shown) and artifact bar are not separated.'
 bar_spacing_slider:SetMinMaxValues( 0.1, 10 )
 bar_spacing_slider:SetValueStep( 0.1 )
 bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )

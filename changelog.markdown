@@ -5,6 +5,14 @@
 
 ## 7.0.3 series
 
+### 7.0.3.19
+
+- Fixed the positioning of the ArtifactWatchBar.
+- Fixed the text of the ArtifactWatchBar appearing at startup, until refreshed or the mouse is moved through it.
+- Removed the reputation bar functionality.
+  -  As of 22522, I've learned that the "reputation as experience bar" feature is gone, though the checkbox still exists in the UI.
+  -  I don't know if the UI needs to be updated, or if the feature will return in some form.  I'm guessing the former.
+
 ### 7.0.3.18
 
 - Fixed ArtifactWatchBar on characters with no legendary weapon.
