@@ -1,6 +1,6 @@
 ﻿# Tested against 7.0.3 (22345) x64
 # The interface number can be learned with:
-#   /dump select(4, GetBuildInfo())
+#   /dump select( 4, GetBuildInfo() )
 ## Interface:       70000
 ## Author:          spiralofhope
 ## Title:           Tidy Bar
