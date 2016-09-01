@@ -10,6 +10,7 @@ TidyBar_options.scale = 1
 TidyBar_options.bar_spacing = 4
 TidyBar_options.main_area_positioning = 500
 
+local can_display_artifact_bar = nil
 
 
 local MenuButtonFrames = {
@@ -221,30 +222,38 @@ local function TidyBar_refresh_main_area()
     end
   end
 
-  --  /run ArtifactWatchBar:SetPoint( 'BottomLeft', MultiBarBottomRight, 'TopLeft', 0, 8 )
-  do  --  ArtifactWatchBar
-    if  TidyBar_options.show_artifact_power_bar
-    and ArtifactWatchBar:IsShown()
-    then
-      ArtifactWatchBar:Show()
-      -- The colour underneath the ArtifactWatchBar
-      ArtifactWatchBar.StatusBar.Underlay:Hide()
-    else
-      ArtifactWatchBar:Hide()
-    end
-    if  ArtifactWatchBar:IsShown() then
-      if not MainMenuExpBar:IsShown() then
-        ArtifactWatchBar_bar_spacing = 0
-      else
-        ArtifactWatchBar_bar_spacing = TidyBar_options.bar_spacing
-      end
 
-      ArtifactWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-      ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
-      ArtifactWatchBar.OverlayFrame:SetPoint(      'Top', ArtifactWatchBar )
-      ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'Top', ArtifactWatchBar )
-      anchor = ArtifactWatchBar
+  ---- For some strange reason, ArtifactWatchBar:IsShown() is always false immediately upon startup.  Thereafter it can become true.  This deals with that.
+  ---- FIXME - what the hell is going on?
+  --if can_display_artifact_bar == nil then
+    --if ArtifactWatchBar:IsShown() then
+      --can_display_artifact_bar = true
+    --else
+      --can_display_artifact_bar = false
+    --end
+  --end
+
+
+  if  TidyBar_options.show_artifact_power_bar
+  and can_display_artifact_bar
+  then
+    ArtifactWatchBar:Show()
+    -- The colour underneath the ArtifactWatchBar
+    ArtifactWatchBar.StatusBar.Underlay:Hide()
+
+    if MainMenuExpBar:IsShown() then
+      local ArtifactWatchBar_bar_spacing = TidyBar_options.bar_spacing
+    else
+      local ArtifactWatchBar_bar_spacing = 0
     end
+
+    ArtifactWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
+    ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
+    ArtifactWatchBar.OverlayFrame:SetPoint(      'Top', ArtifactWatchBar )
+    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'Top', ArtifactWatchBar )
+    anchor = ArtifactWatchBar
+  else
+    ArtifactWatchBar:Hide()
   end
 
 
@@ -496,10 +505,7 @@ local function TidyBar_bars_setup()
     MainMenuBarExpText:SetHeight( height )
     MainMenuBarExpText:ClearAllPoints()
 
-    --MainMenuExpBar.SparkBurstMove:SetPoint( 'Top', MainMenuExpBar.BarGain, 'Top' )
-    --MainMenuExpBar.SparkBurstMove:SetWidth( width )
-    --MainMenuExpBar.SparkBurstMove:SetHeight( height )
-    --MainMenuExpBar.SparkBurstMove:ClearAllPoints()
+    -- The "zomg I killed a wolf" animation.
     MainMenuExpBar.SparkBurstMove:Hide()
 
     -- The 'bubbles'
@@ -514,12 +520,20 @@ local function TidyBar_bars_setup()
     ExhaustionLevelFillBar:SetTexture( Empty_Art )
     ExhaustionTick:Hide()
     ExhaustionTickNormal:Hide()
+    ExhaustionTickHighlight:Hide()
 
     MainMenuBarMaxLevelBar:Hide()
   end
 
 
   do  --  ArtifactWatchBar
+    -- If Legion
+    if  GetExpansionLevel() > 5
+    and UnitLevel('player') > 99
+    then
+      can_display_artifact_bar = true
+    end
+
     ArtifactWatchBar:SetWidth( width )
     ArtifactWatchBar:SetHeight( height )
     ArtifactWatchBar:ClearAllPoints()
@@ -539,22 +553,26 @@ local function TidyBar_bars_setup()
     ArtifactWatchBar.Tick:SetAlpha( 0 )
     ArtifactWatchBar.Tick:Hide()
 
+    ArtifactWatchBar.StatusBar.BarTexture:Hide()
+    ArtifactWatchBar.StatusBar.Background:Hide()
+
     -- The ArtifactWatchBar bubbles
     -- .. in the middle of the screen
     ArtifactWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.WatchBarTexture0:Hide()
-    ArtifactWatchBar.StatusBar.WatchBarTexture1:Hide()
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
+    --ArtifactWatchBar.StatusBar.WatchBarTexture0:Hide()
+    -- This just re-shows itself..
+    --ArtifactWatchBar.StatusBar.WatchBarTexture1:Hide()
     -- .. which would hang off the Right
     ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
-    -- .. for level 100 characters TODO
     ArtifactWatchBar.StatusBar.XPBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
   end
-
 
   -- Hide the fiddly bits on the main bar
   MainMenuBarPageNumber:Hide()
@@ -579,8 +597,6 @@ local function TidyBar_bars_setup()
   MainMenuBarRightEndCap:ClearAllPoints()
   MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
   MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
-
-  --TidyBar_refresh_main_area()
 end
 
 
@@ -606,12 +622,11 @@ local function TidyBar_vehicle_setup()
   OverrideActionBarExpBarXpMid:Hide()
   OverrideActionBarExpBarXpR:Hide()
 
-  -- The XP 'bubbles'.
+  -- The vehicle XP 'bubbles'.
   for i=1,19 do
     _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
   end
 end
-
 
 
 local function TidyBar_OnLoad()
