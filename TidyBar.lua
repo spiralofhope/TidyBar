@@ -263,6 +263,8 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
     ArtifactWatchBar.OverlayFrame:SetPoint(      'Top', ArtifactWatchBar )
     ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'Top', ArtifactWatchBar )
+    -- The colour underneath the ArtifactWatchBar
+    ArtifactWatchBar.StatusBar.Underlay:Hide()
     anchor = ArtifactWatchBar
   end
 
