@@ -5,6 +5,13 @@
 
 ## 7.0.3 series
 
+### 7.0.3.20
+
+- Fixed the bar spacing functionality.
+  -  It was working well, but imperfectly and caused some jumpyness.
+- Removed some misaligned sparklies when experience or artifact points are gained.
+- Fixed the horizontal movement for the main area.
+
 ### 7.0.3.19
 
 - Fixed the positioning of the ArtifactWatchBar.

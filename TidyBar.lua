@@ -112,6 +112,8 @@ end
 local function ConfigureCornerBars()
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
+  MainMenuBarTexture2:Hide()
+  MainMenuBarTexture3:Hide()
 
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
@@ -157,8 +159,8 @@ end
 
 local function TidyBar_refresh_main_area()
   -- The position of the middle buttons, from the left side.
-  MainMenuBar:SetWidth( TidyBar_options.main_area_positioning )
-  -- Scaling
+  MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
+  -- Scaling for everything.  Somehow.
   MainMenuBar:SetScale( TidyBar_options.scale )
 
   local function show_macro_text( alpha )
@@ -223,17 +225,6 @@ local function TidyBar_refresh_main_area()
   end
 
 
-  ---- For some strange reason, ArtifactWatchBar:IsShown() is always false immediately upon startup.  Thereafter it can become true.  This deals with that.
-  ---- FIXME - what the hell is going on?
-  --if can_display_artifact_bar == nil then
-    --if ArtifactWatchBar:IsShown() then
-      --can_display_artifact_bar = true
-    --else
-      --can_display_artifact_bar = false
-    --end
-  --end
-
-
   if  TidyBar_options.show_artifact_power_bar
   and can_display_artifact_bar
   then
@@ -247,11 +238,11 @@ local function TidyBar_refresh_main_area()
       local ArtifactWatchBar_bar_spacing = 0
     end
 
-    ArtifactWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-    ArtifactWatchBar.StatusBar:SetPoint(         'Top', ArtifactWatchBar )
-    ArtifactWatchBar.OverlayFrame:SetPoint(      'Top', ArtifactWatchBar )
-    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'Top', ArtifactWatchBar )
-    anchor = ArtifactWatchBar
+    ArtifactWatchBar:SetPoint(                   'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
+    ArtifactWatchBar.StatusBar:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
+    ArtifactWatchBar.OverlayFrame:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
+    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
+    anchor = ArtifactWatchBar.StatusBar
   else
     ArtifactWatchBar:Hide()
   end
@@ -299,6 +290,9 @@ end
 
 
 local function TidyBar_refresh_vehicle()
+  local width = 500
+  local height = 8
+  
   if not UnitHasVehicleUI( 'player' ) then return nil end
   -- This works, but it's useless if I can't reposition them.
   --LFDMicroButton:ClearAllPoints()
@@ -309,7 +303,7 @@ local function TidyBar_refresh_vehicle()
   --MainMenuMicroButton:ClearAllPoints()
   --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame, 'BottomRight' )
 
-  OverrideActionBar:SetWidth( 500 )
+  OverrideActionBar:SetWidth( width )
 
   OverrideActionBarButton1:ClearAllPoints()
   OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
@@ -321,8 +315,8 @@ local function TidyBar_refresh_vehicle()
   OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
 
   OverrideActionBarExpBar:ClearAllPoints()
-  OverrideActionBarExpBar:SetHeight( 8 )
-  OverrideActionBarExpBar:SetWidth( 500 )
+  OverrideActionBarExpBar:SetHeight( height )
+  OverrideActionBarExpBar:SetWidth( width )
   OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
   --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
   --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
@@ -340,6 +334,7 @@ function TidyBar_RefreshPositions()
   ConfigureCornerBars()
   ConfigureSideBars()
   TidyBar_refresh_vehicle()
+--TidyBar_corner_setup()
 end
 
 
@@ -506,6 +501,7 @@ local function TidyBar_bars_setup()
     MainMenuBarExpText:ClearAllPoints()
 
     -- The "zomg I killed a wolf" animation.
+    MainMenuExpBar.BarTrailGlow:Hide()
     MainMenuExpBar.SparkBurstMove:Hide()
 
     -- The 'bubbles'
@@ -518,7 +514,8 @@ local function TidyBar_bars_setup()
 
     -- The rested state
     ExhaustionLevelFillBar:SetTexture( Empty_Art )
-    ExhaustionTick:Hide()
+    -- Re-shows itself.
+    --ExhaustionTick:Hide()
     ExhaustionTickNormal:Hide()
     ExhaustionTickHighlight:Hide()
 
@@ -549,6 +546,10 @@ local function TidyBar_bars_setup()
     ArtifactWatchBar.OverlayFrame.Text:SetWidth( width )
     ArtifactWatchBar.OverlayFrame.Text:SetHeight( height )
     ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
+
+    ArtifactWatchBar.StatusBar.BarGlow:Hide()
+    ArtifactWatchBar.StatusBar.BarTrailGlow:Hide()
+    ArtifactWatchBar.StatusBar.SparkBurstMove:Hide()
 
     ArtifactWatchBar.Tick:SetAlpha( 0 )
     ArtifactWatchBar.Tick:Hide()
