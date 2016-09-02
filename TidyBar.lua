@@ -473,7 +473,7 @@ end
 
 
 
-local function TidyBar_bars_setup()
+local function TidyBar_main_area_setup()
   -- This deals with positioning and permanent-hiding.
   -- This does not deal with showing / hiding features.
 
@@ -635,7 +635,7 @@ local function TidyBar_OnLoad()
   TidyBar_corner_setup()
   TidyBar_corner_menu_setup()
   TidyBar_sidebar_setup()
-  TidyBar_bars_setup()
+  TidyBar_main_area_setup()
   TidyBar_create_options_pane()
   TidyBar_vehicle_setup()
 
