@@ -1,14 +1,14 @@
-﻿# Tested against 7.0.3 (22522) x64
+﻿# Tested against 7.0.3 (22566) x64
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
 ## Interface:       70000
 ## Author:          spiralofhope
 ## Title:           Tidy Bar
 ## Notes:           Simplifies your button bars, saving screen real estate.
-## Version:         7.0.3.20
+## Version:         7.0.3.21
 ## SavedVariables:  TidyBar_options
 
-## X-Date:          2016-09-01
+## X-Date:          2016-09-02
 ## X-Website:       https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:      https://github.com/spiralofhope/TidyBar/issues/new
 

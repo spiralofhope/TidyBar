@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.21
+
+- Re-introduce reputation bar support.
+- Show the grey of the ArtifactWatchBar
+
 ### 7.0.3.20
 
 - Fixed the bar spacing functionality.
