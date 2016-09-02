@@ -61,7 +61,7 @@ local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_experience_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Experience Bar' )
-CheckButton.tooltipText = 'The artifact bar  still be shown.'
+--CheckButton.tooltipText = ''
 CheckButton:SetChecked( TidyBar_options.show_experience_bar )
 CheckButton:SetScript( 'OnClick', function( self )
   if self:GetChecked()then
@@ -122,7 +122,7 @@ local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_gryphons', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show gryphons' )
-CheckButton.tooltipText = 'Show the gryphons to the left and Right of the main buttons.'
+CheckButton.tooltipText = 'Show the gryphons to the left and right of the main buttons.'
 CheckButton:SetChecked( TidyBar_options.show_gryphons )
 CheckButton:SetScript( 'OnClick', function( self )
   if self:GetChecked()then
