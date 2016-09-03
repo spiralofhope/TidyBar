@@ -7,17 +7,18 @@
 
 ### 7.0.3.22 WORKING
 
-- Support HonorWatchBar
+- Support HonorWatchBar.
   -  I have no way of testing this, as I do not and will never PvP or get in a circumstance where I can even be flagged.
+- Implemented an option to show/hide the HonorWatchBar.
 
 ### 7.0.3.21
 
-- Re-introduce reputation bar support.
-- Show the grey of the ArtifactWatchBar
+- Fixed #41 - Fix reputation bar when at max-xp
+- Fixed #26 - Fix artifact experience bar backdrop
 
 ### 7.0.3.20
 
-- Fixed the bar spacing functionality.
+- Fixed #37 - Adjust artifact power bar 
   -  It was working well, but imperfectly and caused some jumpyness.
 - Removed some misaligned sparklies when experience or artifact points are gained.
 - Fixed the horizontal movement for the main area.
