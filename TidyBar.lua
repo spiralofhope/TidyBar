@@ -127,6 +127,10 @@ local function ConfigureCornerBars()
   MainMenuBarTexture2:Hide()
   MainMenuBarTexture3:Hide()
 
+  -- The nagging talent popup
+  TalentMicroButtonAlert:SetAlpha( 0 )
+  TalentMicroButtonAlert:Hide()
+
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
     CharacterMicroButton:SetPoint( 'BottomRight', CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
@@ -537,9 +541,6 @@ end
 
 
 local function TidyBar_corner_menu_setup()
-  -- The nagging talent popup
-  TalentMicroButtonAlert:SetAlpha( 0 )
-
   -- Keyring etc
   for i, name in pairs( BagButtonFrameList ) do
     name:SetParent( CornerMenuFrame.BagButtonFrame )
