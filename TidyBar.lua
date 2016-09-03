@@ -2,6 +2,7 @@
 TidyBar_options = {}
 TidyBar_options.show_experience_bar = true
 TidyBar_options.show_artifact_power_bar = true
+TidyBar_options.show_honor_bar = true
 TidyBar_options.show_gryphons = false
 TidyBar_options.hide_sidebar_on_mouseout = true
 TidyBar_options.show_MainMenuBar_textured_background = false
@@ -10,7 +11,11 @@ TidyBar_options.scale = 1
 TidyBar_options.bar_spacing = 4
 TidyBar_options.main_area_positioning = 500
 
+
 local can_display_artifact_bar = nil
+local bar_width  = 500
+--  Technically adjustable, but I don't want to support that without a request.
+local bar_height = 8
 
 
 if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
@@ -210,47 +215,56 @@ local function TidyBar_refresh_main_area()
 
 
   local anchor = ActionButton1
+  local the_first_bar = true
+  local space_between_bottom_bar_and_buttons = 6
 
-  
-  do  --  MainMenuExpBar
-    if      TidyBar_options.show_experience_bar
-    and     UnitXP( 'player' ) > 0
-    and not IsXPUserDisabled()
-    and not character_is_max_level
-    then
-      MainMenuExpBar:Show()
-      MainMenuBarExpText:Show()
+
+  if      TidyBar_options.show_experience_bar
+  and     UnitXP( 'player' ) > 0
+  and not IsXPUserDisabled()
+  and not character_is_max_level
+  then
+    if the_first_bar then
+      bar_spacing = space_between_bottom_bar_and_buttons
     else
-      MainMenuExpBar:Hide()
-      MainMenuBarExpText:Hide()
+      bar_spacing = 0
     end
-    if MainMenuExpBar:IsShown() then
-      MainMenuExpBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-      MainMenuBarExpText:SetPoint(      'Top', MainMenuExpBar )
-      MainMenuXPBarTextureMid:SetPoint( 'Top', MainMenuExpBar )
-      anchor = MainMenuExpBar
-    end
+
+    MainMenuExpBar:Show()
+    MainMenuBarExpText:Show()
+
+    MainMenuExpBar:SetPoint(          'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    MainMenuBarExpText:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    MainMenuXPBarTextureMid:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+
+    the_first_bar = false
+    anchor = MainMenuExpBar
+  else
+    MainMenuExpBar:Hide()
+    MainMenuBarExpText:Hide()
   end
 
 
   if  TidyBar_options.show_artifact_power_bar
   and can_display_artifact_bar
   then
+    if the_first_bar then
+      bar_spacing = space_between_bottom_bar_and_buttons
+    else
+      bar_spacing = 0
+    end
+
     ArtifactWatchBar:Show()
+    ArtifactWatchBar:SetPoint(                   'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.StatusBar:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.OverlayFrame:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+
     -- The colour underneath the ArtifactWatchBar
     ArtifactWatchBar.StatusBar.Underlay:Hide()
 
-    if MainMenuExpBar:IsShown() then
-      local ArtifactWatchBar_bar_spacing = TidyBar_options.bar_spacing
-    else
-      local ArtifactWatchBar_bar_spacing = 0
-    end
-
     if character_is_max_level then
-      ArtifactWatchBar_bar_spacing = 6
-      
-      local height = 8
-      ArtifactWatchBar.StatusBar:SetHeight( height )
+      ArtifactWatchBar.StatusBar:SetHeight( bar_height )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
@@ -259,24 +273,67 @@ local function TidyBar_refresh_main_area()
       ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
     end
 
-    ArtifactWatchBar:SetPoint(                   'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-    ArtifactWatchBar.StatusBar:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-    ArtifactWatchBar.OverlayFrame:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ArtifactWatchBar_bar_spacing )
-
+    the_first_bar = false
     anchor = ArtifactWatchBar.StatusBar
   else
     ArtifactWatchBar:Hide()
   end
 
 
+  if  TidyBar_options.show_honor_bar
+  and HonorWatchBar:IsShown() 
+  then
+    if the_first_bar then
+      bar_spacing = space_between_bottom_bar_and_buttons
+    else
+      bar_spacing = 0
+    end
+
+    HonorWatchBar:Show()
+    HonorWatchBar:SetPoint(               'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar.StatusBar:SetPoint(     'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar.OverlayFrame:SetPoint(  'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+
+    -- This may not be a thing
+    HonorWatchBar.StatusBar.BarGlow:SetHeight( bar_height )
+    HonorWatchBar.StatusBar.BarGlow:ClearAllPoints()
+
+    HonorWatchBar.OverlayFrame:SetHeight( bar_height )
+    HonorWatchBar.OverlayFrame:ClearAllPoints()
+
+    HonorWatchBar.OverlayFrame.Text:SetHeight( bar_height )
+    HonorWatchBar.OverlayFrame.Text:ClearAllPoints()
+
+    HonorWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
+    HonorWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
+    HonorWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
+    HonorWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+
+    HonorWatchBar.StatusBar.WatchBarTexture0:Hide()
+    HonorWatchBar.StatusBar.WatchBarTexture1:Hide()
+    HonorWatchBar.StatusBar.WatchBarTexture2:Hide()
+    HonorWatchBar.StatusBar.WatchBarTexture3:Hide()
+
+    the_first_bar = false
+    anchor = ArtifactWatchBar.StatusBar
+  else
+    HonorWatchBar:Hide()
+  end
+
+
   if ReputationWatchBar:IsShown() then
-    ReputationWatchBar.StatusBar:SetHeight( 8 )
+    if the_first_bar then
+      bar_spacing = space_between_bottom_bar_and_buttons
+    else
+      bar_spacing = 0
+    end
+
+    ReputationWatchBar.StatusBar:SetHeight( bar_height )
 
     if TidyBar_options.show_experience_bar then
       ReputationWatchBar_bar_spacing = 0
     else
-      ReputationWatchBar_bar_spacing = TidyBar_options.bar_spacing
+      ReputationWatchBar_bar_spacing = bar_spacing
     end
     ReputationWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
     ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
@@ -291,6 +348,7 @@ local function TidyBar_refresh_main_area()
     ReputationWatchBar.StatusBar.WatchBarTexture2:Hide()
     ReputationWatchBar.StatusBar.WatchBarTexture3:Hide()
 
+    the_first_bar = false
     anchor = ReputationWatchBar
   end
 
@@ -336,12 +394,8 @@ end
 
 
 
-
-
 local function TidyBar_refresh_vehicle()
-  local width = 500
-  local height = 8
-  
+ 
   if not UnitHasVehicleUI( 'player' ) then return nil end
   -- This works, but it's useless if I can't reposition them.
   --LFDMicroButton:ClearAllPoints()
@@ -352,7 +406,7 @@ local function TidyBar_refresh_vehicle()
   --MainMenuMicroButton:ClearAllPoints()
   --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame, 'BottomRight' )
 
-  OverrideActionBar:SetWidth( width )
+  OverrideActionBar:SetWidth( bar_width )
 
   OverrideActionBarButton1:ClearAllPoints()
   OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
@@ -364,8 +418,8 @@ local function TidyBar_refresh_vehicle()
   OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
 
   OverrideActionBarExpBar:ClearAllPoints()
-  OverrideActionBarExpBar:SetHeight( height )
-  OverrideActionBarExpBar:SetWidth( width )
+  OverrideActionBarExpBar:SetHeight( bar_height )
+  OverrideActionBarExpBar:SetWidth( bar_width )
   OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
   --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
   --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
@@ -541,12 +595,12 @@ local function TidyBar_main_area_setup()
 
 
   do  --  MainMenuExpBar
-    MainMenuExpBar:SetWidth( width )
-    MainMenuExpBar:SetHeight( height )
+    MainMenuExpBar:SetWidth( bar_width )
+    MainMenuExpBar:SetHeight( bar_height )
     MainMenuExpBar:ClearAllPoints()
 
-    MainMenuBarExpText:SetWidth( width )
-    MainMenuBarExpText:SetHeight( height )
+    MainMenuBarExpText:SetWidth( bar_width )
+    MainMenuBarExpText:SetHeight( bar_height )
     MainMenuBarExpText:ClearAllPoints()
 
     -- The "zomg I killed a wolf" animation.
@@ -580,20 +634,20 @@ local function TidyBar_main_area_setup()
       can_display_artifact_bar = true
     end
 
-    ArtifactWatchBar:SetWidth( width )
-    ArtifactWatchBar:SetHeight( height )
+    ArtifactWatchBar:SetWidth( bar_width )
+    ArtifactWatchBar:SetHeight( bar_height )
     ArtifactWatchBar:ClearAllPoints()
 
-    ArtifactWatchBar.StatusBar:SetWidth( width )
-    ArtifactWatchBar.StatusBar:SetHeight( height )
+    ArtifactWatchBar.StatusBar:SetWidth( bar_width )
+    ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
-    ArtifactWatchBar.OverlayFrame:SetWidth( width )
-    ArtifactWatchBar.OverlayFrame:SetHeight( height )
+    ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
+    ArtifactWatchBar.OverlayFrame:SetHeight( bar_height )
     ArtifactWatchBar.OverlayFrame:ClearAllPoints()
 
-    ArtifactWatchBar.OverlayFrame.Text:SetWidth( width )
-    ArtifactWatchBar.OverlayFrame.Text:SetHeight( height )
+    ArtifactWatchBar.OverlayFrame.Text:SetWidth( bar_width )
+    ArtifactWatchBar.OverlayFrame.Text:SetHeight( bar_height )
     ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar.BarGlow:Hide()
@@ -603,56 +657,53 @@ local function TidyBar_main_area_setup()
     ArtifactWatchBar.Tick:SetAlpha( 0 )
     ArtifactWatchBar.Tick:Hide()
 
-    ArtifactWatchBar.StatusBar.BarTexture:Hide()
-
-    -- The ArtifactWatchBar bubbles
-    -- .. in the middle of the screen
     ArtifactWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
-    ArtifactWatchBar.StatusBar.WatchBarTexture0:Hide()
-    -- This just re-shows itself..
-    ArtifactWatchBar.StatusBar.WatchBarTexture1:Hide()
-    -- .. which would hang off the Right
     ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+
+    ArtifactWatchBar.StatusBar.WatchBarTexture0:Hide()
+    ArtifactWatchBar.StatusBar.WatchBarTexture1:Hide()
     ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
+
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture3:SetTexture( Empty_Art )
+
+    ArtifactWatchBar.StatusBar.XPBarTexture0:Hide()
+    ArtifactWatchBar.StatusBar.XPBarTexture1:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
   end
 
 
   do  --  ReputationWatchBar
-    ReputationWatchBar:SetWidth( width )
-    ReputationWatchBar:SetHeight( height )
+    ReputationWatchBar:SetWidth( bar_width )
+    ReputationWatchBar:SetHeight( bar_height )
     ReputationWatchBar:ClearAllPoints()
 
-    ReputationWatchBar.StatusBar:SetWidth( width )
-    ReputationWatchBar.StatusBar:SetHeight( height )
+    ReputationWatchBar.StatusBar:SetWidth( bar_width )
+    ReputationWatchBar.StatusBar:SetHeight( bar_height )
     ReputationWatchBar.StatusBar:ClearAllPoints()
 
-    ReputationWatchBar.StatusBar.BarGlow:SetHeight( height )
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( bar_height )
     ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
 
-    ReputationWatchBar.OverlayFrame:SetHeight( height )
+    ReputationWatchBar.OverlayFrame:SetHeight( bar_height )
     ReputationWatchBar.OverlayFrame:ClearAllPoints()
 
-    ReputationWatchBar.OverlayFrame.Text:SetHeight( height )
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( bar_height )
     ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
 
-    -- The reputation bar bubbles
-    -- .. in the middle of the screen
     ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
     ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
-    ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
-    -- .. which would hang off the Right
     ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
     ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+
+    ReputationWatchBar.StatusBar.WatchBarTexture0:SetAlpha( 0 )
+    ReputationWatchBar.StatusBar.WatchBarTexture1:SetAlpha( 0 )
     ReputationWatchBar.StatusBar.WatchBarTexture2:SetAlpha( 0 )
     ReputationWatchBar.StatusBar.WatchBarTexture3:SetAlpha( 0 )
   end

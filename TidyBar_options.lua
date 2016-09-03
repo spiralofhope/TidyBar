@@ -94,6 +94,24 @@ end)
 
 position = position + 1
 local CheckButton
+CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_honor_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
+getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Honor Bar' )
+--CheckButton.tooltipText = ''
+CheckButton:SetChecked( TidyBar_options.show_honor_bar )
+CheckButton:SetScript( 'OnClick', function( self )
+  if self:GetChecked()then
+    TidyBar_options.show_honor_bar = true
+  else
+    TidyBar_options.show_honor_bar = false
+  end
+  TidyBar_RefreshPositions()
+end)
+
+
+
+position = position + 1
+local CheckButton
 CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_sidebar_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
 CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Autohide sidebar' )
