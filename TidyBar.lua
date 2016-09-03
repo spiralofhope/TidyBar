@@ -174,6 +174,10 @@ end
 
 
 local function TidyBar_refresh_main_area()
+    MainMenuBarMaxLevelBar:SetAlpha( 0 )
+    MainMenuBarMaxLevelBar:Hide()
+
+
   -- The position of the middle buttons, from the left side.
   MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
   -- Scaling for everything.  Somehow.
@@ -622,8 +626,6 @@ local function TidyBar_main_area_setup()
     --ExhaustionTick:Hide()
     ExhaustionTickNormal:Hide()
     ExhaustionTickHighlight:Hide()
-
-    MainMenuBarMaxLevelBar:Hide()
   end
 
 
