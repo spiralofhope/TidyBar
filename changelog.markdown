@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.22 WORKING
+
+- Support HonorWatchBar
+  -  I have no way of testing this, as I do not and will never PvP or get in a circumstance where I can even be flagged.
+
 ### 7.0.3.21
 
 - Re-introduce reputation bar support.
