@@ -298,9 +298,10 @@ local function TidyBar_refresh_main_area()
     end
 
     HonorWatchBar:Show()
-    HonorWatchBar:SetPoint(               'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    HonorWatchBar.StatusBar:SetPoint(     'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    HonorWatchBar.OverlayFrame:SetPoint(  'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar:SetPoint(                      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar.StatusBar:SetPoint(            'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar.StatusBar.Background:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    HonorWatchBar.OverlayFrame:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
 
     -- This may not be a thing
     HonorWatchBar.StatusBar.BarGlow:SetHeight( bar_height )
@@ -679,6 +680,21 @@ local function TidyBar_main_area_setup()
     ArtifactWatchBar.StatusBar.XPBarTexture1:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
+  end
+
+
+  do  --  HonorWatchBar
+    HonorWatchBar:SetWidth( bar_width )
+    HonorWatchBar:SetHeight( bar_height )
+    HonorWatchBar:ClearAllPoints()
+
+    HonorWatchBar.StatusBar:SetWidth( bar_width )
+    HonorWatchBar.StatusBar:SetHeight( bar_height )
+    HonorWatchBar.StatusBar:ClearAllPoints()
+
+    HonorWatchBar.StatusBar.Background:SetWidth( bar_width )
+    HonorWatchBar.StatusBar.Background:SetHeight( bar_height )
+    HonorWatchBar.StatusBar.Background:ClearAllPoints()
   end
 
 
