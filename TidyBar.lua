@@ -644,11 +644,8 @@ local function TidyBar_event_handler_setup()
   events.UPDATE_VEHICLE_ACTIONBAR    = TidyBar_RefreshPositions
   events.QUEST_WATCH_UPDATE          = TidyBar_RefreshPositions
   events.UNIT_AURA                   = TidyBar_RefreshPositions
-
-  -- Possible battlegrounds fixes for issue 34:
-  --events.UPDATE_WORLD_STATES         = TidyBar_RefreshPositions         --  Fired within Battlefields when certain things occur such as a flag being captured. Also seen in the outdoor world occasionlly, but it's not clear what triggers it.
-  --events.WORLD_MAP_UPDATE            = TidyBar_RefreshPositions         --  Fired when the world map should be updated.  When entering a battleground, this event won't fire until the zone is changed (i.e. in WSG when you walk outside of Warsong Lumber Mill or Silverwing Hold
-
+  -- If the artifact bar's height keeps changing during a flightpath, perhaps this is the solution:
+  --events.ZONE_CHANGED                = TidyBar_RefreshPositions
 
   local function EventHandler( frame, event )
     if events[ event ] then
@@ -753,9 +750,6 @@ end
 
 
 
-
-
-
 local function TidyBar_vehicle_setup()
   OverrideActionBarEndCapL:Hide()
   OverrideActionBarEndCapR:Hide()
@@ -790,7 +784,6 @@ local function TidyBar_OnLoad()
   TidyBar_corner_setup()
   TidyBar_corner_menu_setup()
   TidyBar_sidebar_setup()
-  --TidyBar_main_area_setup()
   TidyBar_create_options_pane()
   TidyBar_vehicle_setup()
 
