@@ -586,18 +586,18 @@ local function TidyBar_main_area_setup()
   -- This deals with positioning and permanent-hiding.
   -- This does not deal with showing / hiding features.
 
-  ActionButton1:ClearAllPoints()
-  ActionButton1:SetPoint( 'BottomLeft', MainMenuBarOverlayFrame, 'BottomLeft' )
-
-  local width = 500
-  local height = 8
-
   -- MainMenuBar textured background
   -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
   MainMenuBarTexture0:ClearAllPoints()
   MainMenuBarTexture1:ClearAllPoints()
   MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left', -8, -5 )
   MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
+
+  ActionButton1:ClearAllPoints()
+  ActionButton1:SetPoint( 'BottomLeft', MainMenuBarOverlayFrame, 'BottomLeft' )
+
+  local width = 500
+  local height = 8
 
 
   do  --  MainMenuExpBar
