@@ -45,7 +45,6 @@ local BagButtonFrameList = {
   CharacterBag1Slot,
   CharacterBag2Slot,
   CharacterBag3Slot,
-  KeyRingButton,
 }
 
 local ButtonGridIsShown = false
@@ -720,7 +719,6 @@ end
 
 
 local function TidyBar_corner_menu_setup()
-  -- Keyring etc
   for i, name in pairs( BagButtonFrameList ) do
     name:SetParent( CornerMenuFrame.BagButtonFrame )
   end
