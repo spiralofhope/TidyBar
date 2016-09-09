@@ -7,7 +7,7 @@
 
 ### 7.0.3.22 WORKING
 
-- Fixed #27 right-hand mainbar alignment 
+- Fixed #27 right-hand mainbar alignment.
 - Fixed the locked-XP bar.  Hiding it.
 - Support HonorWatchBar.
   -  I have no way of testing this, as I do not and will never PvP or get in a circumstance where I can even be flagged.
