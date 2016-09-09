@@ -299,7 +299,7 @@ Button.tooltipText = 'Reset the main area positioning to (roughly) the middle.'
 -- Maybe I should have it actually reset to the middle.
 --   .. or perhaps alongside the chat window, but that'll be bad for a tweaked layout.
 Button:SetScript( 'OnClick', function( self )
-  TidyBar_options.main_area_positioning = 500
+  TidyBar_options.main_area_positioning = 425
   main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
   TidyBar_RefreshPositions()
 end)
