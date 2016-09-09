@@ -640,6 +640,8 @@ end
 
 
 
+-- Uh, is any of this used/needed?
+--[=[
 local function TidyBar_event_handler_setup()
   local events = {}
 
@@ -694,6 +696,7 @@ local function TidyBar_event_handler_setup()
     TidyBar:RegisterEvent( eventname )
   end
 end
+]=]
 
 
 
@@ -821,7 +824,8 @@ end
 
 
 local function TidyBar_OnLoad()
-  TidyBar_event_handler_setup()
+  -- Uh, is this used/needed?
+  --TidyBar_event_handler_setup()
   TidyBar_corner_setup()
   TidyBar_corner_menu_setup()
   TidyBar_sidebar_setup()
