@@ -45,10 +45,11 @@ local Corner_Artwork_Texture = "Interface\\Addons\\TidyBar\\empty"
 local Empty_Art              = "Interface\\Addons\\TidyBar\\empty"
 local MouseInSidebar, MouseInCorner = false
 
+-- TODO? - move these into setup functions?
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 local CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',         UIParent )
 local SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_SideBarMouseoverFrame',   UIParent )
-local CornerMouseoverFrame = CreateFrame( 'Frame', 'TidyBar_CornerBarMouseoverFrame', UIParent )
+      SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
 
 local SetSidebarAlpha
 
@@ -780,6 +781,7 @@ local function TidyBar_corner_menu_setup()
   CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
   
   -- Setup the Corner Menu Mouseover frame
+  local CornerMouseoverFrame = CreateFrame( 'Frame', 'TidyBar_CornerBarMouseoverFrame', UIParent )
   CornerMouseoverFrame:EnableMouse()
   CornerMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
   
