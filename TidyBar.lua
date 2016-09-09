@@ -647,8 +647,9 @@ local function TidyBar_event_handler_setup()
 
   local function EventHandler( frame, event )
     if events[ event ] then
-      -- NOTE - The following line is to debug:
-      --print( GetTime(), event )
+      if TidyBar_options.debug then
+        print( GetTime(), event )
+      end
       events[ event ]()
     end
   end
@@ -799,6 +800,10 @@ local function TidyBar_OnLoad()
 
   SLASH_TIDYBAR1 = '/tidybar'
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
+
+  if TidyBar_options.debug then
+    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
+  end
 end
 TidyBar:RegisterEvent( 'ADDON_LOADED' )
 TidyBar:SetScript( 'OnEvent', TidyBar_OnLoad )

@@ -7,6 +7,8 @@
 
 ### 7.0.3.22 WORKING
 
+- Implemented a debugging mode.
+  -  Prints out various messages of interest to developers.
 - Fixed #27 right-hand mainbar alignment.
 - Fixed the locked-XP bar.  Hiding it.
 - Support HonorWatchBar.
