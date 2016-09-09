@@ -31,20 +31,12 @@ local MenuButtonFrames = {
   TalentMicroButton,        -- Specialization & Talents
   AchievementMicroButton,   -- Achievements
   QuestLogMicroButton,      -- Quest Log
-  GuildMicroButton,         -- Guild Finder
+  GuildMicroButton,         -- Guild / Guild Finder
   LFDMicroButton,           -- Group Finder
   CollectionsMicroButton,   -- Collections
-  EJMicroButton,            -- Dungeon Journal
+  EJMicroButton,            -- Adventure Guide
   StoreMicroButton,         -- Shop
   MainMenuMicroButton,      -- Game Menu
-}
-
-local BagButtonFrameList = {
-  MainMenuBarBackpackButton,
-  CharacterBag0Slot,
-  CharacterBag1Slot,
-  CharacterBag2Slot,
-  CharacterBag3Slot,
 }
 
 local ButtonGridIsShown = false
@@ -719,6 +711,14 @@ end
 
 
 local function TidyBar_corner_menu_setup()
+  local BagButtonFrameList = {
+    MainMenuBarBackpackButton,
+    CharacterBag0Slot,
+    CharacterBag1Slot,
+    CharacterBag2Slot,
+    CharacterBag3Slot,
+  }
+
   for i, name in pairs( BagButtonFrameList ) do
     name:SetParent( CornerMenuFrame.BagButtonFrame )
   end
