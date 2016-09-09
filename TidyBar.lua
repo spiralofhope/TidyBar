@@ -10,6 +10,7 @@ TidyBar_options.show_macro_text = false
 TidyBar_options.scale = 1
 TidyBar_options.bar_spacing = 4
 TidyBar_options.main_area_positioning = 500
+TidyBar_options.debug = false
 
 
 local can_display_artifact_bar = nil

@@ -205,6 +205,9 @@ scale_slider:SetValue( TidyBar_options.scale )
 scale_slider:SetScript( 'OnValueChanged', function()
   TidyBar_options.scale = scale_slider:GetValue()
   TidyBar_RefreshPositions()
+  if TidyBar_options.debug then
+    print( 'TidyBar_options.scale ' .. tostring( TidyBar_options.scale ) )
+  end
 end)
 
 
@@ -239,6 +242,9 @@ bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
 bar_spacing_slider:SetScript( 'OnValueChanged', function()
   TidyBar_options.bar_spacing = ( bar_spacing_slider:GetValue() * TidyBar_options.scale )
   TidyBar_RefreshPositions()
+  if TidyBar_options.debug then
+    print( 'TidyBar_options.bar_spacing ' .. tostring( TidyBar_options.bar_spacing ) )
+  end
 end)
 
 
@@ -276,8 +282,11 @@ main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
 main_area_positioning_slider:SetScript( 'OnValueChanged', function()
   TidyBar_options.main_area_positioning = main_area_positioning_slider:GetValue()
   TidyBar_RefreshPositions()
-  print( TidyBar_options.main_area_positioning )
+  if TidyBar_options.debug then
+    print( 'TidyBar_options.main_area_positioning ' .. tostring( TidyBar_options.main_area_positioning ) )
+  end
 end)
+
 
 
 
@@ -292,6 +301,32 @@ Button.tooltipText = 'Reset the main area positioning to (roughly) the middle.'
 Button:SetScript( 'OnClick', function( self )
   TidyBar_options.main_area_positioning = 500
   main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
+  TidyBar_RefreshPositions()
+end)
+
+
+
+space()
+
+
+
+space()
+
+
+
+position = position + 1
+local CheckButton
+CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.debug', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
+getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show debug messages' )
+--CheckButton.tooltipText = ''
+CheckButton:SetChecked( TidyBar_options.debug )
+CheckButton:SetScript( 'OnClick', function( self )
+  if self:GetChecked()then
+    TidyBar_options.debug = true
+  else
+    TidyBar_options.debug = false
+  end
   TidyBar_RefreshPositions()
 end)
 
