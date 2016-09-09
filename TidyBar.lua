@@ -70,6 +70,16 @@ local function CheckDelayedEvent( self )
   if pendingEvents == 0 then DelayedEventWatcher:SetScript( 'OnUpdate', nil ) end
 end
 local function DelayEvent( functionToCall, timeToCall )
+  if TidyBar_options.debug then
+    print(
+      'TidyBar:  DelayEvent() triggered at '
+      .. GetTime()
+      .. ' with '
+      .. tostring( functionToCall )
+      .. ' and TimeToCall '
+      .. tostring( timeToCall )
+    )
+  end
   DelayedEvents[ functionToCall ] = timeToCall
   DelayedEventWatcher:SetScript( 'OnUpdate', CheckDelayedEvent )
 end
@@ -79,8 +89,18 @@ end
 
 local function SetSidebarAlpha()
   local Alpha = 0
-  if MouseInSidebar or ButtonGridIsShown or not TidyBar_options.hide_sidebar_on_mouseout then Alpha = 1 end
+  if        MouseInSidebar
+    or      ButtonGridIsShown
+    or not  TidyBar_options.hide_sidebar_on_mouseout
+  then
+    Alpha = 1
+  end
+  -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
+  --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
   if SpellFlyout:IsShown() then
+    if TidyBar_options.debug then
+      print 'TidyBar:  SpellFlyout:IsShown() true'
+    end
     DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
   else
     for i = 1, 12 do
@@ -646,9 +666,24 @@ local function TidyBar_event_handler_setup()
   --events.ZONE_CHANGED                = TidyBar_RefreshPositions
 
   local function EventHandler( frame, event )
+    if TidyBar_options.debug then
+      print(
+        'TidyBar:  EventHandler() triggered at '
+        .. GetTime()
+        .. ' with frame '
+        .. tostring( frame )
+        .. ' and event '
+        .. tostring( event )
+      )
+    end
     if events[ event ] then
       if TidyBar_options.debug then
-        print( GetTime(), event )
+        print(
+          'TidyBar:  EventHandler() events[ event ] triggered at '
+          .. GetTime()
+          .. ' with event '
+          .. tostring( event )
+        )
       end
       events[ event ]()
     end
@@ -802,7 +837,7 @@ local function TidyBar_OnLoad()
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
 
   if TidyBar_options.debug then
-    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
+    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
   end
 end
 TidyBar:RegisterEvent( 'ADDON_LOADED' )
