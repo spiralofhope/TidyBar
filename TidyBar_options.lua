@@ -281,21 +281,20 @@ end)
 
 
 
-
 position = position + 1
 local Button
 Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning2', TidyBarPanel, 'OptionsButtonTemplate' )
 Button:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
 Button.tooltipText = 'Reset the main area positioning to (roughly) the middle.'
+-- Maybe I should have it actually reset to the middle.
+--   .. or perhaps alongside the chat window, but that'll be bad for a tweaked layout.
 Button:SetScript( 'OnClick', function( self )
-  -- Why do I have to repeat these options?  Who knows!
-  TidyBar_options.main_area_positioning = 500
-  main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
   TidyBar_options.main_area_positioning = 500
   main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
   TidyBar_RefreshPositions()
 end)
+
 
 
 end
