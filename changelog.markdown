@@ -7,10 +7,11 @@
 
 ### 7.0.3.22 WORKING
 
+- Fixed #43 - Fix artifact bar background resetting to dim yellow
 - Implemented a debugging mode.
   -  Prints out various messages of interest to developers.
-- Fixed #27 right-hand mainbar alignment.
-- Fixed the locked-XP bar.  Hiding it.
+- Fixed #27 - Right-hand mainbar alignment.
+- Hiding the grey locked-XP bar.
 - Support HonorWatchBar.
   -  I have no way of testing this, as I do not and will never PvP or get in a circumstance where I can even be flagged.
 - Implemented an option to show/hide the HonorWatchBar.
