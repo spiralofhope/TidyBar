@@ -261,26 +261,22 @@ space()
 
 
 
--- The position of the middle buttons.
---   On a 1920 x 1080 screen:
---       500 is the middle
---      1375 is the left side
---         1 is more to the Right.
---         0 crosses the streams.
 position = position + 1
 local main_area_positioning_slider
 main_area_positioning_slider = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning', TidyBarPanel, 'OptionsSliderTemplate' )
 main_area_positioning_slider:SetPoint( 'TopLeft', 20, -20 * position )
 getglobal( main_area_positioning_slider:GetName() .. 'Text' ):SetText( 'Main area positioning' )
-main_area_positioning_slider.tooltipText = 'The position of the main area.  There is a Right-side limit.'
--- I have no idea why these numbers do what they do.
-main_area_positioning_slider:SetMinMaxValues( 0.1, 1375 )
-main_area_positioning_slider:SetValueStep( 25 )
+main_area_positioning_slider.tooltipText = 'The position of the main area.'
+main_area_positioning_slider:SetMinMaxValues( 1, GetScreenWidth() )
+-- You'd think this would prevent the area from moving off the screen to the wrong.  It does not.
+-- .. even if it did, I may have scaling issues.
+--main_area_positioning_slider:SetMinMaxValues( 1, ( GetScreenWidth() - MainMenuBar:GetWidth() ) )
+main_area_positioning_slider:SetValueStep( 1 )
 main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
 main_area_positioning_slider:SetScript( 'OnValueChanged', function()
-  -- ( - 1375) reverses the direction of the slider.
-  TidyBar_options.main_area_positioning = ( main_area_positioning_slider:GetValue() - 1375 )
+  TidyBar_options.main_area_positioning = main_area_positioning_slider:GetValue()
   TidyBar_RefreshPositions()
+  print( TidyBar_options.main_area_positioning )
 end)
 
 

@@ -187,6 +187,7 @@ local function TidyBar_refresh_main_area()
   local width = 500
   local height = 8
 
+  MainMenuBar:SetWidth( bar_width )
 
   do  --  MainMenuExpBar
     MainMenuExpBar:SetWidth( bar_width )
@@ -349,10 +350,15 @@ local function TidyBar_refresh_main_area()
   MainMenuBarMaxLevelBar:Hide()
 
 
-  -- The position of the middle buttons, from the left side.
-  MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
+  -- The position of the middle buttons, from the left side.  Somehow.
+  --MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
   -- Scaling for everything.  Somehow.
   MainMenuBar:SetScale( TidyBar_options.scale )
+
+  -- New code
+  --MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
+  MainMenuBar:ClearAllPoints()
+  MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
   local function show_macro_text( alpha )
     local bars={
