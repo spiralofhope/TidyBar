@@ -1,4 +1,29 @@
-﻿--  Defaults
+﻿--[=[
+http://wowprogramming.com/docs/widgets/Texture
+
+ArtifactWatchBar.StatusBar.BarTexture
+
+http://wow.gamepedia.com/API_LayeredRegion_SetVertexColor
+r=0 ; g=1 ; b=1 ; ArtifactWatchBar.StatusBar.BarTexture:SetVertexColor(r,g,b)
+
+
+local r,g,b=ArtifactWatchBar.StatusBar.BarTexture:GetVertexColor()
+ArtifactWatchBar.StatusBar.BarTexture:SetGradient( 'VERTICAL',r,g,b,r,g,b)
+
+/run __=ArtifactWatchBar.StatusBar.BarTexture:GetBlendMode() ; print( __ )
+/run ArtifactWatchBar.StatusBar.BarTexture:SetBlendMode( 'DISABLE' )
+
+
+/run __=ArtifactWatchBar.StatusBar.Overlay:GetBlendMode() ; print( __ )
+/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'ADD' )
+/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'ALPHAKEY' )
+/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'BLEND' )
+/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'DISABLE' )
+/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'MOD' )
+/run ArtifactWatchBar.StatusBar.Overlay:Hide()
+]=]
+
+--  Defaults
 TidyBar_options = {}
 TidyBar_options.show_experience_bar = true
 TidyBar_options.show_artifact_power_bar = true
@@ -240,9 +265,8 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
-    ArtifactWatchBar.StatusBar.Overlay:SetWidth( bar_width )
-    ArtifactWatchBar.StatusBar.Overlay:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.Overlay:ClearAllPoints()
+    -- The yellow background.
+    ArtifactWatchBar.StatusBar.Overlay:Hide()
 
     ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
     ArtifactWatchBar.OverlayFrame:SetHeight( bar_height )
