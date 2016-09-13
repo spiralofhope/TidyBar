@@ -1,30 +1,4 @@
-﻿--[=[
-http://wowprogramming.com/docs/widgets/Texture
-
-ArtifactWatchBar.StatusBar.BarTexture
-
-http://wow.gamepedia.com/API_LayeredRegion_SetVertexColor
-r=0 ; g=1 ; b=1 ; ArtifactWatchBar.StatusBar.BarTexture:SetVertexColor(r,g,b)
-
-
-local r,g,b=ArtifactWatchBar.StatusBar.BarTexture:GetVertexColor()
-ArtifactWatchBar.StatusBar.BarTexture:SetGradient( 'VERTICAL',r,g,b,r,g,b)
-
-/run __=ArtifactWatchBar.StatusBar.BarTexture:GetBlendMode() ; print( __ )
-/run ArtifactWatchBar.StatusBar.BarTexture:SetBlendMode( 'DISABLE' )
-
-
-/run __=ArtifactWatchBar.StatusBar.Overlay:GetBlendMode() ; print( __ )
-/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'ADD' )
-/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'ALPHAKEY' )
-/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'BLEND' )
-/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'DISABLE' )
-/run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'MOD' )
-/run ArtifactWatchBar.StatusBar.Overlay:SetAlpha( 0 )
-/run ArtifactWatchBar.StatusBar.Overlay:Hide()
-]=]
-
---  Defaults
+﻿--  Defaults
 TidyBar_options = {}
 TidyBar_options.show_experience_bar = true
 TidyBar_options.show_artifact_power_bar = true
@@ -63,8 +37,8 @@ local MenuButtonFrames = {
 }
 
 local ButtonGridIsShown = false
-local Corner_Artwork_Texture = "Interface\\Addons\\TidyBar\\empty"
-local Empty_Art              = "Interface\\Addons\\TidyBar\\empty"
+local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
+local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 local MouseInSidebar, MouseInCorner = false
 
 -- TODO? - move these into setup functions?
@@ -262,7 +236,7 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
-    -- For reasons unknown, tThis doesn't stick at max level:
+    -- For reasons unknown, this doesn't stick at max level:
     ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
