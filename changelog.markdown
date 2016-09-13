@@ -7,6 +7,7 @@
 
 ### 7.0.3.22 WORKING
 
+- Fixed #47 - Fix ArtifactWatchBar height resetting
 - Fixed #43 - Fix artifact bar background resetting to dim yellow
 - Implemented a debugging mode.
   -  Prints out various messages of interest to developers.

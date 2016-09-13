@@ -13,17 +13,13 @@ TidyBar_options.main_area_positioning = 425
 TidyBar_options.debug = false
 
 
+
 local can_display_artifact_bar = nil
 local bar_width  = 500
 --  Technically adjustable, but I don't want to support that without a request.
 local bar_height = 8
 
 
-if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
-  character_is_max_level = true
-else
-  character_is_max_level = false
-end
 
 
 local MenuButtonFrames = {
@@ -245,6 +241,7 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
+    -- FIXME - this isn't sticking
     ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
@@ -255,6 +252,10 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.OverlayFrame.Text:SetWidth( bar_width )
     ArtifactWatchBar.OverlayFrame.Text:SetHeight( bar_height )
     ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
+
+    ArtifactWatchBar.StatusBar.Background:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.Background:SetWidth( bar_width )
+    ArtifactWatchBar.StatusBar.Background:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar.BarGlow:Hide()
     ArtifactWatchBar.StatusBar.BarTrailGlow:Hide()
@@ -273,10 +274,20 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
 
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( bar_height )
+
     ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture3:SetTexture( Empty_Art )
+
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( bar_height )
 
     ArtifactWatchBar.StatusBar.XPBarTexture0:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture1:Hide()
@@ -420,7 +431,7 @@ local function TidyBar_refresh_main_area()
   if      TidyBar_options.show_experience_bar
   and     UnitXP( 'player' ) > 0
   and not IsXPUserDisabled()
-  and not character_is_max_level
+  and not TidyBar_character_is_max_level
   then
     if the_first_bar then
       bar_spacing = space_between_bottom_bar_and_buttons
@@ -453,15 +464,17 @@ local function TidyBar_refresh_main_area()
     end
 
     ArtifactWatchBar:Show()
-    ArtifactWatchBar:SetPoint(                   'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.StatusBar:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.OverlayFrame:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar:SetPoint(                      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.StatusBar:SetPoint(            'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.OverlayFrame:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.OverlayFrame.Text:SetPoint(    'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
+    ArtifactWatchBar.StatusBar.Background:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
 
     -- The colour underneath the ArtifactWatchBar
     ArtifactWatchBar.StatusBar.Underlay:Hide()
 
-    if character_is_max_level then
+    if TidyBar_character_is_max_level then
+      -- FIXME - this isn't sticking
       ArtifactWatchBar.StatusBar:SetHeight( bar_height )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
@@ -825,7 +838,31 @@ end
 
 
 
+local function TidyBar_main_area_setup()
+  if TidyBar_character_is_max_level then
+    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+      ArtifactWatchBar.StatusBar:SetHeight( bar_height )
+    end )
+  end
+end
+
+
 local function TidyBar_OnLoad()
+  if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
+    local comparison = UnitLevel( 'player' ) .. '/' .. MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
+    if TidyBar_options.debug then
+      print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
+    end
+    TidyBar_character_is_max_level = true
+  else
+  print 'TidyBar:  Character is not max level'
+    if not TidyBar_options.debug then
+      print( 'TidyBar:  Character is level ' .. comparison )
+    end
+    TidyBar_character_is_max_level = false
+  end
+
+
   -- Uh, is this used/needed?
   --TidyBar_event_handler_setup()
   TidyBar_corner_setup()
@@ -833,6 +870,11 @@ local function TidyBar_OnLoad()
   TidyBar_sidebar_setup()
   TidyBar_create_options_pane()
   TidyBar_vehicle_setup()
+  TidyBar_main_area_setup()
+
+  if TidyBar_options.debug then
+    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
+  end
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )
@@ -841,10 +883,6 @@ local function TidyBar_OnLoad()
 
   SLASH_TIDYBAR1 = '/tidybar'
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
-
-  if TidyBar_options.debug then
-    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
-  end
 end
 TidyBar:RegisterEvent( 'ADDON_LOADED' )
 TidyBar:SetScript( 'OnEvent', TidyBar_OnLoad )
