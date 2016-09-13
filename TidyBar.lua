@@ -193,11 +193,6 @@ local function TidyBar_refresh_main_area()
   ActionButton1:ClearAllPoints()
   ActionButton1:SetPoint( 'BottomLeft', MainMenuBarOverlayFrame, 'BottomLeft' )
 
-  local width = 500
-  local height = 8
-
-  MainMenuBar:SetWidth( bar_width )
-
   do  --  MainMenuExpBar
     MainMenuExpBar:SetWidth( bar_width )
     MainMenuExpBar:SetHeight( bar_height )
@@ -241,7 +236,7 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
-    -- FIXME - this isn't sticking
+    -- For reasons unknown, tThis doesn't stick at max level:
     ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
@@ -374,13 +369,10 @@ local function TidyBar_refresh_main_area()
   MainMenuBarMaxLevelBar:Hide()
 
 
-  -- The position of the middle buttons, from the left side.  Somehow.
-  --MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
+  MainMenuBar:SetWidth( bar_width )
   -- Scaling for everything.  Somehow.
   MainMenuBar:SetScale( TidyBar_options.scale )
 
-  -- New code
-  --MainMenuBar:SetWidth(      TidyBar_options.main_area_positioning )
   MainMenuBar:ClearAllPoints()
   MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
@@ -474,7 +466,7 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar.Underlay:Hide()
 
     if TidyBar_character_is_max_level then
-      -- FIXME - this isn't sticking
+      -- For reasons unknown, this doesn't stick at max level:
       ArtifactWatchBar.StatusBar:SetHeight( bar_height )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
@@ -649,7 +641,7 @@ function TidyBar_RefreshPositions()
   ConfigureCornerBars()
   ConfigureSideBars()
   TidyBar_refresh_vehicle()
---TidyBar_corner_setup()
+  --TidyBar_corner_setup()
 end
 
 

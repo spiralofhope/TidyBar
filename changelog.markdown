@@ -5,7 +5,7 @@
 
 ## 7.0.3 series
 
-### 7.0.3.22 WORKING
+### 7.0.3.22
 
 - Fixed #47 - Fix ArtifactWatchBar height resetting
 - Fixed #43 - Fix artifact bar background resetting to dim yellow
