@@ -20,6 +20,7 @@ ArtifactWatchBar.StatusBar.BarTexture:SetGradient( 'VERTICAL',r,g,b,r,g,b)
 /run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'BLEND' )
 /run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'DISABLE' )
 /run ArtifactWatchBar.StatusBar.Overlay:SetBlendMode( 'MOD' )
+/run ArtifactWatchBar.StatusBar.Overlay:SetAlpha( 0 )
 /run ArtifactWatchBar.StatusBar.Overlay:Hide()
 ]=]
 
@@ -264,9 +265,6 @@ local function TidyBar_refresh_main_area()
     -- For reasons unknown, tThis doesn't stick at max level:
     ArtifactWatchBar.StatusBar:SetHeight( bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
-
-    -- The yellow background.
-    ArtifactWatchBar.StatusBar.Overlay:Hide()
 
     ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
     ArtifactWatchBar.OverlayFrame:SetHeight( bar_height )
