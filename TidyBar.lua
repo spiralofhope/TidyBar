@@ -834,7 +834,7 @@ end
 local function TidyBar_main_area_setup()
   if TidyBar_character_is_max_level then
     ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
-      ArtifactWatchBar.StatusBar:SetHeight( bar_height )
+      ArtifactWatchBar.StatusBar:SetHeight( 8 )
     end )
   end
 end
