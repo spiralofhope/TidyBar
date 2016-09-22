@@ -5,6 +5,11 @@
 
 ## 7.0.3 series
 
+### 7.0.3.23
+
+- Fixed a probable bug with a global/local variable.
+  -  Releasing with just this fix, since it's likely a bad issue for some people.
+
 ### 7.0.3.22
 
 - Fixed #47 - Fix ArtifactWatchBar height resetting

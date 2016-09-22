@@ -21,6 +21,11 @@ which simplifies the game buttons, giving much more screen space.  A fork of
 - `/tidybar` will force an update.
 
 
-# Known Bugs
+# Issues and suggestions
 
-([bugs list](https://github.com/spiralofhope/TidyBar/issues))
+([issues list](https://github.com/spiralofhope/TidyBar/issues))
+
+- Disable all addons and re-test before creating an issue.
+- Search for your issue before creating an issue.
+- Always report errors.
+  -  There are several helpful addons to catch errors.  Try something like [TekErr](http://www.wowinterface.com/downloads/info6681).
