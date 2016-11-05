@@ -834,6 +834,9 @@ end
 local function TidyBar_main_area_setup()
   if TidyBar_character_is_max_level then
     ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+      -- Should solve the below occasional login error.
+      if InCombatLockdown() then return end
+      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
       ArtifactWatchBar.StatusBar:SetHeight( 8 )
     end )
   end
