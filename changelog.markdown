@@ -5,6 +5,10 @@
 
 ## 7.0.3 series
 
+### 7.0.3.24 UPCOMING
+
+- Fixed an unpredictable error message when first logging in.
+
 ### 7.0.3.23
 
 - Fixed a probable bug with a global/local variable.
