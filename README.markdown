@@ -15,6 +15,13 @@ which simplifies the game buttons, giving much more screen space.  A fork of
  · [latest beta](https://github.com/spiralofhope/TidyBar/archive/master.zip)
 
 
+# Installation
+
+Since it's a regular addon, it's manually installed the same as every other addon would be.  
+[Download TidyBar](https://github.com/spiralofhope/TidyBar/releases) 
+and extract it to your `Interface\AddOns` folder.
+
+
 # Configuration / Usage
 
 - `Interface > Addons > TidyBar` will give a number of options.
