@@ -5,9 +5,11 @@
 
 ## 7.0.3 series
 
-### 7.0.3.24 UPCOMING
+### 7.1.0.1
 
 - Fixed an unpredictable error message when first logging in.
+
+
 
 ### 7.0.3.23
 
@@ -165,9 +167,11 @@
 - Removed old comments.
 
 
+
 ## Earlier
 
 I had hacked on TidyBar here and there.
+
 
 
 # Earlier authors' notes
