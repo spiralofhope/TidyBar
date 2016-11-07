@@ -25,7 +25,7 @@ Since it's a regular addon, it's manually installed the same as every other addo
 
 Perhaps your game is installed to one of:
 
-  `C:\Program Files\World of Warcraft`  \
+  `C:\Program Files\World of Warcraft` <br />
   `C:\Program Files\World of Warcraft (x86)` 
 
 .. and so you would extract the contents of your downloaded archive to something like:
