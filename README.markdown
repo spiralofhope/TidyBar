@@ -23,9 +23,9 @@ Since it's a regular addon, it's manually installed the same as every other addo
 
 2) Extract it to your `Interface\AddOns` folder.
 
-Perhaps your game is installed to one of
+Perhaps your game is installed to one of:
 
-  `C:\Program Files\World of Warcraft` 
+  `C:\Program Files\World of Warcraft`  \
   `C:\Program Files\World of Warcraft (x86)` 
 
 .. and so you would extract the contents of your downloaded archive to something like:
@@ -37,6 +37,7 @@ Perhaps your game is installed to one of
   `C:\Program Files\World of Warcraft\Interface\AddOns\TidyBar`
 
 .. and inside it would have `TidyBar.lua` and all the other files.
+
 
 - [Curse blog entry on manually installing AddOns](https://support.curse.com/hc/en-us/articles/204270005) and [Curse FAQ on manually installing AddOns](https://mods.curse.com/faqs/wow-addons#manual)
 
