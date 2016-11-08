@@ -647,66 +647,6 @@ end
 
 
 
--- Uh, is any of this used/needed?
---[=[
-local function TidyBar_event_handler_setup()
-  local events = {}
-
-  function events:ACTIONBAR_SHOWGRID() ButtonGridIsShown = true;  SetSidebarAlpha() end
-  function events:ACTIONBAR_HIDEGRID() ButtonGridIsShown = false; SetSidebarAlpha() end
-  function events:UNIT_EXITED_VEHICLE()  TidyBar_RefreshPositions(); DelayEvent( ConfigureCornerBars, GetTime() + 1 ) end    -- Echos the event to verify positions
-  events.PLAYER_ENTERING_WORLD       = TidyBar_RefreshPositions
-  events.UPDATE_INSTANCE_INFO        = TidyBar_RefreshPositions
-  events.PLAYER_TALENT_UPDATE        = TidyBar_RefreshPositions
-  events.ACTIVE_TALENT_GROUP_CHANGED = TidyBar_RefreshPositions
-  events.SPELL_UPDATE_USEABLE        = TidyBar_RefreshPositions
-  events.PET_BAR_UPDATE              = TidyBar_RefreshPositions
-  events.UNIT_ENTERED_VEHICLE        = TidyBar_RefreshPositions
-  events.UPDATE_BONUS_ACTIONBAR      = TidyBar_RefreshPositions
-  events.UPDATE_MULTI_CAST_ACTIONBAR = TidyBar_RefreshPositions
-  events.PLAYER_LEVEL_UP             = TidyBar_RefreshPositions
-  events.UPDATE_SHAPESHIFT_FORM      = TidyBar_RefreshPositions
-  events.PLAYER_GAINS_VEHICLE_DATA   = TidyBar_RefreshPositions
-  events.PLAYER_LOSES_VEHICLE_DATA   = TidyBar_RefreshPositions
-  events.UPDATE_VEHICLE_ACTIONBAR    = TidyBar_RefreshPositions
-  events.QUEST_WATCH_UPDATE          = TidyBar_RefreshPositions
-  events.UNIT_AURA                   = TidyBar_RefreshPositions
-  -- If the artifact bar's height keeps changing during a flightpath, perhaps this is the solution:
-  --events.ZONE_CHANGED                = TidyBar_RefreshPositions
-
-  local function EventHandler( frame, event )
-    if TidyBar_options.debug then
-      print(
-        'TidyBar:  EventHandler() triggered at '
-        .. GetTime()
-        .. ' with frame '
-        .. tostring( frame )
-        .. ' and event '
-        .. tostring( event )
-      )
-    end
-    if events[ event ] then
-      if TidyBar_options.debug then
-        print(
-          'TidyBar:  EventHandler() events[ event ] triggered at '
-          .. GetTime()
-          .. ' with event '
-          .. tostring( event )
-        )
-      end
-      events[ event ]()
-    end
-  end
-
-  -- Set Event Monitoring
-  for eventname in pairs( events ) do
-    TidyBar:RegisterEvent( eventname )
-  end
-end
-]=]
-
-
-
 local function TidyBar_corner_setup()
   CornerMenuFrame:SetFrameStrata( 'LOW' )
   CornerMenuFrame:SetWidth( 300 )
