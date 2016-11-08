@@ -8,6 +8,7 @@
 ### 7.1.0.1
 
 - Removed old code from the original author(s).
+  -  I's been commented-out for some time now, to check if it would be missed.  That code is no longer, or was never, needed.  Probably.
 
 ### 7.1.0.1
 
