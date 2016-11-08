@@ -3,13 +3,15 @@
 `git log` is another good way to peer into the innards of this repository.
 
 
-## 7.0.3 series
+## 7.1 series
 
 ### 7.1.0.1
 
 - Fixed an unpredictable error message when first logging in.
 
 
+
+## 7.0.3 series
 
 ### 7.0.3.23
 
