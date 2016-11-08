@@ -607,7 +607,7 @@ local function TidyBar_refresh_vehicle()
   --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
 
   -- Repositioning these here is a bad idea.
-  -- I don't know how to store/retrieve their positions so that things are back to normal when eciting the vehicle UI.
+  -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
   --MainMenuMicroButton:ClearAllPoints()
   --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame, 'BottomRight' )
 
