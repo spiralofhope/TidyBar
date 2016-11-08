@@ -791,8 +791,6 @@ local function TidyBar_OnLoad()
   end
 
 
-  -- Uh, is this used/needed?
-  --TidyBar_event_handler_setup()
   TidyBar_corner_setup()
   TidyBar_corner_menu_setup()
   TidyBar_sidebar_setup()
