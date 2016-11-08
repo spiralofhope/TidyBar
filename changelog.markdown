@@ -7,6 +7,10 @@
 
 ### 7.1.0.1
 
+- Removed old code from the original author(s).
+
+### 7.1.0.1
+
 - Fixed an unpredictable error message when first logging in.
 
 
