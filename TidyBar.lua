@@ -695,24 +695,21 @@ local function TidyBar_corner_setup()
   TidyBar_CornerMenuFrame:SetPoint( 'BottomRight' )
   TidyBar_CornerMenuFrame:SetScale( TidyBar_options.scale )
 
-  TidyBar_CornerMenuFrame.Texture = TidyBar_CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
-  TidyBar_CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
-  TidyBar_CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
-  TidyBar_CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
-  TidyBar_CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
+  -- I don't use a texture..
+  --TidyBar_CornerMenuFrame.Texture = TidyBar_CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
+  --TidyBar_CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
+  --TidyBar_CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
+  --TidyBar_CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
+  --TidyBar_CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
 
   TidyBar_CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
   TidyBar_CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
 
-  -- Call Update Function when the default UI makes changes
-  -- FIXME - Isn't this a terrible, terrible, idea?
-  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
-  TidyBar:SetScript( 'OnEvent', EventHandler )
+  --TidyBar:SetScript( 'OnEvent', EventHandler )
 
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PossessBarFrame' ]         = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiCastActionBarFrame' ] = nil
 
@@ -738,8 +735,9 @@ local function TidyBar_sidebar_setup()
   TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
-  for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
-  for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
+  -- I shouldn't need to do this..
+  --for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
+  --for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
 
 
@@ -910,9 +908,13 @@ local function TidyBar_OnLoad()
 
   --MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
+  -- Call Update Function when the default UI makes changes
+  -- FIXME - Isn't this a terrible, terrible, idea?
+  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
+
 
   -- Start Tidy Bar
-  TidyBar:SetScript( 'OnEvent', EventHandler )
+  --TidyBar:SetScript( 'OnEvent', EventHandler )
   TidyBar:SetFrameStrata( 'TOOLTIP' )
   TidyBar:Show()
 
