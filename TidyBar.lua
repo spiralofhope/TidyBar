@@ -526,7 +526,11 @@ local function TidyBar_refresh_main_area()
     else
       ReputationWatchBar_bar_spacing = bar_spacing
     end
-    ReputationWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    if can_display_artifact_bar then
+      ReputationWatchBar:SetPoint( 'BottomLeft', ArtifactWatchBar, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    else
+      ReputationWatchBar:SetPoint( 'BottomLeft', anchor,           'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    end
     ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
     ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
     ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
