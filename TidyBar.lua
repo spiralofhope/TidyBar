@@ -711,7 +711,6 @@ local function TidyBar_corner_setup()
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PossessBarFrame' ]         = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiCastActionBarFrame' ] = nil
 
   -- Set Pet Bars
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
