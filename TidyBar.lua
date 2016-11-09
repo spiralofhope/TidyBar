@@ -1,16 +1,17 @@
-﻿--  Defaults
-TidyBar_options = {}
-TidyBar_options.show_experience_bar = true
-TidyBar_options.show_artifact_power_bar = true
-TidyBar_options.show_honor_bar = true
-TidyBar_options.show_gryphons = false
-TidyBar_options.hide_sidebar_on_mouseout = true
-TidyBar_options.show_MainMenuBar_textured_background = false
-TidyBar_options.show_macro_text = false
-TidyBar_options.scale = 1
-TidyBar_options.bar_spacing = 4
-TidyBar_options.main_area_positioning = 425
-TidyBar_options.debug = false
+﻿do  --  Defaults
+  TidyBar_options = {}
+  TidyBar_options.show_experience_bar = true
+  TidyBar_options.show_artifact_power_bar = true
+  TidyBar_options.show_honor_bar = true
+  TidyBar_options.show_gryphons = false
+  TidyBar_options.hide_sidebar_on_mouseout = true
+  TidyBar_options.show_MainMenuBar_textured_background = false
+  TidyBar_options.show_macro_text = false
+  TidyBar_options.scale = 1
+  TidyBar_options.bar_spacing = 4
+  TidyBar_options.main_area_positioning = 425
+  TidyBar_options.debug = false
+end
 
 
 
@@ -36,12 +37,13 @@ local MenuButtonFrames = {
   MainMenuMicroButton,      -- Game Menu
 }
 
-local ButtonGridIsShown = false
+--  Technically adjustable, but I don't want to support that without a request.
 --local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
+--  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 local MouseInSidebar, MouseInCorner = false
 
--- TODO? - move these into setup functions?
+
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 local CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',         UIParent )
 local SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_SideBarMouseoverFrame',   UIParent )
@@ -57,7 +59,6 @@ local function SetSidebarAlpha()
   end
   local Alpha = 0
   if        MouseInSidebar
-    or      ButtonGridIsShown
     or not  TidyBar_options.hide_sidebar_on_mouseout
             -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
             --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
@@ -624,7 +625,12 @@ function TidyBar_RefreshPositions()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_RefreshPositions()' )
   end
-  if InCombatLockdown() then return end
+  if InCombatLockdown() then
+    if TidyBar_options.debug then
+      print( 'TidyBar:  In combat, skipping.' )
+    end
+    return
+  end
   TidyBar_refresh_main_area()
   ConfigureCornerBars()
   ConfigureSideBars()
