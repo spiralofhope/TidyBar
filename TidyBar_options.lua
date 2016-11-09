@@ -1,4 +1,4 @@
-function TidyBar_create_options_pane()
+function TidyBar_setup_options_pane()
 
 TidyBar = {}
 TidyBar.panel = CreateFrame( 'Frame', 'TidyBarPanel', UIParent )
