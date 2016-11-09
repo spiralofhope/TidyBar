@@ -1,25 +1,23 @@
-﻿--  Defaults
-TidyBar_options = {}
-TidyBar_options.show_experience_bar = true
-TidyBar_options.show_artifact_power_bar = true
-TidyBar_options.show_honor_bar = true
-TidyBar_options.show_gryphons = false
-TidyBar_options.hide_sidebar_on_mouseout = true
-TidyBar_options.show_MainMenuBar_textured_background = false
-TidyBar_options.show_macro_text = false
-TidyBar_options.scale = 1
-TidyBar_options.bar_spacing = 4
-TidyBar_options.main_area_positioning = 425
-TidyBar_options.debug = false
-
+﻿do  --  TidyBar-specific global variable defaults
+  TidyBar_options = {}
+  TidyBar_options.show_experience_bar = true
+  TidyBar_options.show_artifact_power_bar = true
+  TidyBar_options.show_honor_bar = true
+  TidyBar_options.show_gryphons = false
+  TidyBar_options.hide_sidebar_on_mouseout = true
+  TidyBar_options.show_MainMenuBar_textured_background = false
+  TidyBar_options.show_macro_text = false
+  TidyBar_options.scale = 1
+  TidyBar_options.bar_spacing = 4
+  TidyBar_options.main_area_positioning = 425
+  TidyBar_options.debug = false
+end
 
 
 local can_display_artifact_bar = nil
 local bar_width  = 500
 --  Technically adjustable, but I don't want to support that without a request.
 local bar_height = 8
-
-
 
 
 local MenuButtonFrames = {
@@ -36,76 +34,75 @@ local MenuButtonFrames = {
   MainMenuMicroButton,      -- Game Menu
 }
 
-local ButtonGridIsShown = false
+--  Technically adjustable, but I don't want to support that without a request.
 local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
+--  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
-local MouseInSidebar, MouseInCorner = false
-
--- TODO? - move these into setup functions?
-local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
-local CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',         UIParent )
-local SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_SideBarMouseoverFrame',   UIParent )
-      SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
-
-local SetSidebarAlpha
+--local MouseInSidebar, MouseInCorner = false
 
 
--- Event Delay
--- FIXME? - This doesn't seem to work..
-local DelayedEventWatcher = CreateFrame( 'Frame' )
-local DelayedEvents = {}
-local function CheckDelayedEvent( self )
-  if TidyBar_options.debug then
-    print( 'CheckDelayedEvent' )
-  end
-  local pendingEvents, currentTime = 0, GetTime()
-  for functionToCall, timeToCall in pairs( DelayedEvents ) do
-    if currentTime > timeToCall then
-      DelayedEvents[ functionToCall ] = nil
-      functionToCall()
-    end
-  end
-  -- Check afterward to prevent missing a recall
-  for functionToCall, timeToCall in pairs( DelayedEvents ) do pendingEvents = pendingEvents + 1 end
-  if pendingEvents == 0 then DelayedEventWatcher:SetScript( 'OnUpdate', nil ) end
-end
-local function DelayEvent( functionToCall, timeToCall )
-  if TidyBar_options.debug then
-    print(
-      'TidyBar:  DelayEvent() triggered at '
-      .. GetTime()
-      .. ' with '
-      .. tostring( functionToCall )
-      .. ' and TimeToCall '
-      .. tostring( timeToCall )
-    )
-  end
-  DelayedEvents[ functionToCall ] = timeToCall
-  DelayedEventWatcher:SetScript( 'OnUpdate', CheckDelayedEvent )
-end
---/ Event Delay
+
+local TidyBar                      = CreateFrame( 'Frame', 'TidyBar',                       UIParent )
+local TidyBar_CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',       UIParent )
+local TidyBar_SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_SideBarMouseoverFrame', UIParent )
+      TidyBar_SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
+
+
+--do  --  Event Delay
+  ---- FIXME? - This doesn't seem to work..
+  --local DelayedEventWatcher = CreateFrame( 'Frame' )
+  --local DelayedEvents = {}
+  --local function CheckDelayedEvent( self )
+    --if TidyBar_options.debug then
+      --print( GetTime() .. ' CheckDelayedEvent' )
+    --end
+    --local pendingEvents, currentTime = 0, GetTime()
+    --for functionToCall, timeToCall in pairs( DelayedEvents ) do
+      --if currentTime > timeToCall then
+        --DelayedEvents[ functionToCall ] = nil
+        --functionToCall()
+      --end
+    --end
+    ---- Check afterward to prevent missing a recall
+    --for functionToCall, timeToCall in pairs( DelayedEvents ) do pendingEvents = pendingEvents + 1 end
+    --if pendingEvents == 0 then DelayedEventWatcher:SetScript( 'OnUpdate', nil ) end
+  --end
+  --local function DelayEvent( functionToCall, timeToCall )
+    --if TidyBar_options.debug then
+      --print(
+        --'TidyBar:  DelayEvent() triggered at '
+        --.. GetTime()
+        --.. ' with '
+        --.. tostring( functionToCall )
+        --.. ' and TimeToCall '
+        --.. tostring( timeToCall )
+      --)
+    --end
+    --DelayedEvents[ functionToCall ] = timeToCall
+    --DelayedEventWatcher:SetScript( 'OnUpdate', CheckDelayedEvent )
+  --end
+--end
 
 
 
 local function SetSidebarAlpha()
   if TidyBar_options.debug then
-    print( 'SetSidebarAlpha()' )
+    print( GetTime() .. ' SetSidebarAlpha()' )
   end
   local Alpha = 0
   if        MouseInSidebar
-    or      ButtonGridIsShown
     or not  TidyBar_options.hide_sidebar_on_mouseout
   then
     Alpha = 1
   end
   -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
   --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
-  if SpellFlyout:IsShown() then
-    if TidyBar_options.debug then
-      print 'TidyBar:  SpellFlyout:IsShown() true'
-    end
-    DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
-  else
+  if not SpellFlyout:IsShown() then
+    --if TidyBar_options.debug then
+      --print 'TidyBar:  SpellFlyout:IsShown() true'
+    --end
+    --DelayEvent( SetSidebarAlpha, GetTime() + 0.5 )
+  --else
     for i = 1, 12 do
       _G[ 'MultiBarRightButton'..i ]:SetAlpha( Alpha )
       _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( Alpha )
@@ -117,27 +114,27 @@ end
 
 local function HookFrame_Microbuttons( frameTarget )
   if TidyBar_options.debug then
-    print( 'HookFrame_Microbuttons' )
+    print( GetTime() .. ' HookFrame_Microbuttons' )
   end
-  frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then CornerMenuFrame:SetAlpha( 1 ) end end )
-  frameTarget:HookScript( 'OnLeave', function()                                          CornerMenuFrame:SetAlpha( 0 ) end )
+  frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_CornerMenuFrame:SetAlpha( 1 ) end end )
+  frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
 
 local function HookFrame_CornerBar( frameTarget )
   if TidyBar_options.debug then
-    print( 'HookFrame_CornerBar' )
+    print( GetTime() .. ' HookFrame_CornerBar' )
   end
-  frameTarget:HookScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
-  frameTarget:HookScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
+  frameTarget:HookScript( 'OnEnter', function() TidyBar_CornerMenuFrame:SetAlpha( 1 ) end )
+  frameTarget:HookScript( 'OnLeave', function() TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
 
 local function HookFrame_SideBar( frameTarget )
   if TidyBar_options.debug then
-    print( 'HookFrame_SideBar' )
+    print( GetTime() .. ' HookFrame_SideBar' )
   end
   frameTarget:HookScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
   frameTarget:HookScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
@@ -147,7 +144,7 @@ end
 
 local function ConfigureCornerBars()
   if TidyBar_options.debug then
-    print( 'ConfigureCornerBars()' )
+    print( GetTime() .. ' ConfigureCornerBars()' )
   end
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
@@ -160,11 +157,11 @@ local function ConfigureCornerBars()
 
   if not UnitHasVehicleUI( 'player' ) then
     if TidyBar_options.debug then
-      print( 'UnitHasVehicleUI' )
+      print( GetTime() .. ' UnitHasVehicleUI' )
     end
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do name:SetParent( CornerMenuFrame.MicroButtons ) end
+    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
+    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_CornerMenuFrame.MicroButtons ) end
   end
 end
 
@@ -172,26 +169,26 @@ end
 
 local function ConfigureSideBars()
   if TidyBar_options.debug then
-    print( 'ConfigureSideBars()' )
+    print( GetTime() .. ' ConfigureSideBars()' )
   end
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
     MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    SideMouseoverFrame:Show()
+    TidyBar_SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
-    SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
+    TidyBar_SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
     -- Right Bar 2
     -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
     if MultiBarLeft:IsShown() then
       MultiBarLeft:ClearAllPoints()
       MultiBarLeft:SetPoint( 'TopRight', MultiBarRight, 'TopLeft' )
       MultiBarLeft:EnableMouse()
-      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
+      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
     else
-      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
+      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
     end
   else
-    SideMouseoverFrame:Hide()
+    TidyBar_SideMouseoverFrame:Hide()
   end
 
 
@@ -208,7 +205,7 @@ end
 
 local function TidyBar_refresh_main_area()
   if TidyBar_options.debug then
-    print( 'TidyBar_refresh_main_area()' )
+    print( GetTime() .. ' TidyBar_refresh_main_area()' )
   end
   -- MainMenuBar textured background
   -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
@@ -401,7 +398,7 @@ local function TidyBar_refresh_main_area()
   MainMenuBar:SetScale( TidyBar_options.scale )
 
   MainMenuBar:ClearAllPoints()
-  MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
+  MainMenuBar:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
   local function show_macro_text( alpha )
     local bars={
@@ -554,6 +551,9 @@ local function TidyBar_refresh_main_area()
 
 
   if ReputationWatchBar:IsShown() then
+    if TidyBar_options.debug then
+      print( GetTime() .. ' ReputationWatchBar:IsShown(), doing stuff..' )
+    end
     if the_first_bar then
       bar_spacing = space_between_bottom_bar_and_buttons
     else
@@ -624,7 +624,7 @@ end
 
 local function TidyBar_refresh_vehicle()
   if TidyBar_options.debug then
-    print( 'TidyBar_refresh_vehicle()' )
+    print( GetTime() .. ' TidyBar_refresh_vehicle()' )
   end
 
   if not UnitHasVehicleUI( 'player' ) then return nil end
@@ -664,7 +664,7 @@ end
 
 function TidyBar_RefreshPositions()
   if TidyBar_options.debug then
-    print( 'TidyBar_RefreshPositions()' )
+    print( GetTime() .. ' TidyBar_RefreshPositions()' )
   end
   if InCombatLockdown() then
     if TidyBar_options.debug then
@@ -687,25 +687,25 @@ end
 
 local function TidyBar_corner_setup()
   if TidyBar_options.debug then
-    print( 'TidyBar_corner_setup()' )
+    print( GetTime() .. ' TidyBar_corner_setup()' )
   end
-  CornerMenuFrame:SetFrameStrata( 'LOW' )
-  CornerMenuFrame:SetWidth( 300 )
-  CornerMenuFrame:SetHeight( 128 )
-  CornerMenuFrame:SetPoint( 'BottomRight' )
-  CornerMenuFrame:SetScale( TidyBar_options.scale )
+  TidyBar_CornerMenuFrame:SetFrameStrata( 'LOW' )
+  TidyBar_CornerMenuFrame:SetWidth( 300 )
+  TidyBar_CornerMenuFrame:SetHeight( 128 )
+  TidyBar_CornerMenuFrame:SetPoint( 'BottomRight' )
+  TidyBar_CornerMenuFrame:SetScale( TidyBar_options.scale )
 
-  CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
-  CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
-  CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
-  CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
-  CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
+  TidyBar_CornerMenuFrame.Texture = TidyBar_CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
+  TidyBar_CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
+  TidyBar_CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
+  TidyBar_CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
+  TidyBar_CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
 
-  CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, CornerMenuFrame )
-  CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
+  TidyBar_CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
+  TidyBar_CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
 
   -- Call Update Function when the default UI makes changes
-  -- FIXME - isn't this a terrible, terrible, idea?
+  -- FIXME - Isn't this a terrible, terrible, idea?
   hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
   TidyBar:SetScript( 'OnEvent', EventHandler )
 
@@ -724,18 +724,18 @@ local function TidyBar_corner_setup()
   ConfigureSideBars()
   SetSidebarAlpha()
   ConfigureCornerBars()
-  CornerMenuFrame:SetAlpha( 0 )
+  TidyBar_CornerMenuFrame:SetAlpha( 0 )
 end
 
 
 
 local function TidyBar_sidebar_setup()
   if TidyBar_options.debug then
-    print( 'TidyBar_sidebar_setup()' )
+    print( GetTime() .. ' TidyBar_sidebar_setup()' )
   end
-  SideMouseoverFrame:EnableMouse()
-  SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
-  SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
+  TidyBar_SideMouseoverFrame:EnableMouse()
+  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
+  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
   HookFrame_SideBar( MultiBarRight )
   HookFrame_SideBar( MultiBarLeft )
   for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
@@ -746,7 +746,7 @@ end
 
 local function TidyBar_corner_menu_setup()
   if TidyBar_options.debug then
-    print( 'TidyBar_corner_menu_setup()' )
+    print( GetTime() .. ' TidyBar_corner_menu_setup()' )
   end
   local BagButtonFrameList = {
     MainMenuBarBackpackButton,
@@ -757,7 +757,7 @@ local function TidyBar_corner_menu_setup()
   }
 
   for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( CornerMenuFrame.BagButtonFrame )
+    name:SetParent( TidyBar_CornerMenuFrame.BagButtonFrame )
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
@@ -769,12 +769,12 @@ local function TidyBar_corner_menu_setup()
   for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
-  CornerMenuFrame:SetScale( TidyBar_options.scale )
-  CornerMenuFrame.MicroButtons:SetAllPoints( CornerMenuFrame )
-  CornerMenuFrame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
-  CornerMenuFrame.BagButtonFrame:SetWidth( 256 )
-  CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
+  TidyBar_CornerMenuFrame:SetScale( TidyBar_options.scale )
+  TidyBar_CornerMenuFrame.MicroButtons:SetAllPoints( TidyBar_CornerMenuFrame )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetWidth( 256 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
   
   -- Setup the Corner Menu Mouseover frame
   local CornerMouseoverFrame = CreateFrame( 'Frame', 'TidyBar_CornerBarMouseoverFrame', UIParent )
@@ -786,15 +786,15 @@ local function TidyBar_corner_menu_setup()
   CornerMouseoverFrame:SetPoint( 'Bottom', UIParent, 'Bottom' )
   CornerMouseoverFrame:SetWidth( 322 )
   
-  CornerMouseoverFrame:SetScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
-  CornerMouseoverFrame:SetScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
+  CornerMouseoverFrame:SetScript( 'OnEnter', function() TidyBar_CornerMenuFrame:SetAlpha( 1 ) end )
+  CornerMouseoverFrame:SetScript( 'OnLeave', function() TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
 
 local function TidyBar_vehicle_setup()
   if TidyBar_options.debug then
-    print( 'TidyBar_vehicle_setup()' )
+    print( GetTime() .. ' TidyBar_vehicle_setup()' )
   end
   OverrideActionBarEndCapL:Hide()
   OverrideActionBarEndCapR:Hide()
@@ -826,36 +826,46 @@ end
 
 local function TidyBar_main_area_setup()
   if TidyBar_options.debug then
-    print( 'TidyBar_main_area_setup()' )
+    print( GetTime() .. ' TidyBar_main_area_setup()' )
   end
+
+  --MainMenuBar:ClearAllPoints()
+  --MainMenuBar:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
+
   if TidyBar_character_is_max_level then
-    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+    -- TESTING - This may not be aggressive enough:
+    ArtifactWatchBar.StatusBar:HookScript( 'OnEvent', function()
+    --ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
       -- Should solve the below occasional login error.
       if InCombatLockdown() then return end
-      if TidyBar_options.debug then
-        print( 'ArtifactWatchBar.StatusBar:SetHeight( 8 )' )
+      if not ArtifactWatchBar.StatusBar:GetHeight() == 8 then
+        if TidyBar_options.debug then
+          print( GetTime() .. ' ArtifactWatchBar.StatusBar:SetHeight( 8 )' )
+        end
+        -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
+        ArtifactWatchBar.StatusBar:SetHeight( 8 )
       end
-      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
-      ArtifactWatchBar.StatusBar:SetHeight( 8 )
     end )
   end
 end
 
 
+
+
 local function TidyBar_OnLoad()
   if TidyBar_options.debug then
-    print( 'TidyBar_OnLoad()' )
+    print( GetTime() .. ' TidyBar_OnLoad()' )
   end
   if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
     local comparison = UnitLevel( 'player' ) .. '/' .. MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
     if TidyBar_options.debug then
-      print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
+      print( GetTime() .. ' TidyBar:  Character level ' .. comparison .. ' (max)' )
     end
     TidyBar_character_is_max_level = true
   else
   print 'TidyBar:  Character is not max level'
     if not TidyBar_options.debug then
-      print( 'TidyBar:  Character is level ' .. comparison )
+      print( GetTime() .. ' TidyBar:  Character is level ' .. comparison )
     end
     TidyBar_character_is_max_level = false
   end
@@ -869,8 +879,37 @@ local function TidyBar_OnLoad()
   TidyBar_main_area_setup()
 
   if TidyBar_options.debug then
-    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
+    print( GetTime() .. ' TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
   end
+
+  -- Removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but reverses what the checkbox means.
+  --ReputationWatchBar:SetScript( 'OnEvent', TidyBar_refresh_main_area )
+  -- .. whereas this is just a big mess:
+  --ReputationWatchBar:HookScript( 'OnEvent', TidyBar_refresh_main_area )
+
+  ---- Testing
+  --MainMenuBar:HookScript( 'OnEvent', TidyBar_refresh_main_area )
+  --MainMenuBar:HookScript( 'OnEvent', function()
+    --local point, relativeTo, relativePoint, xOfs, yOfs = MainMenuBar:GetPoint()
+    --DEFAULT_CHAT_FRAME:AddMessage(point)
+    --DEFAULT_CHAT_FRAME:AddMessage(relativeTo:GetName())
+    --DEFAULT_CHAT_FRAME:AddMessage(relativePoint)
+    --DEFAULT_CHAT_FRAME:AddMessage(xOfs)
+    --DEFAULT_CHAT_FRAME:AddMessage(yOfs)
+    ----if not xOfs == TidyBar_options.main_area_positioning then
+      ----TidyBar_refresh_main_area()
+    ----end
+  --end end )
+
+    --local point, relativeTo, relativePoint, xOfs, yOfs = MainMenuBar:GetPoint()
+    --DEFAULT_CHAT_FRAME:AddMessage(point)
+    --DEFAULT_CHAT_FRAME:AddMessage(relativeTo:GetName())
+    --DEFAULT_CHAT_FRAME:AddMessage(relativePoint)
+    --DEFAULT_CHAT_FRAME:AddMessage(xOfs)
+    --DEFAULT_CHAT_FRAME:AddMessage(yOfs)
+
+  --MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
+
 
   -- Start Tidy Bar
   TidyBar:SetScript( 'OnEvent', EventHandler )
