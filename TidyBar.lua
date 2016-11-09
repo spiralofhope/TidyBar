@@ -55,6 +55,9 @@ local SetSidebarAlpha
 local DelayedEventWatcher = CreateFrame( 'Frame' )
 local DelayedEvents = {}
 local function CheckDelayedEvent( self )
+  if TidyBar_options.debug then
+    print( 'CheckDelayedEvent' )
+  end
   local pendingEvents, currentTime = 0, GetTime()
   for functionToCall, timeToCall in pairs( DelayedEvents ) do
     if currentTime > timeToCall then
@@ -85,6 +88,9 @@ end
 
 
 local function SetSidebarAlpha()
+  if TidyBar_options.debug then
+    print( 'SetSidebarAlpha()' )
+  end
   local Alpha = 0
   if        MouseInSidebar
     or      ButtonGridIsShown
@@ -110,6 +116,9 @@ end
 
 
 local function HookFrame_Microbuttons( frameTarget )
+  if TidyBar_options.debug then
+    print( 'HookFrame_Microbuttons' )
+  end
   frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then CornerMenuFrame:SetAlpha( 1 ) end end )
   frameTarget:HookScript( 'OnLeave', function()                                          CornerMenuFrame:SetAlpha( 0 ) end )
 end
@@ -117,6 +126,9 @@ end
 
 
 local function HookFrame_CornerBar( frameTarget )
+  if TidyBar_options.debug then
+    print( 'HookFrame_CornerBar' )
+  end
   frameTarget:HookScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
   frameTarget:HookScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
 end
@@ -124,6 +136,9 @@ end
 
 
 local function HookFrame_SideBar( frameTarget )
+  if TidyBar_options.debug then
+    print( 'HookFrame_SideBar' )
+  end
   frameTarget:HookScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
   frameTarget:HookScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
 end
@@ -131,6 +146,9 @@ end
 
 
 local function ConfigureCornerBars()
+  if TidyBar_options.debug then
+    print( 'ConfigureCornerBars()' )
+  end
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
   MainMenuBarTexture2:Hide()
@@ -141,6 +159,9 @@ local function ConfigureCornerBars()
   TalentMicroButtonAlert:Hide()
 
   if not UnitHasVehicleUI( 'player' ) then
+    if TidyBar_options.debug then
+      print( 'UnitHasVehicleUI' )
+    end
     CharacterMicroButton:ClearAllPoints()
     CharacterMicroButton:SetPoint( 'BottomRight', CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
     for i, name in pairs( MenuButtonFrames ) do name:SetParent( CornerMenuFrame.MicroButtons ) end
@@ -150,6 +171,9 @@ end
 
 
 local function ConfigureSideBars()
+  if TidyBar_options.debug then
+    print( 'ConfigureSideBars()' )
+  end
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
     MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
@@ -183,6 +207,9 @@ end
 
 
 local function TidyBar_refresh_main_area()
+  if TidyBar_options.debug then
+    print( 'TidyBar_refresh_main_area()' )
+  end
   -- MainMenuBar textured background
   -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
   MainMenuBarTexture0:ClearAllPoints()
@@ -540,7 +567,11 @@ local function TidyBar_refresh_main_area()
     else
       ReputationWatchBar_bar_spacing = bar_spacing
     end
-    ReputationWatchBar:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    if can_display_artifact_bar then
+      ReputationWatchBar:SetPoint( 'BottomLeft', ArtifactWatchBar, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    else
+      ReputationWatchBar:SetPoint( 'BottomLeft', anchor,           'TopLeft', 0, ReputationWatchBar_bar_spacing )
+    end
     ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
     ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
     ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
@@ -592,7 +623,10 @@ end
 
 
 local function TidyBar_refresh_vehicle()
- 
+  if TidyBar_options.debug then
+    print( 'TidyBar_refresh_vehicle()' )
+  end
+
   if not UnitHasVehicleUI( 'player' ) then return nil end
   -- This works, but it's useless if I can't reposition them.
   --LFDMicroButton:ClearAllPoints()
@@ -629,17 +663,32 @@ end
 
 
 function TidyBar_RefreshPositions()
-  if InCombatLockdown() then return end
+  if TidyBar_options.debug then
+    print( 'TidyBar_RefreshPositions()' )
+  end
+  if InCombatLockdown() then
+    if TidyBar_options.debug then
+      print( 'TidyBar:  In combat, skipping.' )
+    end
+    return
+  end
   TidyBar_refresh_main_area()
   ConfigureCornerBars()
   ConfigureSideBars()
   TidyBar_refresh_vehicle()
-  --TidyBar_corner_setup()
+end
+
+
+
+local function TidyBar_refresh_corner()
 end
 
 
 
 local function TidyBar_corner_setup()
+  if TidyBar_options.debug then
+    print( 'TidyBar_corner_setup()' )
+  end
   CornerMenuFrame:SetFrameStrata( 'LOW' )
   CornerMenuFrame:SetWidth( 300 )
   CornerMenuFrame:SetHeight( 128 )
@@ -656,7 +705,10 @@ local function TidyBar_corner_setup()
   CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
 
   -- Call Update Function when the default UI makes changes
+  -- FIXME - isn't this a terrible, terrible, idea?
   hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
+  TidyBar:SetScript( 'OnEvent', EventHandler )
+
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
@@ -678,6 +730,9 @@ end
 
 
 local function TidyBar_sidebar_setup()
+  if TidyBar_options.debug then
+    print( 'TidyBar_sidebar_setup()' )
+  end
   SideMouseoverFrame:EnableMouse()
   SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
   SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
@@ -690,6 +745,9 @@ end
 
 
 local function TidyBar_corner_menu_setup()
+  if TidyBar_options.debug then
+    print( 'TidyBar_corner_menu_setup()' )
+  end
   local BagButtonFrameList = {
     MainMenuBarBackpackButton,
     CharacterBag0Slot,
@@ -735,6 +793,9 @@ end
 
 
 local function TidyBar_vehicle_setup()
+  if TidyBar_options.debug then
+    print( 'TidyBar_vehicle_setup()' )
+  end
   OverrideActionBarEndCapL:Hide()
   OverrideActionBarEndCapR:Hide()
 
@@ -764,10 +825,16 @@ end
 
 
 local function TidyBar_main_area_setup()
+  if TidyBar_options.debug then
+    print( 'TidyBar_main_area_setup()' )
+  end
   if TidyBar_character_is_max_level then
     ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
       -- Should solve the below occasional login error.
       if InCombatLockdown() then return end
+      if TidyBar_options.debug then
+        print( 'ArtifactWatchBar.StatusBar:SetHeight( 8 )' )
+      end
       -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
       ArtifactWatchBar.StatusBar:SetHeight( 8 )
     end )
@@ -776,6 +843,9 @@ end
 
 
 local function TidyBar_OnLoad()
+  if TidyBar_options.debug then
+    print( 'TidyBar_OnLoad()' )
+  end
   if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
     local comparison = UnitLevel( 'player' ) .. '/' .. MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
     if TidyBar_options.debug then
