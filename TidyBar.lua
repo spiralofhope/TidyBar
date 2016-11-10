@@ -166,6 +166,123 @@ end
 
 
 
+local function TidyBar_setup_side()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_setup_side()' )
+  end
+  TidyBar_SideMouseoverFrame:EnableMouse()
+  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
+  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
+  HookFrame_side( MultiBarRight )
+  HookFrame_side( MultiBarLeft )
+  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarRightButton'..i ] ) end
+  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarLeftButton' ..i ] ) end
+end
+
+
+
+local function TidyBar_setup_corner()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_setup_corner()' )
+  end
+  local BagButtonFrameList = {
+    MainMenuBarBackpackButton,
+    CharacterBag0Slot,
+    CharacterBag1Slot,
+    CharacterBag2Slot,
+    CharacterBag3Slot,
+  }
+
+  for i, name in pairs( BagButtonFrameList ) do
+    name:SetParent( TidyBar_corner.BagButtonFrame )
+  end
+  
+  MainMenuBarBackpackButton:ClearAllPoints()
+  MainMenuBarBackpackButton:SetPoint( 'Bottom' )
+  MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
+  
+  -- Setup the Corner Buttons
+  for i, name in pairs( BagButtonFrameList ) do HookFrame_CornerBar(    name ) end
+  for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
+  
+  -- Setup the Corner Menu Artwork
+  TidyBar_corner:SetScale( TidyBar_options.scale )
+  TidyBar_corner.MicroButtons:SetAllPoints( TidyBar_corner )
+  TidyBar_corner.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
+  TidyBar_corner.BagButtonFrame:SetHeight( 64 )
+  TidyBar_corner.BagButtonFrame:SetWidth( 256 )
+  TidyBar_corner.BagButtonFrame:SetScale( 1.02 )
+  
+  -- Setup the Corner Menu Mouseover frame
+  local TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
+  TidyBar_corner_frame:EnableMouse()
+  TidyBar_corner_frame:SetFrameStrata( 'BACKGROUND' )
+  
+  TidyBar_corner_frame:SetPoint( 'Top', MainMenuBarBackpackButton, 'Top', 0, 10 )
+  TidyBar_corner_frame:SetPoint( 'Right',  UIParent, 'Right' )
+  TidyBar_corner_frame:SetPoint( 'Bottom', UIParent, 'Bottom' )
+  TidyBar_corner_frame:SetWidth( 322 )
+  
+  TidyBar_corner_frame:SetScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
+  TidyBar_corner_frame:SetScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
+end
+
+
+
+local function TidyBar_setup_vehicle()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_setup_vehicle()' )
+  end
+  OverrideActionBarEndCapL:Hide()
+  OverrideActionBarEndCapR:Hide()
+
+  OverrideActionBarBG:Hide()
+  OverrideActionBarMicroBGL:Hide()
+  OverrideActionBarMicroBGMid:Hide()
+  OverrideActionBarMicroBGR:Hide()
+  OverrideActionBarButtonBGL:Hide()
+  OverrideActionBarButtonBGMid:Hide()
+  OverrideActionBarButtonBGR:Hide()
+
+  OverrideActionBarDivider2:Hide()
+  OverrideActionBarBorder:Hide()
+  OverrideActionBarLeaveFrameDivider3:Hide()
+  OverrideActionBarLeaveFrameExitBG:Hide()
+
+  OverrideActionBarExpBarXpL:Hide()
+  OverrideActionBarExpBarXpMid:Hide()
+  OverrideActionBarExpBarXpR:Hide()
+
+  -- The vehicle XP 'bubbles'.
+  for i=1,19 do
+    _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
+  end
+end
+
+
+
+local function TidyBar_setup_main_area()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_setup_main_area()' )
+  end
+  if TidyBar_character_is_max_level then
+    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+      -- Should solve the below occasional login error.
+      if InCombatLockdown() then return end
+      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
+      ArtifactWatchBar.StatusBar:SetHeight( 8 )
+    end )
+  end
+end
+
+
+
+
+
+
+
+
+
 local function TidyBar_refresh_main_area()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_main_area()' )
@@ -621,25 +738,6 @@ end
 
 
 
-function TidyBar_RefreshPositions()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_RefreshPositions()' )
-  end
-  if InCombatLockdown() then
-    if TidyBar_options.debug then
-      print( 'TidyBar:  In combat, skipping.' )
-    end
-    return
-  end
-  TidyBar_refresh_main_area()
-  ConfigureCornerBars()
-  TidyBar_setup_side()
-  TidyBar_refresh_vehicle()
-  --TidyBar_refresh_corner()
-end
-
-
-
 local function TidyBar_refresh_corner()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_corner()' )
@@ -677,114 +775,23 @@ end
 
 
 
-local function TidyBar_setup_side()
+function TidyBar_RefreshPositions()
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_side()' )
+    print( GetTime() .. ' TidyBar_RefreshPositions()' )
   end
-  TidyBar_SideMouseoverFrame:EnableMouse()
-  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
-  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
-  HookFrame_side( MultiBarRight )
-  HookFrame_side( MultiBarLeft )
-  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarRightButton'..i ] ) end
-  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarLeftButton' ..i ] ) end
+  if InCombatLockdown() then
+    if TidyBar_options.debug then
+      print( 'TidyBar:  In combat, skipping.' )
+    end
+    return
+  end
+  TidyBar_refresh_main_area()
+  ConfigureCornerBars()
+  TidyBar_setup_side()
+  TidyBar_refresh_vehicle()
+  --TidyBar_refresh_corner()
 end
 
-
-
-local function TidyBar_setup_corner()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_corner()' )
-  end
-  local BagButtonFrameList = {
-    MainMenuBarBackpackButton,
-    CharacterBag0Slot,
-    CharacterBag1Slot,
-    CharacterBag2Slot,
-    CharacterBag3Slot,
-  }
-
-  for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( TidyBar_corner.BagButtonFrame )
-  end
-  
-  MainMenuBarBackpackButton:ClearAllPoints()
-  MainMenuBarBackpackButton:SetPoint( 'Bottom' )
-  MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
-  
-  -- Setup the Corner Buttons
-  for i, name in pairs( BagButtonFrameList ) do HookFrame_CornerBar(    name ) end
-  for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
-  
-  -- Setup the Corner Menu Artwork
-  TidyBar_corner:SetScale( TidyBar_options.scale )
-  TidyBar_corner.MicroButtons:SetAllPoints( TidyBar_corner )
-  TidyBar_corner.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  TidyBar_corner.BagButtonFrame:SetHeight( 64 )
-  TidyBar_corner.BagButtonFrame:SetWidth( 256 )
-  TidyBar_corner.BagButtonFrame:SetScale( 1.02 )
-  
-  -- Setup the Corner Menu Mouseover frame
-  local TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
-  TidyBar_corner_frame:EnableMouse()
-  TidyBar_corner_frame:SetFrameStrata( 'BACKGROUND' )
-  
-  TidyBar_corner_frame:SetPoint( 'Top', MainMenuBarBackpackButton, 'Top', 0, 10 )
-  TidyBar_corner_frame:SetPoint( 'Right',  UIParent, 'Right' )
-  TidyBar_corner_frame:SetPoint( 'Bottom', UIParent, 'Bottom' )
-  TidyBar_corner_frame:SetWidth( 322 )
-  
-  TidyBar_corner_frame:SetScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
-  TidyBar_corner_frame:SetScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
-end
-
-
-
-local function TidyBar_setup_vehicle()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_vehicle()' )
-  end
-  OverrideActionBarEndCapL:Hide()
-  OverrideActionBarEndCapR:Hide()
-
-  OverrideActionBarBG:Hide()
-  OverrideActionBarMicroBGL:Hide()
-  OverrideActionBarMicroBGMid:Hide()
-  OverrideActionBarMicroBGR:Hide()
-  OverrideActionBarButtonBGL:Hide()
-  OverrideActionBarButtonBGMid:Hide()
-  OverrideActionBarButtonBGR:Hide()
-
-  OverrideActionBarDivider2:Hide()
-  OverrideActionBarBorder:Hide()
-  OverrideActionBarLeaveFrameDivider3:Hide()
-  OverrideActionBarLeaveFrameExitBG:Hide()
-
-  OverrideActionBarExpBarXpL:Hide()
-  OverrideActionBarExpBarXpMid:Hide()
-  OverrideActionBarExpBarXpR:Hide()
-
-  -- The vehicle XP 'bubbles'.
-  for i=1,19 do
-    _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
-  end
-end
-
-
-
-local function TidyBar_setup_main_area()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_main_area()' )
-  end
-  if TidyBar_character_is_max_level then
-    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
-      -- Should solve the below occasional login error.
-      if InCombatLockdown() then return end
-      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
-      ArtifactWatchBar.StatusBar:SetHeight( 8 )
-    end )
-  end
-end
 
 
 local function TidyBar_setup()
