@@ -80,7 +80,6 @@ local function TidyBar_refresh_side( mouse_inside )
   end
 end
 
-
 local function TidyBar_SetScript_frame_side( frameTarget )
   -- Spammy
   if TidyBar_options.debug then
@@ -139,12 +138,42 @@ end
 
 
 
+local function TidyBar_refresh_corner()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_refresh_corner()' )
+  end
+  TidyBar_corner_frame:SetFrameStrata( 'LOW' )
+  TidyBar_corner_frame:SetWidth( 300 )
+  TidyBar_corner_frame:SetHeight( 128 )
+  TidyBar_corner_frame:SetPoint( 'BottomRight' )
+  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
 
+  -- Required in order to move the frames around
+  UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
+  UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
+  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
 
+  -- Set Pet Bars
+  PetActionBarFrame:SetAttribute( 'unit', 'pet' )
+  RegisterUnitWatch( PetActionBarFrame )
+  
+  TidyBar_corner_frame:SetAlpha( 0 )
 
+  MainMenuBarTexture2:SetTexture( Empty_Art )
+  MainMenuBarTexture3:SetTexture( Empty_Art )
+  MainMenuBarTexture2:Hide()
+  MainMenuBarTexture3:Hide()
 
+  -- The nagging talent popup
+  TalentMicroButtonAlert:SetAlpha( 0 )
+  TalentMicroButtonAlert:Hide()
 
-
+  if not UnitHasVehicleUI( 'player' ) then
+    CharacterMicroButton:ClearAllPoints()
+    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame.MicroButtons, 'BottomRight', -270, 0 )
+    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_corner_frame.MicroButtons ) end
+  end
+end
 
 local function TidyBar_setup_corner()
   if TidyBar_options.debug then
@@ -203,6 +232,42 @@ end
 
 
 
+local function TidyBar_refresh_vehicle()
+  if TidyBar_options.debug then
+    print( GetTime() .. ' TidyBar_refresh_vehicle()' )
+  end
+   if not UnitHasVehicleUI( 'player' ) then return nil end
+  -- This works, but it's useless if I can't reposition them.
+  --LFDMicroButton:ClearAllPoints()
+  --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
+
+  -- Repositioning these here is a bad idea.
+  -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
+  --MainMenuMicroButton:ClearAllPoints()
+  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame, 'BottomRight' )
+
+  OverrideActionBar:SetWidth( bar_width )
+
+  OverrideActionBarButton1:ClearAllPoints()
+  OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
+
+  OverrideActionBarHealthBar:ClearAllPoints()
+  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBarPowerBar, 'BottomLeft', -4, 0 )
+
+  OverrideActionBarPowerBar:ClearAllPoints()
+  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
+
+  OverrideActionBarExpBar:ClearAllPoints()
+  OverrideActionBarExpBar:SetHeight( bar_height )
+  OverrideActionBarExpBar:SetWidth( bar_width )
+  OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
+  --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
+  --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
+
+  OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
+  OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight' )
+end
+
 local function TidyBar_setup_vehicle()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_vehicle()' )
@@ -232,26 +297,6 @@ local function TidyBar_setup_vehicle()
     _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
   end
 end
-
-
-
-local function TidyBar_setup_main_area()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_main_area()' )
-  end
-  if TidyBar_character_is_max_level then
-    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
-      -- Should solve the below occasional login error.
-      if InCombatLockdown() then return end
-      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
-      ArtifactWatchBar.StatusBar:SetHeight( 8 )
-    end )
-  end
-end
-
-
-
-
 
 
 
@@ -671,82 +716,20 @@ local function TidyBar_refresh_main_area()
   end
 end
 
-
-
-local function TidyBar_refresh_vehicle()
+local function TidyBar_setup_main_area()
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_vehicle()' )
+    print( GetTime() .. ' TidyBar_setup_main_area()' )
   end
-   if not UnitHasVehicleUI( 'player' ) then return nil end
-  -- This works, but it's useless if I can't reposition them.
-  --LFDMicroButton:ClearAllPoints()
-  --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
-
-  -- Repositioning these here is a bad idea.
-  -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
-  --MainMenuMicroButton:ClearAllPoints()
-  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame, 'BottomRight' )
-
-  OverrideActionBar:SetWidth( bar_width )
-
-  OverrideActionBarButton1:ClearAllPoints()
-  OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
-
-  OverrideActionBarHealthBar:ClearAllPoints()
-  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBarPowerBar, 'BottomLeft', -4, 0 )
-
-  OverrideActionBarPowerBar:ClearAllPoints()
-  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
-
-  OverrideActionBarExpBar:ClearAllPoints()
-  OverrideActionBarExpBar:SetHeight( bar_height )
-  OverrideActionBarExpBar:SetWidth( bar_width )
-  OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
-  --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
-  --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
-
-  OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
-  OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight' )
+  if TidyBar_character_is_max_level then
+    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+      -- Should solve the below occasional login error.
+      if InCombatLockdown() then return end
+      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
+      ArtifactWatchBar.StatusBar:SetHeight( 8 )
+    end )
+  end
 end
 
-
-
-local function TidyBar_refresh_corner()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_corner()' )
-  end
-  TidyBar_corner_frame:SetFrameStrata( 'LOW' )
-  TidyBar_corner_frame:SetWidth( 300 )
-  TidyBar_corner_frame:SetHeight( 128 )
-  TidyBar_corner_frame:SetPoint( 'BottomRight' )
-  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
-
-  -- Required in order to move the frames around
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
-
-  -- Set Pet Bars
-  PetActionBarFrame:SetAttribute( 'unit', 'pet' )
-  RegisterUnitWatch( PetActionBarFrame )
-  
-  TidyBar_corner_frame:SetAlpha( 0 )
-
-  MainMenuBarTexture2:SetTexture( Empty_Art )
-  MainMenuBarTexture3:SetTexture( Empty_Art )
-  MainMenuBarTexture2:Hide()
-  MainMenuBarTexture3:Hide()
-
-  -- The nagging talent popup
-  TalentMicroButtonAlert:SetAlpha( 0 )
-  TalentMicroButtonAlert:Hide()
-
-  if not UnitHasVehicleUI( 'player' ) then
-    CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_corner_frame.MicroButtons ) end
-  end
-end
 
 
 
