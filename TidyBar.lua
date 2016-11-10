@@ -49,13 +49,13 @@ local TidyBar_corner      = CreateFrame( 'Frame', 'TidyBar_corner',         UIPa
 local TidyBar_SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_side_frame',   UIParent )
       TidyBar_SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
 
-local TidyBar_set_side_alpha
+local TidyBar_refresh_side
 
 
 
-local function TidyBar_set_side_alpha()
+local function TidyBar_refresh_side()
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_set_side_alpha()' )
+    print( GetTime() .. ' TidyBar_refresh_side()' )
   end
   local Alpha = 0
   if        mouse_in_side
@@ -101,8 +101,8 @@ local function HookFrame_side( frameTarget )
   --if TidyBar_options.debug then
     --print( GetTime() .. ' HookFrame_side()' )
   --end
-  frameTarget:HookScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
-  frameTarget:HookScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
+  frameTarget:HookScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
+  frameTarget:HookScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
 end
 
 
@@ -130,10 +130,14 @@ end
 
 
 
+
+
+
 local function TidyBar_setup_side()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_side()' )
   end
+
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
     MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
@@ -154,7 +158,6 @@ local function TidyBar_setup_side()
     TidyBar_SideMouseoverFrame:Hide()
   end
 
-
   if TidyBar_side_frame:IsShown() then
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
@@ -162,17 +165,10 @@ local function TidyBar_setup_side()
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
-end
 
-
-
-local function TidyBar_setup_side()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_side()' )
-  end
   TidyBar_SideMouseoverFrame:EnableMouse()
-  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
-  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
+  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
+  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
   HookFrame_side( MultiBarRight )
   HookFrame_side( MultiBarLeft )
   for i = 1, 12 do HookFrame_side( _G[ 'MultiBarRightButton'..i ] ) end
@@ -768,7 +764,7 @@ local function TidyBar_refresh_corner()
   
   -- Set Mouseovers
   TidyBar_setup_side()
-  TidyBar_set_side_alpha()
+  TidyBar_refresh_side()
   ConfigureCornerBars()
   TidyBar_corner:SetAlpha( 0 )
 end
