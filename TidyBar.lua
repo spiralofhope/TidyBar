@@ -46,9 +46,6 @@ local mouse_in_side, MouseInCorner = false
 
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 local TidyBar_corner      = CreateFrame( 'Frame', 'TidyBar_corner',         UIParent )
-local TidyBar_SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_side_frame',   UIParent )
-      TidyBar_SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
-
 local TidyBar_refresh_side
 
 
@@ -96,17 +93,6 @@ end
 
 
 
-local function HookFrame_side( frameTarget )
-  -- Spammy
-  --if TidyBar_options.debug then
-    --print( GetTime() .. ' HookFrame_side()' )
-  --end
-  frameTarget:HookScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
-  frameTarget:HookScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
-end
-
-
-
 local function ConfigureCornerBars()
   if TidyBar_options.debug then
     print( GetTime() .. ' ConfigureCornerBars()' )
@@ -132,6 +118,17 @@ end
 
 
 
+local TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
+      TidyBar_frame_side:SetFrameStrata( 'BACKGROUND' )
+
+local function TidyBar_side_hook_frame( frameTarget )
+  -- Spammy
+  --if TidyBar_options.debug then
+    --print( GetTime() .. ' TidyBar_side_hook_frame()' )
+  --end
+  frameTarget:HookScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
+  frameTarget:HookScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
+end
 
 local function TidyBar_setup_side()
   if TidyBar_options.debug then
@@ -141,39 +138,50 @@ local function TidyBar_setup_side()
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
     MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    TidyBar_SideMouseoverFrame:Show()
+    TidyBar_frame_side:Show()
     MultiBarRight:EnableMouse()
-    TidyBar_SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
+    TidyBar_frame_side:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
     -- Right Bar 2
     -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
     if MultiBarLeft:IsShown() then
       MultiBarLeft:ClearAllPoints()
       MultiBarLeft:SetPoint( 'TopRight', MultiBarRight, 'TopLeft' )
       MultiBarLeft:EnableMouse()
-      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
+      TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
     else
-      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
+      TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
     end
   else
-    TidyBar_SideMouseoverFrame:Hide()
+    TidyBar_frame_side:Hide()
   end
 
-  if TidyBar_side_frame:IsShown() then
+  if TidyBar_frame_side:IsShown() then
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_side_frame, 'TopLeft' )
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
 
-  TidyBar_SideMouseoverFrame:EnableMouse()
-  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
-  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
-  HookFrame_side( MultiBarRight )
-  HookFrame_side( MultiBarLeft )
-  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarRightButton'..i ] ) end
-  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarLeftButton' ..i ] ) end
+  TidyBar_frame_side:EnableMouse()
+  TidyBar_frame_side:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_refresh_side() end )
+  TidyBar_frame_side:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_refresh_side() end )
+  TidyBar_side_hook_frame( MultiBarRight )
+  TidyBar_side_hook_frame( MultiBarLeft )
+  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarRightButton'..i ] ) end
+  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
+
+
+
+
+
+
+
+
+
+
+
 
 
 
