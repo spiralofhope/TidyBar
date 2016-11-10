@@ -49,28 +49,6 @@ local TidyBar_corner      = CreateFrame( 'Frame', 'TidyBar_corner',         UIPa
 
 
 
-local function HookFrame_Microbuttons( frameTarget )
-  -- Spammy
-  --if TidyBar_options.debug then
-    --print( GetTime() .. ' HookFrame_Microbuttons()' )
-  --end
-  frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner:SetAlpha( 1 ) end end )
-  frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner:SetAlpha( 0 ) end )
-end
-
-
-
-local function HookFrame_CornerBar( frameTarget )
-  -- Spammy
-  --if TidyBar_options.debug then
-    --print( GetTime() .. ' HookFrame_CornerBar()' )
-  --end
-  frameTarget:HookScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
-  frameTarget:HookScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
-end
-
-
-
 local function ConfigureCornerBars()
   if TidyBar_options.debug then
     print( GetTime() .. ' ConfigureCornerBars()' )
@@ -106,9 +84,9 @@ local function TidyBar_refresh_side( mouse_inside )
     print( GetTime() .. ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
     -- Oh god, all the verbosities:
     --print( GetTime() .. ' TidyBar_refresh_side()' )
-    --print( 'mouse_inside  -  '                     .. tostring( mouse_inside ) )
-    --print( 'TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
-    --print( 'SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
+    --print( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
+    --print( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
+    --print( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
   end
   local Alpha = 0
   if    mouse_inside
@@ -126,13 +104,13 @@ local function TidyBar_refresh_side( mouse_inside )
 end
 
 
-local function TidyBar_side_hook_frame( frameTarget )
+local function TidyBar_SetScript_frame_side( frameTarget )
   -- Spammy
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_side_hook_frame( ' .. tostring( frameTarget ) .. ' )' )
+    print( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
   end
-  frameTarget:HookScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
-  frameTarget:HookScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
+  frameTarget:SetScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
+  frameTarget:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
 end
 
 local function TidyBar_setup_side()
@@ -173,10 +151,10 @@ local function TidyBar_setup_side()
   TidyBar_frame_side:EnableMouse()
   TidyBar_frame_side:SetScript( 'OnEnter', function() TidyBar_refresh_side( true )  end )
   TidyBar_frame_side:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
-  TidyBar_side_hook_frame( MultiBarRight )
-  TidyBar_side_hook_frame( MultiBarLeft )
-  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarRightButton' .. i ] ) end
-  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarLeftButton'  .. i ] ) end
+  TidyBar_SetScript_frame_side( MultiBarRight )
+  TidyBar_SetScript_frame_side( MultiBarLeft )
+  for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
+  for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
 end
 
 
@@ -211,10 +189,26 @@ local function TidyBar_setup_corner()
   MainMenuBarBackpackButton:ClearAllPoints()
   MainMenuBarBackpackButton:SetPoint( 'Bottom' )
   MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
+
+  local function TidyBar_SetScript_frame_microbuttons( frameTarget )
+    if TidyBar_options.debug then
+      print( GetTime() .. ' TidyBar_SetScript_frame_microbuttons( ' .. tostring( frameTarget ) .. ' )'  )
+    end
+    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner:SetAlpha( 1 ) end end )
+    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner:SetAlpha( 0 ) end )
+  end
+
+  local function TidyBar_SetScript_frame_corner( frameTarget )
+    if TidyBar_options.debug then
+      print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
+    end
+    frameTarget:HookScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
+    frameTarget:HookScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
+  end
   
   -- Setup the Corner Buttons
-  for i, name in pairs( BagButtonFrameList ) do HookFrame_CornerBar(    name ) end
-  for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
+  for i, name in pairs( BagButtonFrameList ) do TidyBar_SetScript_frame_corner(       name ) end
+  for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
   TidyBar_corner:SetScale( TidyBar_options.scale )
@@ -778,8 +772,8 @@ local function TidyBar_refresh_corner()
   RegisterUnitWatch( PetActionBarFrame )
   
   -- Set Mouseovers
-  TidyBar_setup_side()
-  TidyBar_refresh_side()
+--  TidyBar_setup_side()
+--  TidyBar_refresh_side()
   ConfigureCornerBars()
   TidyBar_corner:SetAlpha( 0 )
 end
@@ -798,9 +792,12 @@ function TidyBar_RefreshPositions()
   end
   TidyBar_refresh_main_area()
   ConfigureCornerBars()
+  -- FIXME - I want to remove this, it's bad code.
+  -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
   TidyBar_setup_side()
   TidyBar_refresh_vehicle()
   --TidyBar_refresh_corner()
+  TidyBar_refresh_side( false )
 end
 
 
