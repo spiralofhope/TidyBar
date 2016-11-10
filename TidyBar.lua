@@ -102,12 +102,12 @@ local TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIPar
 
 
 
-local function TidyBar_refresh_side( mouse_in_side )
+local function TidyBar_refresh_side( mouse_inside )
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_side()' )
   end
   local Alpha = 0
-  if        mouse_in_side
+  if        mouse_inside
     or not  TidyBar_options.hide_side_on_mouseout
             -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
             --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
