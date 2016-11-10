@@ -247,10 +247,19 @@ local function TidyBar_refresh_vehicle()
   OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
 
   OverrideActionBarHealthBar:ClearAllPoints()
-  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBarPowerBar, 'BottomLeft', -4, 0 )
-
   OverrideActionBarPowerBar:ClearAllPoints()
-  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarButton1, 'BottomLeft', -4, 0 )
+  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBar, 'BottomLeft' )
+  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarHealthBar, 'BottomLeft' )
+  OverrideActionBarHealthBarText:SetWidth( 0.001 )
+  OverrideActionBarPowerBarText:SetWidth( 0.001 )
+  -- It just re-shows on mouseout.
+  --OverrideActionBarHealthBarText:Hide()
+  OverrideActionBarHealthBar:SetWidth( 8 )
+  OverrideActionBarPowerBar:SetWidth( 8 )
+  OverrideActionBarHealthBarOverlay:SetWidth( 8 )
+  OverrideActionBarPowerBarOverlay:SetWidth( 8 )
+  OverrideActionBarHealthBarBackground:Hide()
+  OverrideActionBarPowerBarBackground:Hide()
 
   OverrideActionBarExpBar:ClearAllPoints()
   OverrideActionBarExpBar:SetHeight( bar_height )
