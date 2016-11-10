@@ -7,6 +7,7 @@
 
 ### 7.1.0.2 beta
 
+- Fixed #50 - Fix jumping main area
 - Fixed the side not toggling correctly when set/unset in the options panel.
 - General code clarity improvements.
 - For code clarity, references to "sidebar" have been renamed "side".

@@ -80,6 +80,7 @@ local function TidyBar_refresh_side( mouse_inside )
   end
 end
 
+-- FIXME - this is fired every time I mount!
 local function TidyBar_SetScript_frame_side( frameTarget )
   -- Spammy
   if TidyBar_options.debug then
