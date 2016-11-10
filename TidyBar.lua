@@ -38,12 +38,8 @@ local MenuButtonFrames = {
 }
 
 --  Technically adjustable, but I don't want to support that without a request.
---local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
---  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
-
-local MouseInCorner = false
 
 TidyBar        = CreateFrame( 'Frame', 'TidyBar',        WorldFrame )
 TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
@@ -724,12 +720,6 @@ local function TidyBar_refresh_corner()
   TidyBar_corner_frame:SetHeight( 128 )
   TidyBar_corner_frame:SetPoint( 'BottomRight' )
   TidyBar_corner_frame:SetScale( TidyBar_options.scale )
-
-  --TidyBar_corner_frame.Texture = TidyBar_corner_frame:CreateTexture( nil, 'BACKGROUND' )
-  --TidyBar_corner_frame.Texture:SetTexture( Corner_Artwork_Texture )
-  --TidyBar_corner_frame.Texture:SetPoint( 'BottomRight' )
-  --TidyBar_corner_frame.Texture:SetWidth(  512 * 1.09 )
-  --TidyBar_corner_frame.Texture:SetHeight( 128 * 1.09 )
 
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
