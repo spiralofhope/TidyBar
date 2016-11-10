@@ -775,7 +775,8 @@ local function TidyBar_setup()
   TidyBar_setup_options_pane()
   TidyBar_setup_vehicle()
   TidyBar_setup_main_area()
-
+  -- I can't get this to work..
+  --TidyBar_RefreshPositions()
 
 
   -- This SetScript removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but ends up reversing what the checkbox means.
