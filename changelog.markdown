@@ -7,6 +7,8 @@
 
 ### 7.1.0.2 BETA
 
+- For code clarity, references to "sidebar" have been renamed "side".
+  -  Users who wish to once again hide the "sidebar" on mouseout will have to enable this renamed preference in the options panel.
 - Style improvements to the options panel code.
   -  Yes, these things matter.
 - Removed old code from the original author(s).

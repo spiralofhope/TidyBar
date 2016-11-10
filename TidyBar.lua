@@ -4,7 +4,7 @@
   TidyBar_options.show_artifact_power_bar = true
   TidyBar_options.show_honor_bar = true
   TidyBar_options.show_gryphons = false
-  TidyBar_options.hide_sidebar_on_mouseout = true
+  TidyBar_options.hide_side_on_mouseout = true
   TidyBar_options.show_MainMenuBar_textured_background = false
   TidyBar_options.show_macro_text = false
   TidyBar_options.scale = 1
@@ -41,25 +41,25 @@ local MenuButtonFrames = {
 --local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
 --  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
-local MouseInSidebar, MouseInCorner = false
+local mouse_in_side, MouseInCorner = false
 
 
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
-local CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',         UIParent )
-local SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_SideBarMouseoverFrame',   UIParent )
-      SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
+local TidyBar_CornerMenuFrame      = CreateFrame( 'Frame', 'TidyBar_CornerMenuFrame',         UIParent )
+local TidyBar_SideMouseoverFrame   = CreateFrame( 'Frame', 'TidyBar_side_frame',   UIParent )
+      TidyBar_SideMouseoverFrame:SetFrameStrata( 'BACKGROUND' )
 
-local SetSidebarAlpha
+local TidyBar_set_side_alpha
 
 
 
-local function SetSidebarAlpha()
+local function TidyBar_set_side_alpha()
   if TidyBar_options.debug then
-    print( GetTime() .. ' SetSidebarAlpha()' )
+    print( GetTime() .. ' TidyBar_set_side_alpha()' )
   end
   local Alpha = 0
-  if        MouseInSidebar
-    or not  TidyBar_options.hide_sidebar_on_mouseout
+  if        mouse_in_side
+    or not  TidyBar_options.hide_side_on_mouseout
             -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
             --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
     or      SpellFlyout:IsShown()
@@ -79,8 +79,8 @@ local function HookFrame_Microbuttons( frameTarget )
   --if TidyBar_options.debug then
     --print( GetTime() .. ' HookFrame_Microbuttons()' )
   --end
-  frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then CornerMenuFrame:SetAlpha( 1 ) end end )
-  frameTarget:HookScript( 'OnLeave', function()                                          CornerMenuFrame:SetAlpha( 0 ) end )
+  frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_CornerMenuFrame:SetAlpha( 1 ) end end )
+  frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
@@ -90,19 +90,19 @@ local function HookFrame_CornerBar( frameTarget )
   --if TidyBar_options.debug then
     --print( GetTime() .. ' HookFrame_CornerBar()' )
   --end
-  frameTarget:HookScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
-  frameTarget:HookScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
+  frameTarget:HookScript( 'OnEnter', function() TidyBar_CornerMenuFrame:SetAlpha( 1 ) end )
+  frameTarget:HookScript( 'OnLeave', function() TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
 
-local function HookFrame_SideBar( frameTarget )
+local function HookFrame_side( frameTarget )
   -- Spammy
   --if TidyBar_options.debug then
-    --print( GetTime() .. ' HookFrame_SideBar()' )
+    --print( GetTime() .. ' HookFrame_side()' )
   --end
-  frameTarget:HookScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
-  frameTarget:HookScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
+  frameTarget:HookScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
+  frameTarget:HookScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
 end
 
 
@@ -123,42 +123,42 @@ local function ConfigureCornerBars()
 
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do name:SetParent( CornerMenuFrame.MicroButtons ) end
+    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_CornerMenuFrame.MicroButtons, 'BottomRight', -270, 0 )
+    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_CornerMenuFrame.MicroButtons ) end
   end
 end
 
 
 
-local function ConfigureSideBars()
+local function TidyBar_setup_side()
   if TidyBar_options.debug then
-    print( GetTime() .. ' ConfigureSideBars()' )
+    print( GetTime() .. ' TidyBar_setup_side()' )
   end
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
     MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    SideMouseoverFrame:Show()
+    TidyBar_SideMouseoverFrame:Show()
     MultiBarRight:EnableMouse()
-    SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
+    TidyBar_SideMouseoverFrame:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
     -- Right Bar 2
     -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
     if MultiBarLeft:IsShown() then
       MultiBarLeft:ClearAllPoints()
       MultiBarLeft:SetPoint( 'TopRight', MultiBarRight, 'TopLeft' )
       MultiBarLeft:EnableMouse()
-      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
+      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
     else
-      SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
+      TidyBar_SideMouseoverFrame:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
     end
   else
-    SideMouseoverFrame:Hide()
+    TidyBar_SideMouseoverFrame:Hide()
   end
 
 
-  if TidyBar_SideBarMouseoverFrame:IsShown() then
+  if TidyBar_side_frame:IsShown() then
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items.
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_SideBarMouseoverFrame, 'TopLeft' )
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_side_frame, 'TopLeft' )
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
@@ -633,7 +633,7 @@ function TidyBar_RefreshPositions()
   end
   TidyBar_refresh_main_area()
   ConfigureCornerBars()
-  ConfigureSideBars()
+  TidyBar_setup_side()
   TidyBar_refresh_vehicle()
   --TidyBar_setup_corner()
 end
@@ -644,20 +644,20 @@ local function TidyBar_setup_corner()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_corner()' )
   end
-  CornerMenuFrame:SetFrameStrata( 'LOW' )
-  CornerMenuFrame:SetWidth( 300 )
-  CornerMenuFrame:SetHeight( 128 )
-  CornerMenuFrame:SetPoint( 'BottomRight' )
-  CornerMenuFrame:SetScale( TidyBar_options.scale )
+  TidyBar_CornerMenuFrame:SetFrameStrata( 'LOW' )
+  TidyBar_CornerMenuFrame:SetWidth( 300 )
+  TidyBar_CornerMenuFrame:SetHeight( 128 )
+  TidyBar_CornerMenuFrame:SetPoint( 'BottomRight' )
+  TidyBar_CornerMenuFrame:SetScale( TidyBar_options.scale )
 
-  --CornerMenuFrame.Texture = CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
-  --CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
-  --CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
-  --CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
-  --CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
+  --TidyBar_CornerMenuFrame.Texture = TidyBar_CornerMenuFrame:CreateTexture( nil, 'BACKGROUND' )
+  --TidyBar_CornerMenuFrame.Texture:SetTexture( Corner_Artwork_Texture )
+  --TidyBar_CornerMenuFrame.Texture:SetPoint( 'BottomRight' )
+  --TidyBar_CornerMenuFrame.Texture:SetWidth(  512 * 1.09 )
+  --TidyBar_CornerMenuFrame.Texture:SetHeight( 128 * 1.09 )
 
-  CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, CornerMenuFrame )
-  CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, CornerMenuFrame )
+  TidyBar_CornerMenuFrame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
+  TidyBar_CornerMenuFrame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_CornerMenuFrame )
 
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
@@ -669,25 +669,25 @@ local function TidyBar_setup_corner()
   RegisterUnitWatch( PetActionBarFrame )
   
   -- Set Mouseovers
-  ConfigureSideBars()
-  SetSidebarAlpha()
+  TidyBar_setup_side()
+  TidyBar_set_side_alpha()
   ConfigureCornerBars()
-  CornerMenuFrame:SetAlpha( 0 )
+  TidyBar_CornerMenuFrame:SetAlpha( 0 )
 end
 
 
 
-local function TidyBar_setup_sidebar()
+local function TidyBar_setup_side()
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_sidebar()' )
+    print( GetTime() .. ' TidyBar_setup_side()' )
   end
-  SideMouseoverFrame:EnableMouse()
-  SideMouseoverFrame:SetScript( 'OnEnter', function() MouseInSidebar = true;  SetSidebarAlpha() end )
-  SideMouseoverFrame:SetScript( 'OnLeave', function() MouseInSidebar = false; SetSidebarAlpha() end )
-  HookFrame_SideBar( MultiBarRight )
-  HookFrame_SideBar( MultiBarLeft )
-  for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarRightButton'..i ] ) end
-  for i = 1, 12 do HookFrame_SideBar( _G[ 'MultiBarLeftButton' ..i ] ) end
+  TidyBar_SideMouseoverFrame:EnableMouse()
+  TidyBar_SideMouseoverFrame:SetScript( 'OnEnter', function() mouse_in_side = true;  TidyBar_set_side_alpha() end )
+  TidyBar_SideMouseoverFrame:SetScript( 'OnLeave', function() mouse_in_side = false; TidyBar_set_side_alpha() end )
+  HookFrame_side( MultiBarRight )
+  HookFrame_side( MultiBarLeft )
+  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarRightButton'..i ] ) end
+  for i = 1, 12 do HookFrame_side( _G[ 'MultiBarLeftButton' ..i ] ) end
 end
 
 
@@ -705,7 +705,7 @@ local function TidyBar_setup_corner_menu()
   }
 
   for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( CornerMenuFrame.BagButtonFrame )
+    name:SetParent( TidyBar_CornerMenuFrame.BagButtonFrame )
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
@@ -717,12 +717,12 @@ local function TidyBar_setup_corner_menu()
   for i, name in pairs( MenuButtonFrames   ) do HookFrame_Microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
-  CornerMenuFrame:SetScale( TidyBar_options.scale )
-  CornerMenuFrame.MicroButtons:SetAllPoints( CornerMenuFrame )
-  CornerMenuFrame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
-  CornerMenuFrame.BagButtonFrame:SetWidth( 256 )
-  CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
+  TidyBar_CornerMenuFrame:SetScale( TidyBar_options.scale )
+  TidyBar_CornerMenuFrame.MicroButtons:SetAllPoints( TidyBar_CornerMenuFrame )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetHeight( 64 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetWidth( 256 )
+  TidyBar_CornerMenuFrame.BagButtonFrame:SetScale( 1.02 )
   
   -- Setup the Corner Menu Mouseover frame
   local CornerMouseoverFrame = CreateFrame( 'Frame', 'TidyBar_CornerBarMouseoverFrame', UIParent )
@@ -734,8 +734,8 @@ local function TidyBar_setup_corner_menu()
   CornerMouseoverFrame:SetPoint( 'Bottom', UIParent, 'Bottom' )
   CornerMouseoverFrame:SetWidth( 322 )
   
-  CornerMouseoverFrame:SetScript( 'OnEnter', function() CornerMenuFrame:SetAlpha( 1 ) end )
-  CornerMouseoverFrame:SetScript( 'OnLeave', function() CornerMenuFrame:SetAlpha( 0 ) end )
+  CornerMouseoverFrame:SetScript( 'OnEnter', function() TidyBar_CornerMenuFrame:SetAlpha( 1 ) end )
+  CornerMouseoverFrame:SetScript( 'OnLeave', function() TidyBar_CornerMenuFrame:SetAlpha( 0 ) end )
 end
 
 
@@ -811,7 +811,7 @@ local function TidyBar_setup()
 
   TidyBar_setup_corner()
   TidyBar_setup_corner_menu()
-  TidyBar_setup_sidebar()
+  TidyBar_setup_side()
   TidyBar_setup_options_pane()
   TidyBar_setup_vehicle()
   TidyBar_setup_main_area()

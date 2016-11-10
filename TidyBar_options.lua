@@ -116,21 +116,21 @@ end
 
 
 
-do  --  TidyBar_options.hide_sidebar_on_mouseout
+do  --  TidyBar_options.hide_side_on_mouseout
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_sidebar_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_side_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Autohide sidebar' )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Autohide the right-hand vertical bars' )
   CheckButton.tooltipText = 'Hide the Right-hand bar(s) when the mouse is not over them.'
-  CheckButton:SetChecked( TidyBar_options.hide_sidebar_on_mouseout )
+  CheckButton:SetChecked( TidyBar_options.hide_side_on_mouseout )
   CheckButton:SetScript( 'OnClick', function( self )
     local alpha
     if self:GetChecked()then
-      TidyBar_options.hide_sidebar_on_mouseout = true
+      TidyBar_options.hide_side_on_mouseout = true
       alpha = 0
     else
-      TidyBar_options.hide_sidebar_on_mouseout = false
+      TidyBar_options.hide_side_on_mouseout = false
       alpha = 1
     end
     for i = 1, 12 do
