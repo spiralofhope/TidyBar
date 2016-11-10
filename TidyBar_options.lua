@@ -121,8 +121,8 @@ do  --  TidyBar_options.always_show_side
   local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.always_show_side', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'When disabled, auto-hide the right-hand vertical bars on MouseOut.' )
-  CheckButton.tooltipText = 'Hide the Right-hand bar(s) when the mouse is not over them.'
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Always show the side bar(s)' )
+  CheckButton.tooltipText = 'When disabled, auto-hide the right-hand vertical bars on MouseOut.'
   CheckButton:SetChecked( TidyBar_options.always_show_side )
   CheckButton:SetScript( 'OnClick', function( self )
     local alpha
