@@ -41,41 +41,22 @@ local MenuButtonFrames = {
 --local Corner_Artwork_Texture = 'Interface/Addons/TidyBar/empty'
 --  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
+
+
 local MouseInCorner = false
 
-local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
-local TidyBar_corner      = CreateFrame( 'Frame', 'TidyBar_corner',         UIParent )
+TidyBar        = CreateFrame( 'Frame', 'TidyBar',        WorldFrame )
+TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
+TidyBar_corner_frame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
+TidyBar_corner_frame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
+
+TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
+
+TidyBar_corner_frame:EnableMouse()
+TidyBar_corner_frame:SetFrameStrata( 'BACKGROUND' )
+TidyBar_frame_side:SetFrameStrata( 'BACKGROUND' )
 
 
-
-
-local function ConfigureCornerBars()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' ConfigureCornerBars()' )
-  end
-
-  MainMenuBarTexture2:SetTexture( Empty_Art )
-  MainMenuBarTexture3:SetTexture( Empty_Art )
-  MainMenuBarTexture2:Hide()
-  MainMenuBarTexture3:Hide()
-
-  -- The nagging talent popup
-  TalentMicroButtonAlert:SetAlpha( 0 )
-  TalentMicroButtonAlert:Hide()
-
-  if not UnitHasVehicleUI( 'player' ) then
-    CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_corner.MicroButtons ) end
-  end
-end
-
-
-
-
-
-local TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
-      TidyBar_frame_side:SetFrameStrata( 'BACKGROUND' )
 
 
 
@@ -169,11 +150,11 @@ end
 
 
 
-
 local function TidyBar_setup_corner()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_corner()' )
   end
+
   local BagButtonFrameList = {
     MainMenuBarBackpackButton,
     CharacterBag0Slot,
@@ -183,7 +164,7 @@ local function TidyBar_setup_corner()
   }
 
   for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( TidyBar_corner.BagButtonFrame )
+    name:SetParent( TidyBar_corner_frame.BagButtonFrame )
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
@@ -194,16 +175,16 @@ local function TidyBar_setup_corner()
     if TidyBar_options.debug then
       print( GetTime() .. ' TidyBar_SetScript_frame_microbuttons( ' .. tostring( frameTarget ) .. ' )'  )
     end
-    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner:SetAlpha( 1 ) end end )
-    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner:SetAlpha( 0 ) end )
+    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner_frame:SetAlpha( 1 ) end end )
+    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner_frame:SetAlpha( 0 ) end )
   end
 
   local function TidyBar_SetScript_frame_corner( frameTarget )
     if TidyBar_options.debug then
       print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
     end
-    frameTarget:HookScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
-    frameTarget:HookScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
+    frameTarget:HookScript( 'OnEnter', function() TidyBar_corner_frame:SetAlpha( 1 ) end )
+    frameTarget:HookScript( 'OnLeave', function() TidyBar_corner_frame:SetAlpha( 0 ) end )
   end
   
   -- Setup the Corner Buttons
@@ -211,25 +192,17 @@ local function TidyBar_setup_corner()
   for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_microbuttons( name ) end
   
   -- Setup the Corner Menu Artwork
-  TidyBar_corner:SetScale( TidyBar_options.scale )
-  TidyBar_corner.MicroButtons:SetAllPoints( TidyBar_corner )
-  TidyBar_corner.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  TidyBar_corner.BagButtonFrame:SetHeight( 64 )
-  TidyBar_corner.BagButtonFrame:SetWidth( 256 )
-  TidyBar_corner.BagButtonFrame:SetScale( 1.02 )
+  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
+  TidyBar_corner_frame.MicroButtons:SetAllPoints( TidyBar_corner_frame )
+  TidyBar_corner_frame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
+  TidyBar_corner_frame.BagButtonFrame:SetHeight( 64 )
+  TidyBar_corner_frame.BagButtonFrame:SetWidth( 256 )
+  TidyBar_corner_frame.BagButtonFrame:SetScale( 1.02 )
   
   -- Setup the Corner Menu Mouseover frame
-  local TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
-  TidyBar_corner_frame:EnableMouse()
-  TidyBar_corner_frame:SetFrameStrata( 'BACKGROUND' )
-  
-  TidyBar_corner_frame:SetPoint( 'Top', MainMenuBarBackpackButton, 'Top', 0, 10 )
-  TidyBar_corner_frame:SetPoint( 'Right',  UIParent, 'Right' )
-  TidyBar_corner_frame:SetPoint( 'Bottom', UIParent, 'Bottom' )
-  TidyBar_corner_frame:SetWidth( 322 )
-  
-  TidyBar_corner_frame:SetScript( 'OnEnter', function() TidyBar_corner:SetAlpha( 1 ) end )
-  TidyBar_corner_frame:SetScript( 'OnLeave', function() TidyBar_corner:SetAlpha( 0 ) end )
+  TidyBar_corner_frame:SetPoint( 'BottomRight', WORLDFRAME, 'BottomRight' )
+  TidyBar_corner_frame:SetScript( 'OnEnter', function() TidyBar_corner_frame:SetAlpha( 1 ) end )
+  TidyBar_corner_frame:SetScript( 'OnLeave', function() TidyBar_corner_frame:SetAlpha( 0 ) end )
 end
 
 
@@ -716,7 +689,7 @@ local function TidyBar_refresh_vehicle()
   -- Repositioning these here is a bad idea.
   -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
   --MainMenuMicroButton:ClearAllPoints()
-  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_corner, 'BottomRight' )
+  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame, 'BottomRight' )
 
   OverrideActionBar:SetWidth( bar_width )
 
@@ -738,7 +711,6 @@ local function TidyBar_refresh_vehicle()
 
   OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
   OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight' )
-
 end
 
 
@@ -747,20 +719,17 @@ local function TidyBar_refresh_corner()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_corner()' )
   end
-  TidyBar_corner:SetFrameStrata( 'LOW' )
-  TidyBar_corner:SetWidth( 300 )
-  TidyBar_corner:SetHeight( 128 )
-  TidyBar_corner:SetPoint( 'BottomRight' )
-  TidyBar_corner:SetScale( TidyBar_options.scale )
+  TidyBar_corner_frame:SetFrameStrata( 'LOW' )
+  TidyBar_corner_frame:SetWidth( 300 )
+  TidyBar_corner_frame:SetHeight( 128 )
+  TidyBar_corner_frame:SetPoint( 'BottomRight' )
+  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
 
-  --TidyBar_corner.Texture = TidyBar_corner:CreateTexture( nil, 'BACKGROUND' )
-  --TidyBar_corner.Texture:SetTexture( Corner_Artwork_Texture )
-  --TidyBar_corner.Texture:SetPoint( 'BottomRight' )
-  --TidyBar_corner.Texture:SetWidth(  512 * 1.09 )
-  --TidyBar_corner.Texture:SetHeight( 128 * 1.09 )
-
-  TidyBar_corner.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_corner )
-  TidyBar_corner.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_corner )
+  --TidyBar_corner_frame.Texture = TidyBar_corner_frame:CreateTexture( nil, 'BACKGROUND' )
+  --TidyBar_corner_frame.Texture:SetTexture( Corner_Artwork_Texture )
+  --TidyBar_corner_frame.Texture:SetPoint( 'BottomRight' )
+  --TidyBar_corner_frame.Texture:SetWidth(  512 * 1.09 )
+  --TidyBar_corner_frame.Texture:SetHeight( 128 * 1.09 )
 
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
@@ -771,11 +740,22 @@ local function TidyBar_refresh_corner()
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
   RegisterUnitWatch( PetActionBarFrame )
   
-  -- Set Mouseovers
---  TidyBar_setup_side()
---  TidyBar_refresh_side()
-  ConfigureCornerBars()
-  TidyBar_corner:SetAlpha( 0 )
+  TidyBar_corner_frame:SetAlpha( 0 )
+
+  MainMenuBarTexture2:SetTexture( Empty_Art )
+  MainMenuBarTexture3:SetTexture( Empty_Art )
+  MainMenuBarTexture2:Hide()
+  MainMenuBarTexture3:Hide()
+
+  -- The nagging talent popup
+  TalentMicroButtonAlert:SetAlpha( 0 )
+  TalentMicroButtonAlert:Hide()
+
+  if not UnitHasVehicleUI( 'player' ) then
+    CharacterMicroButton:ClearAllPoints()
+    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame.MicroButtons, 'BottomRight', -270, 0 )
+    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_corner_frame.MicroButtons ) end
+  end
 end
 
 
@@ -791,12 +771,11 @@ function TidyBar_RefreshPositions()
     return
   end
   TidyBar_refresh_main_area()
-  ConfigureCornerBars()
   -- FIXME - I want to remove this, it's bad code.
   -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
   TidyBar_setup_side()
   TidyBar_refresh_vehicle()
-  --TidyBar_refresh_corner()
+  TidyBar_refresh_corner()
   TidyBar_refresh_side( false )
 end
 
@@ -824,7 +803,6 @@ local function TidyBar_setup()
   end
 
 
-  TidyBar_refresh_corner()
   TidyBar_setup_corner()
   TidyBar_setup_side()
   TidyBar_setup_options_pane()

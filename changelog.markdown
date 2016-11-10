@@ -7,6 +7,8 @@
 
 ### 7.1.0.2 beta
 
+- Fixed the side not toggling correctly when set/unset in the options panel.
+- General code clarity improvements.
 - For code clarity, references to "sidebar" have been renamed "side".
   -  Users who wish to once again hide the "sidebar" on mouseout will have to enable this renamed preference in the options panel.
 - Style improvements to the options panel code.
