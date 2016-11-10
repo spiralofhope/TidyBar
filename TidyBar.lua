@@ -45,7 +45,6 @@ local MouseInCorner = false
 
 local TidyBar              = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 local TidyBar_corner      = CreateFrame( 'Frame', 'TidyBar_corner',         UIParent )
-local TidyBar_refresh_side
 
 
 
@@ -104,20 +103,25 @@ local TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIPar
 
 local function TidyBar_refresh_side( mouse_inside )
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_side()' )
+    print( GetTime() .. ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
+    -- Oh god, all the verbosities:
+    --print( GetTime() .. ' TidyBar_refresh_side()' )
+    --print( 'mouse_inside  -  '                     .. tostring( mouse_inside ) )
+    --print( 'TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
+    --print( 'SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
   end
   local Alpha = 0
-  if        mouse_inside
-    or not  TidyBar_options.hide_side_on_mouseout
-            -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
-            --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
-    or      SpellFlyout:IsShown()
+  if    mouse_inside
+    or  TidyBar_options.always_show_side
+        -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
+        --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
+    or  SpellFlyout:IsShown()
   then
     Alpha = 1
   end
   for i = 1, 12 do
-    _G[ 'MultiBarRightButton'..i ]:SetAlpha( Alpha )
-    _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( Alpha )
+    _G[ 'MultiBarRightButton' .. i ]:SetAlpha( Alpha )
+    _G[ 'MultiBarLeftButton'  .. i ]:SetAlpha( Alpha )
   end
 end
 
@@ -160,19 +164,19 @@ local function TidyBar_setup_side()
     -- Doing this somehow reduces the height of the objective tracker, showing only a few items:
     --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
     -- Yes, this shifts the objectives tracker over, leaving space on the right.  I am not happy about this.
-      --   However, this is what is needed, because the user needs to click the right of the tracker for any quest-actions.  Hovering the mouse over those items would then shift the objectives tracker, making it impossible to click them!
+    --   However, this is what is needed, because the user needs to click the right of the tracker for any quest-actions.  Hovering the mouse over those items would then shift the objectives tracker, making it impossible to click them!
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
 
   TidyBar_frame_side:EnableMouse()
-  TidyBar_frame_side:SetScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
+  TidyBar_frame_side:SetScript( 'OnEnter', function() TidyBar_refresh_side( true )  end )
   TidyBar_frame_side:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
   TidyBar_side_hook_frame( MultiBarRight )
   TidyBar_side_hook_frame( MultiBarLeft )
-  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarRightButton'..i ] ) end
-  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarLeftButton' ..i ] ) end
+  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarRightButton' .. i ] ) end
+  for i = 1, 12 do TidyBar_side_hook_frame( _G[ 'MultiBarLeftButton'  .. i ] ) end
 end
 
 
