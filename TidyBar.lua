@@ -784,9 +784,9 @@ local function TidyBar_setup()
 
 
 
-  -- Removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but reverses what the checkbox means.
+  -- This SetScript removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but ends up reversing what the checkbox means.
   --ReputationWatchBar:SetScript( 'OnEvent', TidyBar_refresh_main_area )
-  -- .. whereas this is just a big mess:
+  -- .. whereas HookScript is just a big mess:
   --ReputationWatchBar:HookScript( 'OnEvent', TidyBar_refresh_main_area )
 
 
@@ -820,12 +820,7 @@ local function TidyBar_setup()
 
 
 
-
-
-
-
   -- Start Tidy Bar
-  TidyBar:SetScript( 'OnEvent', EventHandler )
   TidyBar:SetFrameStrata( 'TOOLTIP' )
   TidyBar:Show()
 
@@ -833,4 +828,4 @@ local function TidyBar_setup()
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
 end
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
-TidyBar:SetScript( 'OnEvent', TidyBar_setup )
+TidyBar:SetScript( 'OnEvent', TidyBar_setup() )
