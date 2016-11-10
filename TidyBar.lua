@@ -171,7 +171,9 @@ local function TidyBar_refresh_corner()
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
     CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do name:SetParent( TidyBar_corner_frame.MicroButtons ) end
+    for i, name in pairs( MenuButtonFrames ) do
+      name:SetParent( TidyBar_corner_frame.MicroButtons )
+    end
   end
 end
 
@@ -196,25 +198,17 @@ local function TidyBar_setup_corner()
   MainMenuBarBackpackButton:SetPoint( 'Bottom' )
   MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
 
-  local function TidyBar_SetScript_frame_microbuttons( frameTarget )
+  local function TidyBar_SetScript_frame_corner( frameTarget )
     if TidyBar_options.debug then
       print( GetTime() .. ' TidyBar_SetScript_frame_microbuttons( ' .. tostring( frameTarget ) .. ' )'  )
     end
     frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner_frame:SetAlpha( 1 ) end end )
     frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner_frame:SetAlpha( 0 ) end )
   end
-
-  local function TidyBar_SetScript_frame_corner( frameTarget )
-    if TidyBar_options.debug then
-      print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
-    end
-    frameTarget:HookScript( 'OnEnter', function() TidyBar_corner_frame:SetAlpha( 1 ) end )
-    frameTarget:HookScript( 'OnLeave', function() TidyBar_corner_frame:SetAlpha( 0 ) end )
-  end
   
   -- Setup the Corner Buttons
-  for i, name in pairs( BagButtonFrameList ) do TidyBar_SetScript_frame_corner(       name ) end
-  for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_microbuttons( name ) end
+  for i, name in pairs( BagButtonFrameList ) do TidyBar_SetScript_frame_corner( name ) end
+  for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_corner( name ) end
   
   -- Setup the Corner Menu Artwork
   TidyBar_corner_frame:SetScale( TidyBar_options.scale )
