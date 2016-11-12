@@ -70,7 +70,7 @@ do  --  TidyBar_options.show_experience_bar
     else
       TidyBar_options.show_experience_bar = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -90,7 +90,7 @@ do  --  TidyBar_options.show_artifact_power_bar
     else
       TidyBar_options.show_artifact_power_bar = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -110,7 +110,7 @@ do  --  TidyBar_options.show_honor_bar
     else
       TidyBar_options.show_honor_bar = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -137,7 +137,7 @@ do  --  TidyBar_options.always_show_side
       _G[ 'MultiBarRightButton'..i ]:SetAlpha( alpha )
       _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( alpha )
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -157,7 +157,7 @@ do  --  TidyBar_options.show_gryphons
     else
       TidyBar_options.show_gryphons = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -177,7 +177,7 @@ do  --  TidyBar_options.show_MainMenuBar_textured_background
     else
       TidyBar_options.show_MainMenuBar_textured_background = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -197,7 +197,7 @@ do  --  TidyBar_options.show_macro_text
     else
       TidyBar_options.show_macro_text = false
     end
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -219,7 +219,7 @@ do  --  TidyBar_options.scale
   scale_slider:SetValue( TidyBar_options.scale )
   scale_slider:SetScript( 'OnValueChanged', function()
     TidyBar_options.scale = scale_slider:GetValue()
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
     if TidyBar_options.debug then
       print( 'TidyBar_options.scale ' .. tostring( TidyBar_options.scale ) )
     end
@@ -235,7 +235,7 @@ do  --  TidyBar_options.scale
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.scale = 1
     scale_slider:SetValue( TidyBar_options.scale )
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -257,7 +257,7 @@ do  --  TidyBar_options.bar_spacing
   bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
   bar_spacing_slider:SetScript( 'OnValueChanged', function()
     TidyBar_options.bar_spacing = ( bar_spacing_slider:GetValue() * TidyBar_options.scale )
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
     if TidyBar_options.debug then
       print( 'TidyBar_options.bar_spacing ' .. tostring( TidyBar_options.bar_spacing ) )
     end
@@ -273,7 +273,7 @@ do  --  TidyBar_options.bar_spacing
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.bar_spacing = ( 4 * TidyBar_options.scale )
     bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -298,7 +298,7 @@ do  --  TidyBar_options.main_area_positioning
   main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
   main_area_positioning_slider:SetScript( 'OnValueChanged', function()
     TidyBar_options.main_area_positioning = main_area_positioning_slider:GetValue()
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
     if TidyBar_options.debug then
       print( 'TidyBar_options.main_area_positioning ' .. tostring( TidyBar_options.main_area_positioning ) )
     end
@@ -316,7 +316,7 @@ do  --  TidyBar_options.main_area_positioning
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.main_area_positioning = 425
     main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
-    TidyBar_RefreshPositions()
+    TidyBar_refresh_everything()
   end)
 end
 
@@ -336,18 +336,19 @@ do  --  TidyBar_options.debug
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.debug', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show debug messages' )
-  --CheckButton.tooltipText = ''
+  CheckButton.tooltipText = ''
   CheckButton:SetChecked( TidyBar_options.debug )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
+      print( 'TidyBar:  Debugging enabled' )
       TidyBar_options.debug = true
     else
+      print( 'TidyBar:  Debugging disabled' )
       TidyBar_options.debug = false
     end
-    TidyBar_RefreshPositions()
+    --TidyBar_refresh_everything()
   end)
 end
-
 
 
 end

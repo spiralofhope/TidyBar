@@ -42,6 +42,7 @@ local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
 
 TidyBar        = CreateFrame( 'Frame', 'TidyBar',        WorldFrame )
+TidyBar:SetFrameStrata( 'TOOLTIP' )
 TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
 TidyBar_corner_frame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
 TidyBar_corner_frame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
@@ -737,9 +738,9 @@ end
 
 
 
-function TidyBar_RefreshPositions()
+function TidyBar_refresh_everything()
   if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_RefreshPositions()' )
+    print( GetTime() .. ' TidyBar_refresh_everything()' )
   end
   if InCombatLockdown() then
     if TidyBar_options.debug then
@@ -765,20 +766,18 @@ local function TidyBar_setup()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup()' )
   end
+  local comparison = tostring( UnitLevel( 'player' ) ) .. '/' .. tostring( MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] )
   if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
-    local comparison = UnitLevel( 'player' ) .. '/' .. MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
+    TidyBar_character_is_max_level = true
     if TidyBar_options.debug then
       print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
     end
-    TidyBar_character_is_max_level = true
   else
-  print 'TidyBar:  Character is not max level'
-    if not TidyBar_options.debug then
-      print( 'TidyBar:  Character is level ' .. comparison )
-    end
     TidyBar_character_is_max_level = false
+    if not TidyBar_options.debug then
+      print( 'TidyBar:  Character level ' .. comparison )
+    end
   end
-
 
   TidyBar_setup_corner()
   TidyBar_setup_side()
@@ -786,7 +785,7 @@ local function TidyBar_setup()
   TidyBar_setup_vehicle()
   TidyBar_setup_main_area()
   -- I can't get this to work..
-  --TidyBar_RefreshPositions()
+  --TidyBar_refresh_everything()
 
 
   -- This SetScript removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but ends up reversing what the checkbox means.
@@ -821,16 +820,15 @@ local function TidyBar_setup()
 
   -- Call Update Function when the default UI makes changes
   -- FIXME - Isn't this a terrible, terrible, idea?
-  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_RefreshPositions )
+  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_refresh_everything )
 
 
 
   -- Start Tidy Bar
-  TidyBar:SetFrameStrata( 'TOOLTIP' )
   TidyBar:Show()
 
   SLASH_TIDYBAR1 = '/tidybar'
-  SlashCmdList[ 'TIDYBAR' ] = TidyBar_RefreshPositions
+  SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
 end
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 TidyBar:SetScript( 'OnEvent', TidyBar_setup() )
