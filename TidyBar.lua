@@ -37,18 +37,6 @@ local MenuButtonFrames = {
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
 
-TidyBar        = CreateFrame( 'Frame', 'TidyBar',        WorldFrame )
-TidyBar:SetFrameStrata( 'TOOLTIP' )
-TidyBar_corner_frame = CreateFrame( 'Frame', 'TidyBar_corner_frame', UIParent )
-TidyBar_corner_frame.MicroButtons   = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
-TidyBar_corner_frame.BagButtonFrame = CreateFrame( 'Frame', nil, TidyBar_corner_frame )
-
-TidyBar_frame_side   = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
-
-TidyBar_corner_frame:EnableMouse()
-TidyBar_corner_frame:SetFrameStrata( 'BACKGROUND' )
-TidyBar_frame_side:SetFrameStrata( 'BACKGROUND' )
-
 
 
 
@@ -140,11 +128,11 @@ local function TidyBar_refresh_corner()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_corner()' )
   end
-  TidyBar_corner_frame:SetFrameStrata( 'LOW' )
-  TidyBar_corner_frame:SetWidth( 300 )
-  TidyBar_corner_frame:SetHeight( 128 )
-  TidyBar_corner_frame:SetPoint( 'BottomRight' )
-  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
+  TidyBar_frame_corner:SetFrameStrata( 'LOW' )
+  TidyBar_frame_corner:SetWidth( 300 )
+  TidyBar_frame_corner:SetHeight( 128 )
+  TidyBar_frame_corner:SetPoint( 'BottomRight' )
+  TidyBar_frame_corner:SetScale( TidyBar_options.scale )
 
   -- Required in order to move the frames around
   UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
@@ -155,7 +143,7 @@ local function TidyBar_refresh_corner()
   PetActionBarFrame:SetAttribute( 'unit', 'pet' )
   RegisterUnitWatch( PetActionBarFrame )
   
-  TidyBar_corner_frame:SetAlpha( 0 )
+  TidyBar_frame_corner:SetAlpha( 0 )
 
   MainMenuBarTexture2:SetTexture( Empty_Art )
   MainMenuBarTexture3:SetTexture( Empty_Art )
@@ -168,9 +156,9 @@ local function TidyBar_refresh_corner()
 
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame.MicroButtons, 'BottomRight', -270, 0 )
+    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
     for i, name in pairs( MenuButtonFrames ) do
-      name:SetParent( TidyBar_corner_frame.MicroButtons )
+      name:SetParent( TidyBar_frame_corner.MicroButtons )
     end
   end
 end
@@ -189,7 +177,7 @@ local function TidyBar_setup_corner()
   }
 
   for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( TidyBar_corner_frame.BagButtonFrame )
+    name:SetParent( TidyBar_frame_corner.BagButtonFrame )
   end
   
   MainMenuBarBackpackButton:ClearAllPoints()
@@ -200,8 +188,8 @@ local function TidyBar_setup_corner()
     if TidyBar_options.debug then
       print( GetTime() .. ' TidyBar_SetScript_frame_microbuttons( ' .. tostring( frameTarget ) .. ' )'  )
     end
-    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_corner_frame:SetAlpha( 1 ) end end )
-    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_corner_frame:SetAlpha( 0 ) end )
+    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_frame_corner:SetAlpha( 1 ) end end )
+    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_frame_corner:SetAlpha( 0 ) end )
   end
   
   -- Setup the Corner Buttons
@@ -209,17 +197,17 @@ local function TidyBar_setup_corner()
   for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_corner( name ) end
   
   -- Setup the Corner Menu Artwork
-  TidyBar_corner_frame:SetScale( TidyBar_options.scale )
-  TidyBar_corner_frame.MicroButtons:SetAllPoints( TidyBar_corner_frame )
-  TidyBar_corner_frame.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  TidyBar_corner_frame.BagButtonFrame:SetHeight( 64 )
-  TidyBar_corner_frame.BagButtonFrame:SetWidth( 256 )
-  TidyBar_corner_frame.BagButtonFrame:SetScale( 1.02 )
+  TidyBar_frame_corner:SetScale( TidyBar_options.scale )
+  TidyBar_frame_corner.MicroButtons:SetAllPoints( TidyBar_frame_corner )
+  TidyBar_frame_corner.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
+  TidyBar_frame_corner.BagButtonFrame:SetHeight( 64 )
+  TidyBar_frame_corner.BagButtonFrame:SetWidth( 256 )
+  TidyBar_frame_corner.BagButtonFrame:SetScale( 1.02 )
   
   -- Setup the Corner Menu Mouseover frame
-  TidyBar_corner_frame:SetPoint( 'BottomRight', WORLDFRAME, 'BottomRight' )
-  TidyBar_corner_frame:SetScript( 'OnEnter', function() TidyBar_corner_frame:SetAlpha( 1 ) end )
-  TidyBar_corner_frame:SetScript( 'OnLeave', function() TidyBar_corner_frame:SetAlpha( 0 ) end )
+  TidyBar_frame_corner:SetPoint( 'BottomRight', WORLDFRAME, 'BottomRight' )
+  TidyBar_frame_corner:SetScript( 'OnEnter', function() TidyBar_frame_corner:SetAlpha( 1 ) end )
+  TidyBar_frame_corner:SetScript( 'OnLeave', function() TidyBar_frame_corner:SetAlpha( 0 ) end )
 end
 
 
@@ -236,7 +224,7 @@ local function TidyBar_refresh_vehicle()
   -- Repositioning these here is a bad idea.
   -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
   --MainMenuMicroButton:ClearAllPoints()
-  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_corner_frame, 'BottomRight' )
+  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner, 'BottomRight' )
 
   OverrideActionBar:SetWidth( bar_width )
 
@@ -359,10 +347,27 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar:ClearAllPoints()
 
+    ArtifactWatchBar.StatusBar:ClearAllPoints()
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
     -- For reasons unknown, this doesn't stick at max level:
     ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-    ArtifactWatchBar.StatusBar:ClearAllPoints()
+    --do  --  experimentation
+    ---- This doesn't seem to do anything, but I'm leaving it in for testing
+    ----ArtifactWatchBar.StatusBar:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height ) end )
+    ---- Attempting to force some other things..
+    ----ArtifactWatchBar.StatusBar.BarGain:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar.BarGain:SetHeight( TidyBar_options.bar_height ) end )
+    ----ArtifactWatchBar.StatusBar.Overlay:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar.Overlay:SetHeight( TidyBar_options.bar_height ) end )
+
+    --ArtifactWatchBar.StatusBar.BarGain:SetHeight( TidyBar_options.bar_height )
+    --ArtifactWatchBar.StatusBar.BarTexture:SetHeight( TidyBar_options.bar_height )
+    --ArtifactWatchBar.StatusBar.Overlay:SetHeight( TidyBar_options.bar_height )
+    --ArtifactWatchBar.StatusBar.Underlay:SetHeight( TidyBar_options.bar_height )
+
+    --ArtifactWatchBar.StatusBar.BarTexture:SetTexture( Empty_Art )
+    --end
+
+
+
 
     ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
     ArtifactWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
@@ -403,10 +408,10 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar.XPBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture3:SetTexture( Empty_Art )
 
-    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( TidyBar_options.bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( TidyBar_options.bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( TidyBar_options.bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( 0.001 )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( 0.001 )
+    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( 0.001 )
+    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( 0.001 )
 
     ArtifactWatchBar.StatusBar.XPBarTexture0:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture1:Hide()
@@ -431,9 +436,10 @@ local function TidyBar_refresh_main_area()
 
 
   do  --  ReputationWatchBar
-    ReputationWatchBar:SetWidth( bar_width )
-    ReputationWatchBar:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar:ClearAllPoints()
+
+    ReputationWatchBar:SetWidth( bar_width )
+    --ReputationWatchBar:SetHeight( TidyBar_options.bar_height )
 
     ReputationWatchBar.StatusBar:SetWidth( bar_width )
     ReputationWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
@@ -668,10 +674,10 @@ local function TidyBar_refresh_main_area()
     else
       ReputationWatchBar:SetPoint( 'BottomLeft', anchor,           'TopLeft', 0, ReputationWatchBar_bar_spacing )
     end
-    ReputationWatchBar.StatusBar:SetPoint(         'Top', ReputationWatchBar )
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'Top', ReputationWatchBar )
-    ReputationWatchBar.OverlayFrame:SetPoint(      'Top', ReputationWatchBar )
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'Top', ReputationWatchBar )
+    ReputationWatchBar.StatusBar:SetPoint(         'BottomLeft', ReputationWatchBar, 'BottomLeft' )
+    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
+    ReputationWatchBar.OverlayFrame:SetPoint(      'BottomLeft', ReputationWatchBar, 'BottomLeft' )
+    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
 
     ReputationWatchBar.StatusBar.WatchBarTexture0:Hide()
     ReputationWatchBar.StatusBar.WatchBarTexture1:Hide()
@@ -720,17 +726,28 @@ local function TidyBar_setup_main_area()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_main_area()' )
   end
+
+  -- Fixes #54 reputation bar jumping.
   if TidyBar_character_is_max_level then
-    ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
-      -- Should solve the below occasional login error.
+    ReputationWatchBar:HookScript( 'OnUpdate', function()
       if InCombatLockdown() then return end
-      -- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
-      ArtifactWatchBar.StatusBar:SetHeight( 8 )
+      TidyBar_refresh_main_area()
     end )
   end
+
+
+  -- It looks like this is no longer necessary.
+  --if TidyBar_character_is_max_level then
+    --ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
+      ---- Should solve the below occasional login error.
+      --if InCombatLockdown() then return end
+      ---- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
+      --ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
+    --end )
+  --end
 end
 
-
+--_G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
 
 
 function TidyBar_refresh_everything()
@@ -754,6 +771,8 @@ end
 
 
 
+TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
+TidyBar:SetFrameStrata( 'TOOLTIP' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 TidyBar:SetScript( 'OnEvent', function( self )
  self:Show()
@@ -763,24 +782,42 @@ TidyBar:SetScript( 'OnEvent', function( self )
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup()' )
   end
-  local comparison = tostring( UnitLevel( 'player' ) ) .. '/' .. tostring( MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] )
-  if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
-    TidyBar_character_is_max_level = true
-    if TidyBar_options.debug then
-      print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
-    end
-  else
-    TidyBar_character_is_max_level = false
-    if not TidyBar_options.debug then
-      print( 'TidyBar:  Character level ' .. comparison )
+
+  do  --  learn if max level
+    local comparison = tostring( UnitLevel( 'player' ) ) .. '/' .. tostring( MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] )
+    if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
+      TidyBar_character_is_max_level = true
+      if TidyBar_options.debug then
+        print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
+      end
+    else
+      TidyBar_character_is_max_level = false
+      if not TidyBar_options.debug then
+        print( 'TidyBar:  Character level ' .. comparison )
+      end
     end
   end
 
-  TidyBar_setup_corner()
-  TidyBar_setup_side()
-  TidyBar_setup_options_pane()
-  TidyBar_setup_vehicle()
-  TidyBar_setup_main_area()
+  do  --  Create and set up the secondary frames.
+    TidyBar_frame_side                  = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
+    TidyBar_frame_corner                = CreateFrame( 'Frame', 'TidyBar_frame_corner', UIParent )
+    TidyBar_frame_corner.MicroButtons   = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
+    TidyBar_frame_corner.BagButtonFrame = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
+
+    TidyBar_frame_side:EnableMouse()
+    TidyBar_frame_corner:EnableMouse()
+
+    TidyBar_frame_side:SetFrameStrata(   'BACKGROUND' )
+    TidyBar_frame_corner:SetFrameStrata( 'BACKGROUND' )
+  end
+
+  do  --  Set up the various components of TidyBar.
+    TidyBar_setup_corner()
+    TidyBar_setup_side()
+    TidyBar_setup_options_pane()
+    TidyBar_setup_vehicle()
+    TidyBar_setup_main_area()
+  end
   -- I can't get this to work..
   --TidyBar_refresh_everything()
 
@@ -788,7 +825,7 @@ TidyBar:SetScript( 'OnEvent', function( self )
   -- This SetScript removes the jumpiness when un-checking a reputation's "Show as Experience Bar", but ends up reversing what the checkbox means.
   --ReputationWatchBar:SetScript( 'OnEvent', TidyBar_refresh_main_area )
   -- .. whereas HookScript is just a big mess:
-  --ReputationWatchBar:HookScript( 'OnEvent', TidyBar_refresh_main_area )
+  ReputationWatchBar:HookScript( 'OnEvent', TidyBar_refresh_main_area )
 
 
 
@@ -826,4 +863,4 @@ TidyBar:SetScript( 'OnEvent', function( self )
 
   SLASH_TIDYBAR1 = '/tidybar'
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
-end)
+end )
