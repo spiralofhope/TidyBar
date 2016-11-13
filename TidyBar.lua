@@ -436,10 +436,22 @@ local function TidyBar_refresh_main_area()
 
 
   do  --  ReputationWatchBar
-    ReputationWatchBar:ClearAllPoints()
 
+    local function testing( frame )
+      print( frame )
+      --_G[ frame ]:ClearAllPoints()
+      _G[ frame ]:SetWidth( bar_width )
+      _G[ frame ]:SetHeight( TidyBar_options.bar_height )
+    end
+
+--testing( 'ReputationWatchBar' )
+--testing( 'ReputationWatchBar.StatusBar' )
+--testing( 'ReputationWatchBar.StatusBar.BarGlow' )
+--testing( 'ReputationWatchBar.OverlayFrame' )
+
+    ReputationWatchBar:ClearAllPoints()
     ReputationWatchBar:SetWidth( bar_width )
-    --ReputationWatchBar:SetHeight( TidyBar_options.bar_height )
+    ReputationWatchBar:SetHeight( TidyBar_options.bar_height )
 
     ReputationWatchBar.StatusBar:SetWidth( bar_width )
     ReputationWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
@@ -728,26 +740,23 @@ local function TidyBar_setup_main_area()
   end
 
   -- Fixes #54 reputation bar jumping.
+  -- Though throttled, oh god is this a harsh solution.
+  local TidyBar_TimeSinceLastUpdate = 0
+  local percentage_of_fps = 100
   if TidyBar_character_is_max_level then
-    ReputationWatchBar:HookScript( 'OnUpdate', function()
+    WorldFrame:HookScript( 'OnUpdate', function()
       if InCombatLockdown() then return end
-      TidyBar_refresh_main_area()
-    end )
-  end
-
-
-  -- It looks like this is no longer necessary.
-  --if TidyBar_character_is_max_level then
-    --ArtifactWatchBar.StatusBar:HookScript( 'OnUpdate', function()
-      ---- Should solve the below occasional login error.
-      --if InCombatLockdown() then return end
-      ---- Occasionally throws an error (protected function) when entering combat while having recently logged-in.
-      --ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-    --end )
-  --end
+      local __, relativeTo, __, __, __ = ReputationWatchBar:GetPoint()
+      if not relativeTo == MainMenuBar then return end
+      TidyBar_TimeSinceLastUpdate = TidyBar_TimeSinceLastUpdate + percentage_of_fps + 1
+      if ( TidyBar_TimeSinceLastUpdate > 100 ) then
+        --print( GetTime() )
+        TidyBar_refresh_main_area()
+        TidyBar_TimeSinceLastUpdate = 0
+      end
+    end ) -- HookScript
+  end -- if TidyBar_character_is_max_level
 end
-
---_G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
 
 
 function TidyBar_refresh_everything()
@@ -775,6 +784,11 @@ TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 TidyBar:SetFrameStrata( 'TOOLTIP' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 TidyBar:SetScript( 'OnEvent', function( self )
+
+
+TidyBar_UpdateInterval = 1.0
+
+
  self:Show()
   if TidyBar_options.debug then
     print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
@@ -856,11 +870,8 @@ TidyBar:SetScript( 'OnEvent', function( self )
   -- FIXME - Isn't this a terrible, terrible, idea?
   hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_refresh_everything )
 
-
-
-  -- Start Tidy Bar
-  --TidyBar:Show()
-
-  SLASH_TIDYBAR1 = '/tidybar'
-  SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
+  -- Slash commands are added bulk.
+  -- Shift-up/down will do the same thing.
+  --SLASH_TIDYBAR1 = '/tidybar'
+  --SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
 end )
