@@ -1,23 +1,5 @@
-﻿do  --  Defaults
-  TidyBar_options = {}
-  TidyBar_options.show_experience_bar = true
-  TidyBar_options.show_artifact_power_bar = true
-  TidyBar_options.show_honor_bar = true
-  TidyBar_options.show_gryphons = false
-  TidyBar_options.hide_side_on_mouseout = true
-  TidyBar_options.show_MainMenuBar_textured_background = false
-  TidyBar_options.show_macro_text = false
-  TidyBar_options.scale = 1
-  TidyBar_options.bar_spacing = 4
-  TidyBar_options.main_area_positioning = 425
-  TidyBar_options.debug = false
-  TidyBar_options.bar_height = 8
-end
-
-
-local can_display_artifact_bar = nil
-local bar_width  = 500
-
+﻿--  Technically adjustable, but I don't want to support that without a request.
+local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
 local MenuButtonFrames = {
   CharacterMicroButton,     -- Character Info
@@ -33,11 +15,8 @@ local MenuButtonFrames = {
   MainMenuMicroButton,      -- Game Menu
 }
 
---  Technically adjustable, but I don't want to support that without a request.
-local Empty_Art              = 'Interface/Addons/TidyBar/empty'
-
-
-
+local can_display_artifact_bar = nil
+local bar_width  = 500
 
 
 
@@ -349,25 +328,7 @@ local function TidyBar_refresh_main_area()
 
     ArtifactWatchBar.StatusBar:ClearAllPoints()
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
-    -- For reasons unknown, this doesn't stick at max level:
     ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-    --do  --  experimentation
-    ---- This doesn't seem to do anything, but I'm leaving it in for testing
-    ----ArtifactWatchBar.StatusBar:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height ) end )
-    ---- Attempting to force some other things..
-    ----ArtifactWatchBar.StatusBar.BarGain:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar.BarGain:SetHeight( TidyBar_options.bar_height ) end )
-    ----ArtifactWatchBar.StatusBar.Overlay:HookScript( 'OnEvent', function() ArtifactWatchBar.StatusBar.Overlay:SetHeight( TidyBar_options.bar_height ) end )
-
-    --ArtifactWatchBar.StatusBar.BarGain:SetHeight( TidyBar_options.bar_height )
-    --ArtifactWatchBar.StatusBar.BarTexture:SetHeight( TidyBar_options.bar_height )
-    --ArtifactWatchBar.StatusBar.Overlay:SetHeight( TidyBar_options.bar_height )
-    --ArtifactWatchBar.StatusBar.Underlay:SetHeight( TidyBar_options.bar_height )
-
-    --ArtifactWatchBar.StatusBar.BarTexture:SetTexture( Empty_Art )
-    --end
-
-
-
 
     ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
     ArtifactWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
@@ -745,7 +706,8 @@ local function TidyBar_setup_main_area()
   local percentage_of_fps = 100
   if TidyBar_character_is_max_level then
     WorldFrame:HookScript( 'OnUpdate', function()
-      if InCombatLockdown() then return end
+      -- TESTING - I wonder if this is needed.
+      --if InCombatLockdown() then return end
       local __, relativeTo, __, __, __ = ReputationWatchBar:GetPoint()
       if not relativeTo == MainMenuBar then return end
       TidyBar_TimeSinceLastUpdate = TidyBar_TimeSinceLastUpdate + percentage_of_fps + 1
@@ -763,16 +725,19 @@ function TidyBar_refresh_everything()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_refresh_everything()' )
   end
-  if InCombatLockdown() then
-    if TidyBar_options.debug then
-      print( 'TidyBar:  In combat, skipping.' )
-    end
-    return
-  end
+  -- TESTING - I wonder if this is needed.
+  --if InCombatLockdown() then
+    --if TidyBar_options.debug then
+      --print( 'TidyBar:  In combat, skipping.' )
+    --end
+    --return
+  --end
   TidyBar_refresh_main_area()
-  -- FIXME - I want to remove this, it's bad code.
+  -- FIXME - I want to remove this, it's bad code.q
   -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
+  -- :
   TidyBar_setup_side()
+
   TidyBar_refresh_vehicle()
   TidyBar_refresh_corner()
   TidyBar_refresh_side( false )
@@ -784,17 +749,33 @@ TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 TidyBar:SetFrameStrata( 'TOOLTIP' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 TidyBar:SetScript( 'OnEvent', function( self )
-
-
-TidyBar_UpdateInterval = 1.0
-
-
  self:Show()
   if TidyBar_options.debug then
     print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
-  end
-  if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup()' )
+  end
+
+  -- Defaults
+  if TidyBar_options == nil then
+    print( 'Welcome to TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. '!  Defaults have been set.  See Interface > Addons > TidyBar to configure.' )
+    TidyBar_options = {}
+    TidyBar_options.show_experience_bar = true
+    TidyBar_options.show_artifact_power_bar = true
+    TidyBar_options.show_honor_bar = true
+    TidyBar_options.show_gryphons = false
+    TidyBar_options.hide_side_on_mouseout = true
+    TidyBar_options.show_MainMenuBar_textured_background = false
+    TidyBar_options.show_macro_text = false
+    for button=1, #bars do
+      for i=1,12 do
+        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Hide()
+      end
+    end
+    TidyBar_options.scale = 1
+    TidyBar_options.bar_spacing = 4
+    TidyBar_options.main_area_positioning = 425
+    TidyBar_options.debug = false
+    TidyBar_options.bar_height = 8
   end
 
   do  --  learn if max level
@@ -832,8 +813,6 @@ TidyBar_UpdateInterval = 1.0
     TidyBar_setup_vehicle()
     TidyBar_setup_main_area()
   end
-  -- I can't get this to work..
-  --TidyBar_refresh_everything()
 
   -- Call Update Function when the default UI makes changes
   -- FIXME - Isn't this a terrible, terrible, idea?
