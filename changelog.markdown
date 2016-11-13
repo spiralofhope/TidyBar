@@ -7,6 +7,7 @@
 
 ### 7.1.0.2 beta
 
+- Fixed #43 and #54 related to the bars resetting and repositioning under certain circumstances.
 - Fixed the feature to show/hide macro text on buttons.
 - Implemented bar height customization.
 - Thinned-down the vehicle health and power bars.
