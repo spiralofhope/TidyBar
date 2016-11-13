@@ -11,16 +11,12 @@
   TidyBar_options.bar_spacing = 4
   TidyBar_options.main_area_positioning = 425
   TidyBar_options.debug = false
+  TidyBar_options.bar_height = 8
 end
-
 
 
 local can_display_artifact_bar = nil
 local bar_width  = 500
---  Technically adjustable, but I don't want to support that without a request.
-local bar_height = 8
-
-
 
 
 local MenuButtonFrames = {
@@ -263,7 +259,7 @@ local function TidyBar_refresh_vehicle()
   OverrideActionBarPowerBarBackground:Hide()
 
   OverrideActionBarExpBar:ClearAllPoints()
-  OverrideActionBarExpBar:SetHeight( bar_height )
+  OverrideActionBarExpBar:SetHeight( TidyBar_options.bar_height )
   OverrideActionBarExpBar:SetWidth( bar_width )
   OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
   --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
@@ -323,11 +319,11 @@ local function TidyBar_refresh_main_area()
 
   do  --  MainMenuExpBar
     MainMenuExpBar:SetWidth( bar_width )
-    MainMenuExpBar:SetHeight( bar_height )
+    MainMenuExpBar:SetHeight( TidyBar_options.bar_height )
     MainMenuExpBar:ClearAllPoints()
 
     MainMenuBarExpText:SetWidth( bar_width )
-    MainMenuBarExpText:SetHeight( bar_height )
+    MainMenuBarExpText:SetHeight( TidyBar_options.bar_height )
     MainMenuBarExpText:ClearAllPoints()
 
     -- The "zomg I killed a wolf" animation.
@@ -360,23 +356,23 @@ local function TidyBar_refresh_main_area()
     end
 
     ArtifactWatchBar:SetWidth( bar_width )
-    ArtifactWatchBar:SetHeight( bar_height )
+    ArtifactWatchBar:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar:ClearAllPoints()
 
     ArtifactWatchBar.StatusBar:SetWidth( bar_width )
     -- For reasons unknown, this doesn't stick at max level:
-    ArtifactWatchBar.StatusBar:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar.StatusBar:ClearAllPoints()
 
     ArtifactWatchBar.OverlayFrame:SetWidth( bar_width )
-    ArtifactWatchBar.OverlayFrame:SetHeight( bar_height )
+    ArtifactWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar.OverlayFrame:ClearAllPoints()
 
     ArtifactWatchBar.OverlayFrame.Text:SetWidth( bar_width )
-    ArtifactWatchBar.OverlayFrame.Text:SetHeight( bar_height )
+    ArtifactWatchBar.OverlayFrame.Text:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar.OverlayFrame.Text:ClearAllPoints()
 
-    ArtifactWatchBar.StatusBar.Background:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.Background:SetHeight( TidyBar_options.bar_height )
     ArtifactWatchBar.StatusBar.Background:SetWidth( bar_width )
     ArtifactWatchBar.StatusBar.Background:ClearAllPoints()
 
@@ -397,20 +393,20 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
     ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
 
-    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( TidyBar_options.bar_height )
 
     ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture2:SetTexture( Empty_Art )
     ArtifactWatchBar.StatusBar.XPBarTexture3:SetTexture( Empty_Art )
 
-    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( bar_height )
-    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture0:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture1:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture2:SetHeight( TidyBar_options.bar_height )
+    ArtifactWatchBar.StatusBar.XPBarTexture3:SetHeight( TidyBar_options.bar_height )
 
     ArtifactWatchBar.StatusBar.XPBarTexture0:Hide()
     ArtifactWatchBar.StatusBar.XPBarTexture1:Hide()
@@ -421,35 +417,35 @@ local function TidyBar_refresh_main_area()
 
   do  --  HonorWatchBar
     HonorWatchBar:SetWidth( bar_width )
-    HonorWatchBar:SetHeight( bar_height )
+    HonorWatchBar:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar:ClearAllPoints()
 
     HonorWatchBar.StatusBar:SetWidth( bar_width )
-    HonorWatchBar.StatusBar:SetHeight( bar_height )
+    HonorWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.StatusBar:ClearAllPoints()
 
     HonorWatchBar.StatusBar.Background:SetWidth( bar_width )
-    HonorWatchBar.StatusBar.Background:SetHeight( bar_height )
+    HonorWatchBar.StatusBar.Background:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.StatusBar.Background:ClearAllPoints()
   end
 
 
   do  --  ReputationWatchBar
     ReputationWatchBar:SetWidth( bar_width )
-    ReputationWatchBar:SetHeight( bar_height )
+    ReputationWatchBar:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar:ClearAllPoints()
 
     ReputationWatchBar.StatusBar:SetWidth( bar_width )
-    ReputationWatchBar.StatusBar:SetHeight( bar_height )
+    ReputationWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar.StatusBar:ClearAllPoints()
 
-    ReputationWatchBar.StatusBar.BarGlow:SetHeight( bar_height )
+    ReputationWatchBar.StatusBar.BarGlow:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar.StatusBar.BarGlow:ClearAllPoints()
 
-    ReputationWatchBar.OverlayFrame:SetHeight( bar_height )
+    ReputationWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar.OverlayFrame:ClearAllPoints()
 
-    ReputationWatchBar.OverlayFrame.Text:SetHeight( bar_height )
+    ReputationWatchBar.OverlayFrame.Text:SetHeight( TidyBar_options.bar_height )
     ReputationWatchBar.OverlayFrame.Text:ClearAllPoints()
 
     ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
@@ -504,7 +500,7 @@ local function TidyBar_refresh_main_area()
   MainMenuBar:ClearAllPoints()
   MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
-  local function show_macro_text( alpha )
+  do  --  TidyBar_options.show_macro_text
     local bars={
       'MultiBarBottomLeft',
       'MultiBarBottomRight',
@@ -514,14 +510,13 @@ local function TidyBar_refresh_main_area()
     }
     for button=1, #bars do
       for i=1,12 do
-        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Hide()
+        if TidyBar_options.show_macro_text then
+          _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Show()
+        else
+          _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Hide()
+        end
       end
     end
-  end
-  if TidyBar_options.show_macro_text then
-    show_macro_text( 1 )
-  else
-    show_macro_text( 0 )
   end
 
 
@@ -596,7 +591,7 @@ local function TidyBar_refresh_main_area()
 
     if TidyBar_character_is_max_level then
       -- For reasons unknown, this doesn't stick at max level:
-      ArtifactWatchBar.StatusBar:SetHeight( bar_height )
+      ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
       ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
@@ -628,13 +623,13 @@ local function TidyBar_refresh_main_area()
     HonorWatchBar.OverlayFrame:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
 
     -- This may not be a thing
-    HonorWatchBar.StatusBar.BarGlow:SetHeight( bar_height )
+    HonorWatchBar.StatusBar.BarGlow:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.StatusBar.BarGlow:ClearAllPoints()
 
-    HonorWatchBar.OverlayFrame:SetHeight( bar_height )
+    HonorWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.OverlayFrame:ClearAllPoints()
 
-    HonorWatchBar.OverlayFrame.Text:SetHeight( bar_height )
+    HonorWatchBar.OverlayFrame.Text:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.OverlayFrame.Text:ClearAllPoints()
 
     HonorWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
@@ -661,7 +656,7 @@ local function TidyBar_refresh_main_area()
       bar_spacing = 0
     end
 
-    ReputationWatchBar.StatusBar:SetHeight( bar_height )
+    ReputationWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
 
     if TidyBar_options.show_experience_bar then
       ReputationWatchBar_bar_spacing = 0
@@ -759,7 +754,9 @@ end
 
 
 
-local function TidyBar_setup()
+TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
+TidyBar:SetScript( 'OnEvent', function( self )
+ self:Show()
   if TidyBar_options.debug then
     print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
   end
@@ -825,10 +822,8 @@ local function TidyBar_setup()
 
 
   -- Start Tidy Bar
-  TidyBar:Show()
+  --TidyBar:Show()
 
   SLASH_TIDYBAR1 = '/tidybar'
   SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
-end
-TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
-TidyBar:SetScript( 'OnEvent', TidyBar_setup() )
+end)

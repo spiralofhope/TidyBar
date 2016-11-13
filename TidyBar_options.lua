@@ -190,10 +190,15 @@ do  --  TidyBar_options.show_macro_text
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show macro text' )
   CheckButton.tooltipText = 'For any macros dragged out into any bar, show its name.'
+print ( '---' )
+print ( '1  --  ' .. tostring( TidyBar_options.show_macro_text ) )
   CheckButton:SetChecked( TidyBar_options.show_macro_text )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
+print ( '2  --  ' .. tostring( TidyBar_options.show_macro_text ) )
       TidyBar_options.show_macro_text = true
+print ( '3  --  ' .. tostring( TidyBar_options.show_macro_text ) )
+print ( '---' )
     else
       TidyBar_options.show_macro_text = false
     end
@@ -273,6 +278,44 @@ do  --  TidyBar_options.bar_spacing
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.bar_spacing = ( 4 * TidyBar_options.scale )
     bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
+    TidyBar_refresh_everything()
+  end)
+end
+
+
+
+space()
+
+
+
+do  --  TidyBar_options.bar_height
+  position = position + 1
+  local main_area_positioning_slider
+  main_area_positioning_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_height', TidyBarPanel, 'OptionsSliderTemplate' )
+  main_area_positioning_slider:SetPoint( 'TopLeft', 20, -20 * position )
+  getglobal( main_area_positioning_slider:GetName() .. 'Text' ):SetText( 'Bar height' )
+  main_area_positioning_slider.tooltipText = 'The height of the experience, reputation, honor and artifact bars.'
+  main_area_positioning_slider:SetMinMaxValues( 1, 24 )
+  main_area_positioning_slider:SetValueStep( 1 )
+  main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
+  main_area_positioning_slider:SetScript( 'OnValueChanged', function()
+    TidyBar_options.bar_height = main_area_positioning_slider:GetValue()
+    TidyBar_refresh_everything()
+    if TidyBar_options.debug then
+      print( 'TidyBar_options.main_area_positioning ' .. tostring( TidyBar_options.bar_height ) )
+    end
+  end)
+
+
+  position = position + 1
+  local Button
+  Button = CreateFrame( 'Button', 'TidyBar_options.bar_height2', TidyBarPanel, 'OptionsButtonTemplate' )
+  Button:SetPoint( 'TopLeft', 20, -20 * position )
+  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
+  Button.tooltipText = 'Reset the bar height to 8.'
+  Button:SetScript( 'OnClick', function( self )
+    TidyBar_options.bar_height = 8
+    main_area_positioning_slider:SetValue( TidyBar_options.bar_height )
     TidyBar_refresh_everything()
   end)
 end

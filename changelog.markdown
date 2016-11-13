@@ -7,6 +7,9 @@
 
 ### 7.1.0.2 beta
 
+- Fixed the feature to show/hide macro text on buttons.
+- I think TidyBar may have been broken for users who were not max level.
+- Implemented bar height customization.
 - Thinned-down the vehicle health and power bars.
 - Fixed #50 - Fix jumping main area
 - Fixed the side not toggling correctly when set/unset in the options panel.
