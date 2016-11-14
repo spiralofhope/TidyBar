@@ -5,6 +5,10 @@
 
 ## 7.1 series
 
+### 7.1.0.4 beta
+
+- Code cleanup and style improvements.
+
 ### 7.1.0.3
 
 - Fixed the experience bar appearing with a max-level character.

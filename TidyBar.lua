@@ -50,7 +50,7 @@ local function hide_more( thing )
 end
 
 local function frame_debug_overlay( frame )
-  if not TidyBar_options.debug then return nil end
+  if not TidyBar_options.debug then return end
   local frame = frame:CreateTexture( nil, 'BACKGROUND' )
         frame:SetAllPoints()
         frame:SetColorTexture( 1, 1, 1, 0.2 )
@@ -63,13 +63,41 @@ local function debug( text )
 end
 
 
+
 local function TidyBar_refresh_side( mouse_inside )
+  if not MultiBarRight:IsShown() then
+    -- if MultiBarRight isn't there, then neither is MultiBarLeft.  May as well hide TidyBar_frame_side. 
+    TidyBar_frame_side:Hide()
+    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+    return
+  end
+
   debug( ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
   -- Oh god, all the verbosities:
   --debug( ' TidyBar_refresh_side()' )
-  --print( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
-  --print( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
-  --print( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
+  --debug( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
+  --debug( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
+  --debug( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
+
+  TidyBar_frame_side:Show()
+
+  MultiBarRight:ClearAllPoints()
+  MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+
+  TidyBar_frame_side:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
+
+  if MultiBarLeft:IsShown() then
+    TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
+  else
+    TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
+  end
+
+  -- Doing this somehow reduces the height of the objective tracker, showing only a few items:
+  --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
+  -- Yes, this shifts the objectives tracker over, leaving space on the right.  I am not happy about this.
+  --   However, this is what is needed, because the user needs to click the right of the tracker for any quest-actions.  Hovering the mouse over those items would then shift the objectives tracker, making it impossible to click them!
+  _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
+
   local Alpha = 0
   if    mouse_inside
     or  TidyBar_options.always_show_side
@@ -105,40 +133,7 @@ local function TidyBar_setup_side()
     for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
     for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
   end
-
-  if MultiBarRight:IsShown() then
-    MultiBarRight:ClearAllPoints()
-    MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    TidyBar_frame_side:Show()
-    MultiBarRight:EnableMouse()
-    TidyBar_frame_side:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
-    -- Right Bar 2
-    -- Note that if MultiBarRight is not enabled, MultiBarLeft cannot be enabled.
-    if MultiBarLeft:IsShown() then
-      MultiBarLeft:ClearAllPoints()
-      MultiBarLeft:SetPoint( 'TopRight', MultiBarRight, 'TopLeft' )
-      MultiBarLeft:EnableMouse()
-      TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
-    else
-      TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
-    end
-  else
-    TidyBar_frame_side:Hide()
-  end
-
-  if TidyBar_frame_side:IsShown() then
-    -- Doing this somehow reduces the height of the objective tracker, showing only a few items:
-    --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-    -- Yes, this shifts the objectives tracker over, leaving space on the right.  I am not happy about this.
-    --   However, this is what is needed, because the user needs to click the right of the tracker for any quest-actions.  Hovering the mouse over those items would then shift the objectives tracker, making it impossible to click them!
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
-  else
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-  end
 end
-
-
-
 
 
 
@@ -225,8 +220,8 @@ end
 
 
 local function TidyBar_refresh_vehicle()
-  debug( ' TidyBar_refresh_vehicle()' )
   if not UnitHasVehicleUI( 'player' ) then return nil end
+  debug( ' TidyBar_refresh_vehicle()' )
   -- This works, but it's useless if I can't reposition them.
   --LFDMicroButton:ClearAllPoints()
   --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
@@ -268,7 +263,9 @@ local function TidyBar_refresh_vehicle()
 end
 
 local function TidyBar_setup_vehicle()
+  debug()
   debug( ' TidyBar_setup_vehicle()' )
+  debug()
   hide( OverrideActionBarEndCapL )
   hide( OverrideActionBarEndCapR )
 
@@ -294,8 +291,6 @@ local function TidyBar_setup_vehicle()
     hide( _G[ 'OverrideActionBarXpDiv' .. i ] )
   end
 end
-
-
 
 
 
@@ -669,13 +664,9 @@ local function TidyBar_setup_main_area()
 end
 
 
+
 function TidyBar_refresh_everything()
   debug( ' TidyBar_refresh_everything()' )
-  -- TESTING - I wonder if this is needed.
-  --if InCombatLockdown() then
-    --debug( 'TidyBar:  In combat, skipping.' )
-    --return
-  --end
   TidyBar_refresh_main_area()
   -- FIXME - I want to remove this, it's bad code.
   -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
@@ -685,11 +676,14 @@ function TidyBar_refresh_everything()
   TidyBar_refresh_vehicle()
   TidyBar_refresh_corner()
   TidyBar_refresh_side( false )
+
+  -- FIXME - the overlay is missing without this.
+  --TidyBar_setup_side()
 end
 
 
+
 TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
-frame_debug_overlay( TidyBar )  --  This shouldn't display anything.
 TidyBar:SetFrameStrata( 'BACKGROUND' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 --TidyBar:RegisterEvent( 'ADDON_LOADED' )
@@ -716,16 +710,16 @@ TidyBar:SetScript( 'OnEvent', function( self )
     TidyBar_frame_corner.MicroButtons   = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
     TidyBar_frame_corner.BagButtonFrame = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
 
-    frame_debug_overlay( TidyBar_frame_side )
-    frame_debug_overlay( TidyBar_frame_corner )
-    frame_debug_overlay( TidyBar_frame_corner.MicroButtons )
-    frame_debug_overlay( TidyBar_frame_corner.BagButtonFrame )
-
     TidyBar_frame_side:EnableMouse()
     TidyBar_frame_corner:EnableMouse()
 
     TidyBar_frame_side:SetFrameStrata(   'BACKGROUND' )
     TidyBar_frame_corner:SetFrameStrata( 'BACKGROUND' )
+
+    frame_debug_overlay( TidyBar_frame_side )
+    frame_debug_overlay( TidyBar_frame_corner )
+    frame_debug_overlay( TidyBar_frame_corner.MicroButtons )
+    frame_debug_overlay( TidyBar_frame_corner.BagButtonFrame )
   end
 
   do  --  Set up the various components of TidyBar.
