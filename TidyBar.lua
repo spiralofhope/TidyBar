@@ -85,18 +85,26 @@ local function TidyBar_refresh_side( mouse_inside )
   end
 end
 
--- FIXME - this is fired every time I mount!
-local function TidyBar_SetScript_frame_side( frameTarget )
-  -- Spammy
-  --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
-  frameTarget:SetScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
-  frameTarget:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
-end
-
 local function TidyBar_setup_side()
   debug()
   debug( ' TidyBar_setup_side()' )
   debug()
+
+  do  --  mouse in/out
+    local function TidyBar_SetScript_frame_side( frame )
+      -- Spammy
+      --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frame ) .. ' )' )
+      frame:SetScript( 'OnEnter', function() TidyBar_refresh_side( true  ) end )
+      frame:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
+    end
+
+    TidyBar_frame_side:EnableMouse()
+    TidyBar_SetScript_frame_side( TidyBar_frame_side )
+    TidyBar_SetScript_frame_side( MultiBarRight )
+    TidyBar_SetScript_frame_side( MultiBarLeft )
+    for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
+    for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
+  end
 
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
@@ -127,14 +135,6 @@ local function TidyBar_setup_side()
   else
     _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
   end
-
-  TidyBar_frame_side:EnableMouse()
-  TidyBar_frame_side:SetScript( 'OnEnter', function() TidyBar_refresh_side( true )  end )
-  TidyBar_frame_side:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
-  TidyBar_SetScript_frame_side( MultiBarRight )
-  TidyBar_SetScript_frame_side( MultiBarLeft )
-  for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
-  for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
 end
 
 
@@ -177,7 +177,9 @@ local function TidyBar_refresh_corner()
 end
 
 local function TidyBar_setup_corner()
+  debug()
   debug( ' TidyBar_setup_corner()' )
+  debug()
 
   local BagButtonFrameList = {
     MainMenuBarBackpackButton,
@@ -675,10 +677,10 @@ function TidyBar_refresh_everything()
     --return
   --end
   TidyBar_refresh_main_area()
-  -- FIXME - I want to remove this, it's bad code.q
+  -- FIXME - I want to remove this, it's bad code.
   -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
   -- :
-  TidyBar_setup_side()
+  --TidyBar_setup_side()
 
   TidyBar_refresh_vehicle()
   TidyBar_refresh_corner()
