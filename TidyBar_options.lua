@@ -190,15 +190,10 @@ do  --  TidyBar_options.show_macro_text
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show macro text' )
   CheckButton.tooltipText = 'For any macros dragged out into any bar, show its name.'
-print ( '---' )
-print ( '1  --  ' .. tostring( TidyBar_options.show_macro_text ) )
   CheckButton:SetChecked( TidyBar_options.show_macro_text )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
-print ( '2  --  ' .. tostring( TidyBar_options.show_macro_text ) )
       TidyBar_options.show_macro_text = true
-print ( '3  --  ' .. tostring( TidyBar_options.show_macro_text ) )
-print ( '---' )
     else
       TidyBar_options.show_macro_text = false
     end

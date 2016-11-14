@@ -348,6 +348,7 @@ local function TidyBar_refresh_main_area()
     -- If Legion
     if  GetExpansionLevel() > 5
     and UnitLevel( 'player' ) > 99
+    and C_ArtifactUI.GetEquippedArtifactInfo()
     then
       can_display_artifact_bar = true
       set_bar_dimensions( ArtifactWatchBar )
@@ -603,13 +604,6 @@ local function TidyBar_refresh_main_area()
     ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
     ReputationWatchBar.OverlayFrame:SetPoint(      'BottomLeft', ReputationWatchBar, 'BottomLeft' )
     ReputationWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
-
-    ReputationWatchBar.StatusBar.WatchBarTexture0:Hide()
-    ReputationWatchBar.StatusBar.WatchBarTexture1:Hide()
-
--- FIXME
-    ReputationWatchBar.StatusBar.WatchBarTexture2:Hide()
-    ReputationWatchBar.StatusBar.WatchBarTexture3:Hide()
 
     the_first_bar = false
     anchor = ReputationWatchBar
