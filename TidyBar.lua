@@ -38,6 +38,17 @@ local can_display_artifact_bar = nil
 local bar_width  = 500
 
 
+local function hide( thing )
+  thing:SetHeight( 0.001 )
+  thing:SetAlpha( 0 )
+  thing:Hide()
+end
+
+local function hide_more( thing )
+  hide( thing )
+  thing:SetTexture( Empty_Art )
+end
+
 
 local function TidyBar_refresh_side( mouse_inside )
   if TidyBar_options.debug then
@@ -143,14 +154,11 @@ local function TidyBar_refresh_corner()
   
   TidyBar_frame_corner:SetAlpha( 0 )
 
-  MainMenuBarTexture2:SetTexture( Empty_Art )
-  MainMenuBarTexture3:SetTexture( Empty_Art )
-  MainMenuBarTexture2:Hide()
-  MainMenuBarTexture3:Hide()
+  hide_more( MainMenuBarTexture2 )
+  hide_more( MainMenuBarTexture3 )
 
   -- The nagging talent popup
-  TalentMicroButtonAlert:SetAlpha( 0 )
-  TalentMicroButtonAlert:Hide()
+  hide( TalentMicroButtonAlert )
 
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
@@ -241,8 +249,8 @@ local function TidyBar_refresh_vehicle()
   OverrideActionBarPowerBar:SetWidth( 8 )
   OverrideActionBarHealthBarOverlay:SetWidth( 8 )
   OverrideActionBarPowerBarOverlay:SetWidth( 8 )
-  OverrideActionBarHealthBarBackground:Hide()
-  OverrideActionBarPowerBarBackground:Hide()
+  hide( OverrideActionBarHealthBarBackground )
+  hide( OverrideActionBarPowerBarBackground )
 
   OverrideActionBarExpBar:ClearAllPoints()
   OverrideActionBarExpBar:SetHeight( TidyBar_options.bar_height )
@@ -259,29 +267,29 @@ local function TidyBar_setup_vehicle()
   if TidyBar_options.debug then
     print( GetTime() .. ' TidyBar_setup_vehicle()' )
   end
-  OverrideActionBarEndCapL:Hide()
-  OverrideActionBarEndCapR:Hide()
+  hide( OverrideActionBarEndCapL )
+  hide( OverrideActionBarEndCapR )
 
-  OverrideActionBarBG:Hide()
-  OverrideActionBarMicroBGL:Hide()
-  OverrideActionBarMicroBGMid:Hide()
-  OverrideActionBarMicroBGR:Hide()
-  OverrideActionBarButtonBGL:Hide()
-  OverrideActionBarButtonBGMid:Hide()
-  OverrideActionBarButtonBGR:Hide()
+  hide( OverrideActionBarBG )
+  hide( OverrideActionBarMicroBGL )
+  hide( OverrideActionBarMicroBGMid )
+  hide( OverrideActionBarMicroBGR )
+  hide( OverrideActionBarButtonBGL )
+  hide( OverrideActionBarButtonBGMid )
+  hide( OverrideActionBarButtonBGR )
 
-  OverrideActionBarDivider2:Hide()
-  OverrideActionBarBorder:Hide()
-  OverrideActionBarLeaveFrameDivider3:Hide()
-  OverrideActionBarLeaveFrameExitBG:Hide()
+  hide( OverrideActionBarDivider2 )
+  hide( OverrideActionBarBorder )
+  hide( OverrideActionBarLeaveFrameDivider3 )
+  hide( OverrideActionBarLeaveFrameExitBG )
 
-  OverrideActionBarExpBarXpL:Hide()
-  OverrideActionBarExpBarXpMid:Hide()
-  OverrideActionBarExpBarXpR:Hide()
+  hide( OverrideActionBarExpBarXpL )
+  hide( OverrideActionBarExpBarXpMid )
+  hide( OverrideActionBarExpBarXpR )
 
   -- The vehicle XP 'bubbles'.
   for i=1,19 do
-    _G[ 'OverrideActionBarXpDiv' .. i ]:Hide()
+    hide( _G[ 'OverrideActionBarXpDiv' .. i ] )
   end
 end
 
@@ -310,12 +318,6 @@ local function TidyBar_refresh_main_area()
     bar:SetHeight( TidyBar_options.bar_height )
   end
 
-  local function hide( bar )
-    bar:SetHeight( 0.001 )
-    bar:SetAlpha( 0 )
-    bar:Hide()
-  end
-
 
   do  --  MainMenuExpBar
     set_bar_dimensions( MainMenuExpBar )
@@ -334,8 +336,7 @@ local function TidyBar_refresh_main_area()
     end
 
     do  -- The rested state
-      ExhaustionLevelFillBar:SetTexture( Empty_Art )
-      hide( ExhaustionLevelFillBar )
+      hide_more( ExhaustionLevelFillBar )
       -- Re-shows itself, but OnUpdate code elsewhere takes care of this:
       hide( ExhaustionTick )
       hide( ExhaustionTickNormal )
@@ -363,27 +364,17 @@ local function TidyBar_refresh_main_area()
       end
 
       do  --  hide ArtifactWatchBar.StatusBar.WatchBarTexture*
-        ArtifactWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-
-        hide( ArtifactWatchBar.StatusBar.WatchBarTexture0 )
-        hide( ArtifactWatchBar.StatusBar.WatchBarTexture1 )
-        hide( ArtifactWatchBar.StatusBar.WatchBarTexture2 )
-        hide( ArtifactWatchBar.StatusBar.WatchBarTexture3 )
+        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture0 )
+        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture1 )
+        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture2 )
+        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture3 )
       end
 
       do  --  hide ArtifactWatchBar.StatusBar.XPBarTexture*
-        ArtifactWatchBar.StatusBar.XPBarTexture0:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.XPBarTexture1:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.XPBarTexture2:SetTexture( Empty_Art )
-        ArtifactWatchBar.StatusBar.XPBarTexture3:SetTexture( Empty_Art )
-
-        hide( ArtifactWatchBar.StatusBar.XPBarTexture0 )
-        hide( ArtifactWatchBar.StatusBar.XPBarTexture1 )
-        hide( ArtifactWatchBar.StatusBar.XPBarTexture2 )
-        hide( ArtifactWatchBar.StatusBar.XPBarTexture3 )
+        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture0 )
+        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture1 )
+        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture2 )
+        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture3 )
       end
     end  --  can_display_artifact_bar
   end
@@ -401,15 +392,10 @@ local function TidyBar_refresh_main_area()
     set_bar_dimensions( ReputationWatchBar.OverlayFrame.Text )
     hide( ReputationWatchBar.StatusBar.BarGlow )
     do  --  hide ReputationWatchBar.StatusBar.WatchBarTexture*
-      hide( ReputationWatchBar.StatusBar.WatchBarTexture0 )
-      hide( ReputationWatchBar.StatusBar.WatchBarTexture1 )
-      hide( ReputationWatchBar.StatusBar.WatchBarTexture2 )
-      hide( ReputationWatchBar.StatusBar.WatchBarTexture3 )
-
-      ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
-      ReputationWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-      ReputationWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-      ReputationWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
+      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture0 )
+      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture1 )
+      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture2 )
+      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture3 )
     end
   end
 
@@ -431,7 +417,7 @@ local function TidyBar_refresh_main_area()
 
   -- Hide the border around buttons
   for i=1,10 do
-    _G[ 'StanceButton' .. i .. 'NormalTexture2' ]:Hide()
+    hide( _G[ 'StanceButton' .. i .. 'NormalTexture2' ] )
   end
 
   do  -- Position the gryphons
@@ -444,9 +430,7 @@ local function TidyBar_refresh_main_area()
 ----------------------------------------------------------------------
 
 
-  MainMenuBarMaxLevelBar:SetHeight( 0.001 )
-  MainMenuBarMaxLevelBar:SetAlpha( 0 )
-  MainMenuBarMaxLevelBar:Hide()
+  hide( MainMenuBarMaxLevelBar )
 
 
   MainMenuBar:SetWidth( bar_width )
@@ -543,17 +527,13 @@ local function TidyBar_refresh_main_area()
     ArtifactWatchBar.StatusBar.Background:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
 
     -- The colour underneath the ArtifactWatchBar
-    ArtifactWatchBar.StatusBar.Underlay:Hide()
+    hide( ArtifactWatchBar.StatusBar.Underlay )
 
     if TidyBar_character_is_max_level then
       -- For reasons unknown, this doesn't stick at max level:
       ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-      ArtifactWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-      ArtifactWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-      ArtifactWatchBar.StatusBar.WatchBarTexture2:Hide()
-      ArtifactWatchBar.StatusBar.WatchBarTexture3:Hide()
-      ArtifactWatchBar.StatusBar.XPBarTexture2:Hide()
-      ArtifactWatchBar.StatusBar.XPBarTexture3:Hide()
+      hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture2 )
+      hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture3 )
     end
 
     the_first_bar = false
@@ -588,15 +568,10 @@ local function TidyBar_refresh_main_area()
     HonorWatchBar.OverlayFrame.Text:SetHeight( TidyBar_options.bar_height )
     HonorWatchBar.OverlayFrame.Text:ClearAllPoints()
 
-    HonorWatchBar.StatusBar.WatchBarTexture0:SetTexture( Empty_Art )
-    HonorWatchBar.StatusBar.WatchBarTexture1:SetTexture( Empty_Art )
-    HonorWatchBar.StatusBar.WatchBarTexture2:SetTexture( Empty_Art )
-    HonorWatchBar.StatusBar.WatchBarTexture3:SetTexture( Empty_Art )
-
-    HonorWatchBar.StatusBar.WatchBarTexture0:Hide()
-    HonorWatchBar.StatusBar.WatchBarTexture1:Hide()
-    HonorWatchBar.StatusBar.WatchBarTexture2:Hide()
-    HonorWatchBar.StatusBar.WatchBarTexture3:Hide()
+    hide_more( HonorWatchBar.StatusBar.WatchBarTexture0 )
+    hide_more( HonorWatchBar.StatusBar.WatchBarTexture1 )
+    hide_more( HonorWatchBar.StatusBar.WatchBarTexture2 )
+    hide_more( HonorWatchBar.StatusBar.WatchBarTexture3 )
 
     the_first_bar = false
     anchor = ArtifactWatchBar.StatusBar
