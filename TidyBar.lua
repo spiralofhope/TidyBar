@@ -485,16 +485,15 @@ local function TidyBar_refresh_main_area()
 
 
   if      TidyBar_options.show_experience_bar
-  and     UnitXP( 'player' ) > 0
-  and not IsXPUserDisabled()
-  and not TidyBar_character_is_max_level
+  and     UnitXPMax( 'player' ) > 0
+  --and not IsXPUserDisabled()
+  --and not TidyBar_character_is_max_level
   then
     if the_first_bar then
       bar_spacing = space_between_bottom_bar_and_buttons
     else
       bar_spacing = 0
     end
-
     MainMenuExpBar:Show()
     MainMenuBarExpText:Show()
 
@@ -702,16 +701,17 @@ TidyBar:SetScript( 'OnEvent', function( self )
   end
 
   do  --  learn if max level
-    local comparison = tostring( UnitLevel( 'player' ) ) .. '/' .. tostring( MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] )
-    if UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ] then
+    local level_player    = UnitLevel( 'player' )
+    local level_expansion = MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
+    if level_player == level_expansion then
       TidyBar_character_is_max_level = true
       if TidyBar_options.debug then
-        print( 'TidyBar:  Character level ' .. comparison .. ' (max)' )
+        print( 'TidyBar:  Character level ' .. level_player .. ' (max)' )
       end
     else
       TidyBar_character_is_max_level = false
-      if not TidyBar_options.debug then
-        print( 'TidyBar:  Character level ' .. comparison )
+      if TidyBar_options.debug then
+        print( 'TidyBar:  Character level ' .. level_player .. '/' .. level_expansion )
       end
     end
   end
