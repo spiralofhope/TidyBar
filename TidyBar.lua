@@ -56,16 +56,20 @@ local function frame_debug_overlay( frame )
         frame:SetColorTexture( 1, 1, 1, 0.2 )
 end
 
+local function debug( text )
+  if not TidyBar_options.debug then return end
+  if not text then text = '' end
+  print( 'TidyBar - ' .. GetTime() .. ' - ' .. text )
+end
+
 
 local function TidyBar_refresh_side( mouse_inside )
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
-    -- Oh god, all the verbosities:
-    --print( GetTime() .. ' TidyBar_refresh_side()' )
-    --print( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
-    --print( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
-    --print( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
-  end
+  debug( ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
+  -- Oh god, all the verbosities:
+  --debug( ' TidyBar_refresh_side()' )
+  --print( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
+  --print( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
+  --print( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
   local Alpha = 0
   if    mouse_inside
     or  TidyBar_options.always_show_side
@@ -84,19 +88,15 @@ end
 -- FIXME - this is fired every time I mount!
 local function TidyBar_SetScript_frame_side( frameTarget )
   -- Spammy
-  --if TidyBar_options.debug then
-    --print( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
-  --end
+  --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
   frameTarget:SetScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
   frameTarget:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
 end
 
 local function TidyBar_setup_side()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' --' )
-    print( GetTime() .. ' TidyBar_setup_side()' )
-    print( GetTime() .. ' --' )
-  end
+  debug()
+  debug( ' TidyBar_setup_side()' )
+  debug()
 
   if MultiBarRight:IsShown() then
     MultiBarRight:ClearAllPoints()
@@ -143,9 +143,7 @@ end
 
 
 local function TidyBar_refresh_corner()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_corner()' )
-  end
+  debug( ' TidyBar_refresh_corner()' )
   TidyBar_frame_corner:SetFrameStrata( 'LOW' )
   TidyBar_frame_corner:SetWidth( 300 )
   TidyBar_frame_corner:SetHeight( 128 )
@@ -179,9 +177,7 @@ local function TidyBar_refresh_corner()
 end
 
 local function TidyBar_setup_corner()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_corner()' )
-  end
+  debug( ' TidyBar_setup_corner()' )
 
   local BagButtonFrameList = {
     MainMenuBarBackpackButton,
@@ -201,9 +197,7 @@ local function TidyBar_setup_corner()
 
   local function TidyBar_SetScript_frame_corner( frameTarget )
     -- Spammy
-    --if TidyBar_options.debug then
-      --print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
-    --end
+    --debug( ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
     frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_frame_corner:SetAlpha( 1 ) end end )
     frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_frame_corner:SetAlpha( 0 ) end )
   end
@@ -229,10 +223,8 @@ end
 
 
 local function TidyBar_refresh_vehicle()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_vehicle()' )
-  end
-   if not UnitHasVehicleUI( 'player' ) then return nil end
+  debug( ' TidyBar_refresh_vehicle()' )
+  if not UnitHasVehicleUI( 'player' ) then return nil end
   -- This works, but it's useless if I can't reposition them.
   --LFDMicroButton:ClearAllPoints()
   --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
@@ -274,9 +266,7 @@ local function TidyBar_refresh_vehicle()
 end
 
 local function TidyBar_setup_vehicle()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_vehicle()' )
-  end
+  debug( ' TidyBar_setup_vehicle()' )
   hide( OverrideActionBarEndCapL )
   hide( OverrideActionBarEndCapR )
 
@@ -308,9 +298,7 @@ end
 
 
 local function TidyBar_refresh_main_area()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_main_area()' )
-  end
+  debug( ' TidyBar_refresh_main_area()' )
   -- MainMenuBar textured background
   -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
   MainMenuBarTexture0:ClearAllPoints()
@@ -656,9 +644,7 @@ local function TidyBar_refresh_main_area()
 end
 
 local function TidyBar_setup_main_area()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_setup_main_area()' )
-  end
+  debug( ' TidyBar_setup_main_area()' )
 
   -- Fixes #54 reputation bar jumping.
   -- Though throttled, oh god is this a harsh solution.
@@ -682,14 +668,10 @@ end
 
 
 function TidyBar_refresh_everything()
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_refresh_everything()' )
-  end
+  debug( ' TidyBar_refresh_everything()' )
   -- TESTING - I wonder if this is needed.
   --if InCombatLockdown() then
-    --if TidyBar_options.debug then
-      --print( 'TidyBar:  In combat, skipping.' )
-    --end
+    --debug( 'TidyBar:  In combat, skipping.' )
     --return
   --end
   TidyBar_refresh_main_area()
@@ -704,33 +686,25 @@ function TidyBar_refresh_everything()
 end
 
 
-
 TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 frame_debug_overlay( TidyBar )  --  This shouldn't display anything.
 TidyBar:SetFrameStrata( 'BACKGROUND' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 --TidyBar:RegisterEvent( 'ADDON_LOADED' )
 TidyBar:SetScript( 'OnEvent', function( self )
-  print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
-
   self:Show()
-  if TidyBar_options.debug then
-    print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
-  end
+  --print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
+  debug( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
 
   do  --  learn if max level
     local level_player    = UnitLevel( 'player' )
     local level_expansion = MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
     if level_player == level_expansion then
       TidyBar_character_is_max_level = true
-      if TidyBar_options.debug then
-        print( 'TidyBar:  Character level ' .. level_player .. ' (max)' )
-      end
+      debug( 'TidyBar:  Character level ' .. level_player .. ' (max)' )
     else
       TidyBar_character_is_max_level = false
-      if TidyBar_options.debug then
-        print( 'TidyBar:  Character level ' .. level_player .. '/' .. level_expansion )
-      end
+      debug( 'TidyBar:  Character level ' .. level_player .. '/' .. level_expansion )
     end
   end
 
