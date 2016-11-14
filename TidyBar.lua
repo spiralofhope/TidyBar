@@ -49,6 +49,13 @@ local function hide_more( thing )
   thing:SetTexture( Empty_Art )
 end
 
+local function frame_debug_overlay( frame )
+  if not TidyBar_options.debug then return nil end
+  local frame = frame:CreateTexture( nil, 'BACKGROUND' )
+        frame:SetAllPoints()
+        frame:SetColorTexture( 1, 1, 1, 0.2 )
+end
+
 
 local function TidyBar_refresh_side( mouse_inside )
   if TidyBar_options.debug then
@@ -192,7 +199,7 @@ local function TidyBar_setup_corner()
 
   local function TidyBar_SetScript_frame_corner( frameTarget )
     if TidyBar_options.debug then
-      print( GetTime() .. ' TidyBar_SetScript_frame_microbuttons( ' .. tostring( frameTarget ) .. ' )'  )
+      print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
     end
     frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_frame_corner:SetAlpha( 1 ) end end )
     frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_frame_corner:SetAlpha( 0 ) end )
@@ -696,6 +703,7 @@ end
 
 
 TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
+frame_debug_overlay( TidyBar )  --  This shouldn't display anything.
 TidyBar:SetFrameStrata( 'TOOLTIP' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
 TidyBar:SetScript( 'OnEvent', function( self )
@@ -726,6 +734,11 @@ TidyBar:SetScript( 'OnEvent', function( self )
     TidyBar_frame_corner                = CreateFrame( 'Frame', 'TidyBar_frame_corner', UIParent )
     TidyBar_frame_corner.MicroButtons   = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
     TidyBar_frame_corner.BagButtonFrame = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
+
+    frame_debug_overlay( TidyBar_frame_side )
+    frame_debug_overlay( TidyBar_frame_corner )
+    frame_debug_overlay( TidyBar_frame_corner.MicroButtons )
+    frame_debug_overlay( TidyBar_frame_corner.BagButtonFrame )
 
     TidyBar_frame_side:EnableMouse()
     TidyBar_frame_corner:EnableMouse()
