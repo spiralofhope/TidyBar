@@ -7,6 +7,7 @@
 
 ### 7.1.0.2 beta
 
+- Fixed #40 - Adjust bars when level 100 but not in possession of a legendary weapon
 - Fixed #43 and #54 related to the bars resetting and repositioning under certain circumstances.
 - Fixed the feature to show/hide macro text on buttons.
 - Implemented bar height customization.
