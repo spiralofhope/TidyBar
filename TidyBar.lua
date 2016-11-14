@@ -318,29 +318,34 @@ local function TidyBar_refresh_main_area()
     bar:SetHeight( TidyBar_options.bar_height )
   end
 
-
   do  --  MainMenuExpBar
-    set_bar_dimensions( MainMenuExpBar )
-    set_bar_dimensions( MainMenuBarExpText )
-    -- The XP 'bubbles'
-    for i=1,19 do hide( _G[ 'MainMenuXPBarDiv' .. i ] ) end
-    do  -- Hide the "zomg I killed a wolf" animation.
-      hide( MainMenuExpBar.BarTrailGlow )
-      hide( MainMenuExpBar.SparkBurstMove )
-    end
+    if      TidyBar_options.show_experience_bar
+    and     UnitXPMax( 'player' ) > 0
+    and not IsXPUserDisabled()
+    and not TidyBar_character_is_max_level
+    then
+      set_bar_dimensions( MainMenuExpBar )
+      set_bar_dimensions( MainMenuBarExpText )
+      -- The XP 'bubbles'
+      for i=1,19 do hide( _G[ 'MainMenuXPBarDiv' .. i ] ) end
+      do  -- Hide the "zomg I killed a wolf" animation.
+        hide( MainMenuExpBar.BarTrailGlow )
+        hide( MainMenuExpBar.SparkBurstMove )
+      end
 
-    do  -- The border around the XP bar
-      hide( MainMenuXPBarTextureMid )
-      hide( MainMenuXPBarTextureLeftCap )
-      hide( MainMenuXPBarTextureRightCap )
-    end
+      do  -- The border around the XP bar
+        hide( MainMenuXPBarTextureMid )
+        hide( MainMenuXPBarTextureLeftCap )
+        hide( MainMenuXPBarTextureRightCap )
+      end
 
-    do  -- The rested state
-      hide_more( ExhaustionLevelFillBar )
-      -- Re-shows itself, but OnUpdate code elsewhere takes care of this:
-      hide( ExhaustionTick )
-      hide( ExhaustionTickNormal )
-      hide( ExhaustionTickHighlight )
+      do  -- The rested state
+        hide_more( ExhaustionLevelFillBar )
+        -- Re-shows itself, but OnUpdate code elsewhere takes care of this:
+        hide( ExhaustionTick )
+        hide( ExhaustionTickNormal )
+        hide( ExhaustionTickHighlight )
+      end
     end
   end
 
@@ -486,8 +491,8 @@ local function TidyBar_refresh_main_area()
 
   if      TidyBar_options.show_experience_bar
   and     UnitXPMax( 'player' ) > 0
-  --and not IsXPUserDisabled()
-  --and not TidyBar_character_is_max_level
+  and not IsXPUserDisabled()
+  and not TidyBar_character_is_max_level
   then
     if the_first_bar then
       bar_spacing = space_between_bottom_bar_and_buttons

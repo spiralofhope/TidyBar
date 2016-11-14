@@ -5,6 +5,10 @@
 
 ## 7.1 series
 
+### 7.1.0.3
+
+- Fixed the experience bar appearing with a max-level character.
+
 ### 7.1.0.2
 
 - Fixed #40 - Adjust bars when level 100 but not in possession of a legendary weapon
