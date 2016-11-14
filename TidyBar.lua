@@ -84,16 +84,18 @@ end
 -- FIXME - this is fired every time I mount!
 local function TidyBar_SetScript_frame_side( frameTarget )
   -- Spammy
-  if TidyBar_options.debug then
-    print( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
-  end
+  --if TidyBar_options.debug then
+    --print( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frameTarget ) .. ' )' )
+  --end
   frameTarget:SetScript( 'OnEnter', function() TidyBar_refresh_side( true ) end )
   frameTarget:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
 end
 
 local function TidyBar_setup_side()
   if TidyBar_options.debug then
+    print( GetTime() .. ' --' )
     print( GetTime() .. ' TidyBar_setup_side()' )
+    print( GetTime() .. ' --' )
   end
 
   if MultiBarRight:IsShown() then
@@ -198,9 +200,10 @@ local function TidyBar_setup_corner()
   MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
 
   local function TidyBar_SetScript_frame_corner( frameTarget )
-    if TidyBar_options.debug then
-      print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
-    end
+    -- Spammy
+    --if TidyBar_options.debug then
+      --print( GetTime() .. ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
+    --end
     frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_frame_corner:SetAlpha( 1 ) end end )
     frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_frame_corner:SetAlpha( 0 ) end )
   end
@@ -704,13 +707,15 @@ end
 
 TidyBar = CreateFrame( 'Frame', 'TidyBar', WorldFrame )
 frame_debug_overlay( TidyBar )  --  This shouldn't display anything.
-TidyBar:SetFrameStrata( 'TOOLTIP' )
+TidyBar:SetFrameStrata( 'BACKGROUND' )
 TidyBar:RegisterEvent( 'PLAYER_LOGIN' )
+--TidyBar:RegisterEvent( 'ADDON_LOADED' )
 TidyBar:SetScript( 'OnEvent', function( self )
+  print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
+
   self:Show()
   if TidyBar_options.debug then
     print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
-    print( GetTime() .. ' TidyBar_setup()' )
   end
 
   do  --  learn if max level
