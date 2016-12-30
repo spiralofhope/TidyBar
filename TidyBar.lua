@@ -160,6 +160,7 @@ local function TidyBar_refresh_corner()
   hide_more( MainMenuBarTexture3 )
 
   -- The nagging talent popup
+  -- FIXME - this doesn't seem to stick.  Move or copy the code elsewhere or otherwise reapply it under whatever circumstance makes it reappear..
   hide( TalentMicroButtonAlert )
 
   if not UnitHasVehicleUI( 'player' ) then
