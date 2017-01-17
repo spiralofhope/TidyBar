@@ -159,10 +159,6 @@ local function TidyBar_refresh_corner()
   hide_more( MainMenuBarTexture2 )
   hide_more( MainMenuBarTexture3 )
 
-  -- The nagging talent popup
-  -- FIXME - this doesn't seem to stick.  Move or copy the code elsewhere or otherwise reapply it under whatever circumstance makes it reappear..
-  hide( TalentMicroButtonAlert )
-
   if not UnitHasVehicleUI( 'player' ) then
     CharacterMicroButton:ClearAllPoints()
     CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
@@ -306,6 +302,9 @@ local function TidyBar_refresh_main_area()
 
   ActionButton1:ClearAllPoints()
   ActionButton1:SetPoint( 'BottomLeft', MainMenuBarOverlayFrame, 'BottomLeft' )
+
+  -- The nagging talent popup
+  hide( TalentMicroButtonAlert )
 
   local function set_bar_dimensions( bar )
     --print( bar )
