@@ -5,8 +5,9 @@
 
 ## 7.1 series
 
-### 7.1.0.4 beta
+### 7.1.5.1
 
+- More aggressively remove the talent nag's transparent overlay.
 - Code cleanup and style improvements.
 
 ### 7.1.0.3
