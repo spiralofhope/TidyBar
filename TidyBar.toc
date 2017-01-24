@@ -1,4 +1,4 @@
-﻿# TidyBar has been tested against:
+﻿# TidyBar has most recently been tested against:
 #   Version 7.1.5 (23360) (Release x64)
 #   Jan 6 2017
 
