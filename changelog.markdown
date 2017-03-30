@@ -3,6 +3,11 @@
 `git log` is another good way to peer into the innards of this repository.
 
 
+### 7.2.0.0
+
+- Fixed the addon release date.
+- Tested against 7.2
+
 ## 7.1 series
 
 ### 7.1.5.1
