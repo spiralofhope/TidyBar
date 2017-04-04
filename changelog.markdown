@@ -3,10 +3,19 @@
 `git log` is another good way to peer into the innards of this repository.
 
 
+
+## 7.2 series
+
+### 7.2.0.1
+
+- `README.markdown` update.
+
 ### 7.2.0.0
 
 - Fixed the addon release date.
 - Tested against 7.2
+
+
 
 ## 7.1 series
 
@@ -226,6 +235,8 @@ Note that these old releases may or may not be buried in this git repository.  I
 
 - Update to 5.x TOC
 - Added HideMainButtonArt and HideExperienceBar variables to the head of TidyBar.lua; Setting the variable to 'true' will make the changes.
+
+
 
 ## 4.9
 
