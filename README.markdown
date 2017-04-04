@@ -46,7 +46,7 @@ Perhaps your game is installed to one of:
 # Configuration / Usage
 
 - `Interface > Addons > TidyBar` will give a number of options.
-- `/tidybar` will force an update.
+- By default, `shift-up` / `shift-down` will change your actionbar.  TidyBar will force-update itself when it sees this.
 
 
 # Issues and suggestions
