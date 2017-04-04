@@ -125,13 +125,18 @@ local function TidyBar_setup_side()
       frame:SetScript( 'OnEnter', function() TidyBar_refresh_side( true  ) end )
       frame:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
     end
+    local function TidyBar_HookScript_frame_side( frame )
+      -- Spammy
+      --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frame ) .. ' )' )
+      frame:HookScript( 'OnEnter', function() TidyBar_refresh_side( true  ) end )
+      frame:HookScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
+    end
 
-    TidyBar_frame_side:EnableMouse()
     TidyBar_SetScript_frame_side( TidyBar_frame_side )
-    TidyBar_SetScript_frame_side( MultiBarRight )
-    TidyBar_SetScript_frame_side( MultiBarLeft )
-    for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
-    for i = 1, 12 do TidyBar_SetScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
+    TidyBar_HookScript_frame_side( MultiBarRight )
+    TidyBar_HookScript_frame_side( MultiBarLeft )
+    for i = 1, 12 do TidyBar_HookScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
+    for i = 1, 12 do TidyBar_HookScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
   end
 end
 

@@ -10,6 +10,7 @@
 
 - `README.markdown` update.
 - Fixed the right-gryphon not appearing properly when the option was toggled.
+- Fixed #56 - Fix tooltips on items in the side
 
 ### 7.2.0.0
 
