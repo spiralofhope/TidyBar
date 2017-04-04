@@ -6,7 +6,7 @@
 
 ## 7.2 series
 
-### 7.2.0.2 beta
+### 7.2.0.2
 
 - Fixed the pet battle UI.
 
