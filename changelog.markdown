@@ -8,9 +8,10 @@
 
 ### 7.2.0.1
 
-- `README.markdown` update.
-- Fixed the right-gryphon not appearing properly when the option was toggled.
+- Implemented #31 - Support the pet battle UI
 - Fixed #56 - Fix tooltips on items in the side
+- Fixed the right-gryphon not appearing properly when the option was toggled.
+- `README.markdown` update.
 
 ### 7.2.0.0
 

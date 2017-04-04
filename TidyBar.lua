@@ -744,3 +744,27 @@ TidyBar:SetScript( 'OnEvent', function( self )
   --SLASH_TIDYBAR1 = '/tidybar'
   --SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
 end )
+
+function TidyBar_PetSetup()
+  debug( 'TidyBar_PetSetup()' )
+  -- Re-use the micro buttons from the regular game world.
+  CharacterMicroButton:ClearAllPoints()
+  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
+  for i, name in pairs( MenuButtonFrames ) do
+    name:SetParent( TidyBar_frame_corner.MicroButtons )
+  end
+  TidyBar_frame_corner:SetAlpha( 0 )
+  -- Hide the micro buttons from the pet battle UI
+  PetBattleFrame.BottomFrame.MicroButtonFrame:Hide()
+  -- Hide art
+  hide( PetBattleFrame.BottomFrame.Background )
+  hide( PetBattleFrame.BottomFrame.LeftEndCap )
+  hide( PetBattleFrame.BottomFrame.RightEndCap )
+  -- Shift the UI
+  PetBattleFrame.BottomFrame:ClearAllPoints()
+  PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', ChatFrame1EditBoxRight, 'BottomRight' )
+  PetBattleFrame.BottomFrame.TurnTimer:ClearAllPoints()
+  PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
+end
+TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
+TidyBar:HookScript( 'OnEvent', TidyBar_petsetup )
