@@ -9,6 +9,7 @@
 ### 7.2.0.1
 
 - `README.markdown` update.
+- Fixed the right-gryphon not appearing properly when the option was toggled.
 
 ### 7.2.0.0
 

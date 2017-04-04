@@ -421,11 +421,18 @@ local function TidyBar_refresh_main_area()
     hide( _G[ 'StanceButton' .. i .. 'NormalTexture2' ] )
   end
 
-  do  -- Position the gryphons
-    MainMenuBarLeftEndCap:ClearAllPoints()
-    MainMenuBarRightEndCap:ClearAllPoints()
-    MainMenuBarLeftEndCap:SetPoint( 'BottomRight', ActionButton1,  'BottomLeft', -4, 0 )
-    MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
+  do  --  Gryphons
+    if TidyBar_options.show_gryphons then
+      MainMenuBarLeftEndCap:Show()
+      MainMenuBarRightEndCap:Show()
+      MainMenuBarLeftEndCap:ClearAllPoints()
+      MainMenuBarRightEndCap:ClearAllPoints()
+      MainMenuBarLeftEndCap:SetPoint( 'BottomRight', MainMenuBar,  'BottomLeft', -4, 0 )
+      MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
+    else
+      MainMenuBarLeftEndCap:Hide()
+      MainMenuBarRightEndCap:Hide()
+    end
   end
 
 ----------------------------------------------------------------------
@@ -461,13 +468,6 @@ local function TidyBar_refresh_main_area()
   end
 
 
-  if TidyBar_options.show_gryphons then
-    MainMenuBarLeftEndCap:Show()
-    MainMenuBarLeftEndCap:Show()
-  else
-    MainMenuBarLeftEndCap:Hide()
-    MainMenuBarRightEndCap:Hide()
-  end
 
 
   if TidyBar_options.show_MainMenuBar_textured_background then
