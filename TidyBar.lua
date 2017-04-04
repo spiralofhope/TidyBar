@@ -767,4 +767,4 @@ function TidyBar_PetSetup()
   PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
 end
 TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
-TidyBar:HookScript( 'OnEvent', TidyBar_petsetup )
+TidyBar:HookScript( 'OnEvent', TidyBar_PetSetup )
