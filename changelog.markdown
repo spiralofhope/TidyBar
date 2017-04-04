@@ -6,7 +6,7 @@
 
 ## 7.2 series
 
-### 7.2.0.1 
+### 7.2.0.1
 
 - Implemented #31 - Support the pet battle UI
 - Fixed #56 - Fix tooltips on items in the side
