@@ -39,7 +39,8 @@ Perhaps your game is installed to one of:
 .. and inside it would have `TidyBar.lua` and all the other files.
 
 
-- [Curse blog entry on manually installing AddOns](https://support.curse.com/hc/en-us/articles/204270005) and [Curse FAQ on manually installing AddOns](https://mods.curse.com/faqs/wow-addons#manual)
+- [Curse blog entry on manually installing AddOns](https://support.curse.com/hc/en-us/articles/204270005)
+- [Curse FAQ on manually installing AddOns](https://mods.curse.com/faqs/wow-addons#manual)
 
 
 # Configuration / Usage
@@ -52,7 +53,8 @@ Perhaps your game is installed to one of:
 
 ([issues list](https://github.com/spiralofhope/TidyBar/issues))
 
-- Disable all addons and re-test before creating an issue.
+- If you seen an error, disable all addons but this one and re-test before creating an issue.
+  -  If you have multiple addons installed, errors you think are for one addon may actually be for another.  No really, disable everything else.
 - Search for your issue before creating an issue.
 - Always report errors.
   -  There are several helpful addons to catch errors.  Try something like [TekErr](http://www.wowinterface.com/downloads/info6681).
