@@ -6,7 +6,7 @@
 
 ## 7.2 series
 
-### 7.2.0.3 BETA
+### 7.2.0.3
 
 - Vehicle support
   -  It's hardcoded, but seems to be a reasonable default for me.  People with a chat box on the right are screwed.  Same with the pet UI.
