@@ -164,12 +164,10 @@ local function TidyBar_refresh_corner()
   hide_more( MainMenuBarTexture2 )
   hide_more( MainMenuBarTexture3 )
 
-  if not UnitHasVehicleUI( 'player' ) then
-    CharacterMicroButton:ClearAllPoints()
-    CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
-    for i, name in pairs( MenuButtonFrames ) do
-      name:SetParent( TidyBar_frame_corner.MicroButtons )
-    end
+  CharacterMicroButton:ClearAllPoints()
+  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
+  for i, name in pairs( MenuButtonFrames ) do
+    name:SetParent( TidyBar_frame_corner.MicroButtons )
   end
 end
 
@@ -197,8 +195,8 @@ local function TidyBar_setup_corner()
   local function TidyBar_SetScript_frame_corner( frameTarget )
     -- Spammy
     --debug( ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
-    frameTarget:HookScript( 'OnEnter', function() if not UnitHasVehicleUI( 'player' ) then TidyBar_frame_corner:SetAlpha( 1 ) end end )
-    frameTarget:HookScript( 'OnLeave', function()                                          TidyBar_frame_corner:SetAlpha( 0 ) end )
+    frameTarget:HookScript( 'OnEnter', function() TidyBar_frame_corner:SetAlpha( 1 ) end )
+    frameTarget:HookScript( 'OnLeave', function() TidyBar_frame_corner:SetAlpha( 0 ) end )
   end
   
   -- Setup the Corner Buttons
@@ -221,83 +219,12 @@ end
 
 
 
-local function TidyBar_refresh_vehicle()
-  if not UnitHasVehicleUI( 'player' ) then return nil end
-  debug( ' TidyBar_refresh_vehicle()' )
-  -- This works, but it's useless if I can't reposition them.
-  --LFDMicroButton:ClearAllPoints()
-  --LFDMicroButton:SetPoint( 'TopRight', GuildMicroButton, 'TopLeft' )
-
-  -- Repositioning these here is a bad idea.
-  -- I don't know how to store/retrieve their positions so that things are back to normal when exiting the vehicle UI.
-  --MainMenuMicroButton:ClearAllPoints()
-  --MainMenuMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner, 'BottomRight' )
-
-  OverrideActionBar:SetWidth( bar_width )
-
-  OverrideActionBarButton1:ClearAllPoints()
-  OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft' )
-
-  OverrideActionBarHealthBar:ClearAllPoints()
-  OverrideActionBarPowerBar:ClearAllPoints()
-  OverrideActionBarHealthBar:SetPoint( 'BottomRight', OverrideActionBar, 'BottomLeft' )
-  OverrideActionBarPowerBar:SetPoint( 'BottomRight', OverrideActionBarHealthBar, 'BottomLeft' )
-  OverrideActionBarHealthBarText:SetWidth( 0.001 )
-  OverrideActionBarPowerBarText:SetWidth( 0.001 )
-  -- It just re-shows on mouseout.
-  --OverrideActionBarHealthBarText:Hide()
-  OverrideActionBarHealthBar:SetWidth( 8 )
-  OverrideActionBarPowerBar:SetWidth( 8 )
-  OverrideActionBarHealthBarOverlay:SetWidth( 8 )
-  OverrideActionBarPowerBarOverlay:SetWidth( 8 )
-  hide( OverrideActionBarHealthBarBackground )
-  hide( OverrideActionBarPowerBarBackground )
-
-  OverrideActionBarExpBar:ClearAllPoints()
-  OverrideActionBarExpBar:SetHeight( TidyBar_options.bar_height )
-  OverrideActionBarExpBar:SetWidth( bar_width )
-  OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
-  --OverrideActionBarExpBarOverlayFrame:ClearAllPoints()
-  --OverrideActionBarExpBarOverlayFrame:SetPoint( 'Top', OverrideActionBarExpBar )
-
-  OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
-  OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight' )
-end
-
-local function TidyBar_setup_vehicle()
-  debug()
-  debug( ' TidyBar_setup_vehicle()' )
-  debug()
-  hide( OverrideActionBarEndCapL )
-  hide( OverrideActionBarEndCapR )
-
-  hide( OverrideActionBarBG )
-  hide( OverrideActionBarMicroBGL )
-  hide( OverrideActionBarMicroBGMid )
-  hide( OverrideActionBarMicroBGR )
-  hide( OverrideActionBarButtonBGL )
-  hide( OverrideActionBarButtonBGMid )
-  hide( OverrideActionBarButtonBGR )
-
-  hide( OverrideActionBarDivider2 )
-  hide( OverrideActionBarBorder )
-  hide( OverrideActionBarLeaveFrameDivider3 )
-  hide( OverrideActionBarLeaveFrameExitBG )
-
-  hide( OverrideActionBarExpBarXpL )
-  hide( OverrideActionBarExpBarXpMid )
-  hide( OverrideActionBarExpBarXpR )
-
-  -- The vehicle XP 'bubbles'.
-  for i=1,19 do
-    hide( _G[ 'OverrideActionBarXpDiv' .. i ] )
-  end
-end
-
-
-
 local function TidyBar_refresh_main_area()
   debug( ' TidyBar_refresh_main_area()' )
+  -- I seem to need to force this..
+  OverrideActionBar:SetWidth( bar_width )
+  OverrideActionBar:SetPoint( 'Left', ChatFrame1, 'BottomRight', 4, 18 )
+
   -- MainMenuBar textured background
   -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
   MainMenuBarTexture0:ClearAllPoints()
@@ -327,7 +254,7 @@ local function TidyBar_refresh_main_area()
       set_bar_dimensions( MainMenuExpBar )
       set_bar_dimensions( MainMenuBarExpText )
       -- The XP 'bubbles'
-      for i=1,19 do hide( _G[ 'MainMenuXPBarDiv' .. i ] ) end
+      for i=1, 19 do hide( _G[ 'MainMenuXPBarDiv' .. i ] ) end
       do  -- Hide the "zomg I killed a wolf" animation.
         hide( MainMenuExpBar.BarTrailGlow )
         hide( MainMenuExpBar.SparkBurstMove )
@@ -413,7 +340,6 @@ local function TidyBar_refresh_main_area()
 
   MultiBarBottomRight:ClearAllPoints()
   PetActionButton1:ClearAllPoints()
-  MainMenuBarVehicleLeaveButton:ClearAllPoints()
   StanceButton1:ClearAllPoints()
 
   do -- Hide the background behind the stance bar
@@ -462,7 +388,7 @@ local function TidyBar_refresh_main_area()
       'MultiBarRight',
     }
     for button=1, #bars do
-      for i=1,12 do
+      for i=1, 12 do
         if TidyBar_options.show_macro_text then
           _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:Show()
         else
@@ -640,6 +566,7 @@ local function TidyBar_refresh_main_area()
 
 
   if MainMenuBarVehicleLeaveButton:IsShown() then
+    MainMenuBarVehicleLeaveButton:ClearAllPoints()
     MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = MainMenuBarVehicleLeaveButton
   end
@@ -678,7 +605,6 @@ function TidyBar_refresh_everything()
   -- :
   --TidyBar_setup_side()
 
-  TidyBar_refresh_vehicle()
   TidyBar_refresh_corner()
   TidyBar_refresh_side( false )
 
@@ -731,7 +657,6 @@ TidyBar:SetScript( 'OnEvent', function( self )
     TidyBar_setup_corner()
     TidyBar_setup_side()
     TidyBar_setup_options_pane()
-    TidyBar_setup_vehicle()
     TidyBar_setup_main_area()
   end
 
@@ -744,6 +669,8 @@ TidyBar:SetScript( 'OnEvent', function( self )
   --SLASH_TIDYBAR1 = '/tidybar'
   --SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
 end )
+
+
 
 function TidyBar_PetSetup()
   debug( 'TidyBar_PetSetup()' )
@@ -768,3 +695,72 @@ function TidyBar_PetSetup()
 end
 TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
 TidyBar:HookScript( 'OnEvent', TidyBar_PetSetup )
+
+
+
+local function TidyBar_VehicleSetup()
+  if not UnitHasVehicleUI( 'player' ) then return nil end
+  debug( ' TidyBar_VehicleSetup()' )
+
+  do  --  hide stuff
+    hide( OverrideActionBarEndCapL )
+    hide( OverrideActionBarEndCapR )
+
+    hide( OverrideActionBarBG )
+    hide( OverrideActionBarMicroBGL )
+    hide( OverrideActionBarMicroBGMid )
+    hide( OverrideActionBarMicroBGR )
+
+    -- The box around the buttons
+    hide( OverrideActionBarButtonBGL )
+    hide( OverrideActionBarButtonBGMid )
+    hide( OverrideActionBarButtonBGR )
+
+    hide( OverrideActionBarDivider2 )
+    hide( OverrideActionBarBorder )
+    hide( OverrideActionBarLeaveFrameDivider3 )
+    hide( OverrideActionBarLeaveFrameExitBG )
+
+    hide( OverrideActionBarExpBarXpL )
+    hide( OverrideActionBarExpBarXpMid )
+    hide( OverrideActionBarExpBarXpR )
+  end
+
+  do  --  health/power bars
+    OverrideActionBarHealthBar:ClearAllPoints()
+    OverrideActionBarPowerBar:ClearAllPoints()
+    OverrideActionBarHealthBar:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft', 4, 16 )
+    -- FIXME - OverrideActionBarHealthBarOverlay is one pixel too wide, demonstrated here:
+    --OverrideActionBarHealthBarOverlay:SetPoint( 'BottomLeft', OverrideActionBarHealthBar, 'BottomLeft', -1, 0 )
+    OverrideActionBarPowerBar:SetPoint( 'BottomLeft', OverrideActionBarHealthBar, 'BottomRight' )
+    OverrideActionBarHealthBarText:SetWidth( 0.001 )
+    OverrideActionBarPowerBarText:SetWidth( 0.001 )
+    OverrideActionBarHealthBar:SetWidth( 8 )
+    OverrideActionBarPowerBar:SetWidth( 8 )
+    OverrideActionBarHealthBarOverlay:SetWidth( 8 )
+    OverrideActionBarPowerBarOverlay:SetWidth( 8 )
+    hide( OverrideActionBarHealthBarBackground )
+    hide( OverrideActionBarPowerBarBackground )
+  end
+
+  do  --  experience bar
+    -- FIXME? - The width doesn't seem to work.  I can't even force it during a refresh.  This doesn't seem to matter though.
+    OverrideActionBarExpBar:SetWidth( bar_width )
+    OverrideActionBarExpBar:SetHeight( TidyBar_options.bar_height )
+    OverrideActionBarExpBar:ClearAllPoints()
+    OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
+    -- The vehicle XP 'bubbles'.
+    for i=1,19 do
+      hide( _G[ 'OverrideActionBarXpDiv' .. i ] )
+    end
+  end
+
+  OverrideActionBarLeaveFrameLeaveButton:ClearAllPoints()
+  OverrideActionBarLeaveFrameLeaveButton:SetPoint( 'BottomRight', OverrideActionBar, 'BottomRight', 0, 16 )
+
+  OverrideActionBarButton1:ClearAllPoints()
+  OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft', 24, 16 )
+end
+TidyBar:RegisterEvent( 'UNIT_ENTERED_VEHICLE' )
+-- FIXME - this will keep re-hooking, which is a bad idea, right?
+TidyBar:HookScript( 'OnEvent', TidyBar_VehicleSetup )
