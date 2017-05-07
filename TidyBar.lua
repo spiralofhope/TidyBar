@@ -570,6 +570,12 @@ local function TidyBar_refresh_main_area()
     MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
     anchor = MainMenuBarVehicleLeaveButton
   end
+
+  if FramerateText:IsShown() then  --  FPS text
+    FramerateText:ClearAllPoints()
+    FramerateText:SetPoint( 'Bottom', anchor, 'Top', 0, TidyBar_options.bar_spacing )
+    anchor = FramerateText
+  end
 end
 
 local function TidyBar_setup_main_area()
