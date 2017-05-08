@@ -6,6 +6,10 @@
 
 ## 7.2 series
 
+### 7.2.0.5
+
+- Hide the FPS text (FramerateText).
+
 ### 7.2.0.4
 
 - Fixed 57 - Move FPS meter

@@ -572,8 +572,16 @@ local function TidyBar_refresh_main_area()
   end
 
   if FramerateText:IsShown() then  --  FPS text
+    --FramerateLabel:ClearAllPoints()
+    --FramerateText:ClearAllPoints()
+    --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top',  0, TidyBar_options.bar_spacing )
+    --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
+    --anchor = FramerateText
+
+
     FramerateText:ClearAllPoints()
-    FramerateText:SetPoint( 'Bottom', anchor, 'Top', 0, TidyBar_options.bar_spacing )
+    FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
+    FramerateLabel:Hide()
     anchor = FramerateText
   end
 end
