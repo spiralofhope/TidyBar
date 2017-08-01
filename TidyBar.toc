@@ -1,6 +1,6 @@
 ﻿# TidyBar has most recently been tested against:
-#   Version 7.2.0 (24015) (Release x64)
-#   Apr 27 2017
+#   Version 7.2.5 (24461) (Release x64)
+#   Jun 27 2017
 
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
@@ -8,11 +8,11 @@
 ## Author:          spiralofhope
 ## Title:           Tidy Bar
 ## Notes:           Simplifies your button bars, saving screen real estate.
-## Version:         7.2.0.5
+## Version:         7.2.5.0
 ## SavedVariables:  TidyBar_options
 ## DefaultState:    enabled
 
-## X-Date:          2017-05-08
+## X-Date:          2017-08-01
 ## X-Website:       https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:      https://github.com/spiralofhope/TidyBar/issues/new
 
