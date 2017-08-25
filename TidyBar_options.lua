@@ -163,19 +163,19 @@ end
 
 
 
-do  --  TidyBar_options.show_MainMenuBar_textured_background
+do  --  TidyBar_options.show_textured_backgrounds
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_MainMenuBar_textured_background', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_backgrounds', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show mainbar textures' )
-  CheckButton.tooltipText = 'Show the texture behind the main buttons.'
-  CheckButton:SetChecked( TidyBar_options.show_MainMenuBar_textured_background )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show background textures' )
+  CheckButton.tooltipText = 'Show the textures behind the main buttons and pet battle UI.'
+  CheckButton:SetChecked( TidyBar_options.show_textured_backgrounds )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked()then
-      TidyBar_options.show_MainMenuBar_textured_background = true
+      TidyBar_options.show_textured_backgrounds = true
     else
-      TidyBar_options.show_MainMenuBar_textured_background = false
+      TidyBar_options.show_textured_backgrounds = false
     end
     TidyBar_refresh_everything()
   end)

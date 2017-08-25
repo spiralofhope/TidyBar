@@ -11,7 +11,9 @@
 - Fixed #58 - Move pet bar
   -  It's now positioned the same as the main bar.
   -  These could be made to be configured independently, but I'm not going to bother.
-- The bet battle UI is now scaled the same as the main bar.
+- The pet battle UI is now scaled the same as the main bar.
+  -  These could be made to be configured independently, but I'm not going to bother.
+- The pet battle UI now has its background textures shown/hidden the same as the main bar.
   -  These could be made to be configured independently, but I'm not going to bother.
 
 
@@ -136,7 +138,7 @@
 ### 7.0.3.15
 
 - Fixed the sidebar scaling.
-- Fixed the mainbar texture, when `TidyBar_options.show_MainMenuBar_textured_background = true`
+- Fixed the mainbar texture, when `TidyBar_options.show_textured_backgrounds = true`
 
 ### 7.0.3.14
 

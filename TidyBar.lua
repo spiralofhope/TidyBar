@@ -5,7 +5,7 @@
   TidyBar_options.show_honor_bar = true
   TidyBar_options.show_gryphons = false
   TidyBar_options.hide_side_on_mouseout = true
-  TidyBar_options.show_MainMenuBar_textured_background = false
+  TidyBar_options.show_textured_backgrounds = false
   TidyBar_options.show_macro_text = false
   TidyBar_options.scale = 1
   TidyBar_options.bar_spacing = 4
@@ -225,9 +225,28 @@ local function TidyBar_refresh_main_area()
 
   do  --  PetBattleFrame
     if PetBattleFrame.BottomFrame:IsShown() then 
+      -- Positioning
       PetBattleFrame.BottomFrame:ClearAllPoints()
       PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
+      -- Scaling for everything.  Somehow.
       PetBattleFrame:SetScale( TidyBar_options.scale )
+      -- The background art
+      if TidyBar_options.show_textured_backgrounds then
+        PetBattleFrame.BottomFrame.FlowFrame:Show()
+        PetBattleFrame.BottomFrame.Delimiter:Show()
+        PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Show()
+        PetBattleFrame.TopVersusText:Show()
+        PetBattleFrame.TopArtLeft:Show()
+        PetBattleFrame.TopArtRight:Show()
+      else
+        PetBattleFrame.BottomFrame.FlowFrame:Hide()
+        PetBattleFrame.BottomFrame.Delimiter:Hide()
+        PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Hide()
+        PetBattleFrame.TopVersus:Hide()
+        PetBattleFrame.TopVersusText:Hide()
+        PetBattleFrame.TopArtLeft:Hide()
+        PetBattleFrame.TopArtRight:Hide()
+      end
     end
   end
 
@@ -412,7 +431,7 @@ local function TidyBar_refresh_main_area()
 
 
 
-  if TidyBar_options.show_MainMenuBar_textured_background then
+  if TidyBar_options.show_textured_backgrounds then
     MainMenuBarTexture0:Show()
     MainMenuBarTexture1:Show()
   else
