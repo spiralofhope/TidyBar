@@ -292,7 +292,7 @@ do  --  TidyBar_options.bar_height
   main_area_positioning_slider.tooltipText = 'The height of the experience, reputation, honor and artifact bars.'
   main_area_positioning_slider:SetMinMaxValues( 1, 24 )
   main_area_positioning_slider:SetValueStep( 1 )
-  main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
+  main_area_positioning_slider:SetValue( TidyBar_options.bar_height )
   main_area_positioning_slider:SetScript( 'OnValueChanged', function()
     TidyBar_options.bar_height = main_area_positioning_slider:GetValue()
     TidyBar_refresh_everything()
