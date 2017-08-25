@@ -220,6 +220,8 @@ end
 
 
 local function TidyBar_refresh_main_area()
+  -- This would be nice, but it won't work unless/until I code the main area setup differently:
+  --if PetBattleFrame.BottomFrame:IsShown() then return end
   debug( ' TidyBar_refresh_main_area()' )
   -- I seem to need to force this..
   OverrideActionBar:SetWidth( bar_width )
