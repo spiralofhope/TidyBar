@@ -703,7 +703,7 @@ function TidyBar_PetSetup()
   hide( PetBattleFrame.BottomFrame.RightEndCap )
   -- Shift the UI
   PetBattleFrame.BottomFrame:ClearAllPoints()
-  PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', ChatFrame1EditBoxRight, 'BottomRight' )
+  PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
   PetBattleFrame.BottomFrame.TurnTimer:ClearAllPoints()
   PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
 end
