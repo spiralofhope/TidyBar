@@ -688,8 +688,8 @@ end )
 
 
 
-function TidyBar_PetSetup()
-  debug( 'TidyBar_PetSetup()' )
+function TidyBar_PetBattleSetup()
+  debug( 'TidyBar_PetBattleSetup()' )
   -- Re-use the micro buttons from the regular game world.
   CharacterMicroButton:ClearAllPoints()
   CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
@@ -710,7 +710,7 @@ function TidyBar_PetSetup()
   PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
 end
 TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
-TidyBar:HookScript( 'OnEvent', TidyBar_PetSetup )
+TidyBar:HookScript( 'OnEvent', TidyBar_PetBattleSetup )
 
 
 
