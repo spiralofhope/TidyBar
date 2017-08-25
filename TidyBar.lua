@@ -222,6 +222,15 @@ end
 local function TidyBar_refresh_main_area()
   -- This would be nice, but it won't work unless/until I code the main area setup differently:
   --if PetBattleFrame.BottomFrame:IsShown() then return end
+
+  do  --  PetBattleFrame
+    if PetBattleFrame.BottomFrame:IsShown() then 
+      PetBattleFrame.BottomFrame:ClearAllPoints()
+      PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
+      PetBattleFrame:SetScale( TidyBar_options.scale )
+    end
+  end
+
   debug( ' TidyBar_refresh_main_area()' )
   -- I seem to need to force this..
   OverrideActionBar:SetWidth( bar_width )
@@ -588,9 +597,32 @@ local function TidyBar_refresh_main_area()
   end
 end
 
+function TidyBar_setup_petbattle_area()
+  debug( 'TidyBar_PetBattleSetup()' )
+  -- Re-use the micro buttons from the regular game world.
+  CharacterMicroButton:ClearAllPoints()
+  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
+  for i, name in pairs( MenuButtonFrames ) do
+    name:SetParent( TidyBar_frame_corner.MicroButtons )
+  end
+  TidyBar_frame_corner:SetAlpha( 0 )
+  -- Hide the micro buttons from the pet battle UI
+  PetBattleFrame.BottomFrame.MicroButtonFrame:Hide()
+  -- Hide art
+  hide( PetBattleFrame.BottomFrame.Background )
+  hide( PetBattleFrame.BottomFrame.LeftEndCap )
+  hide( PetBattleFrame.BottomFrame.RightEndCap )
+  -- Shift the UI
+  PetBattleFrame.BottomFrame.TurnTimer:ClearAllPoints()
+  PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
+end
+-- Loading it this way somehow screws up the options panel:
+--TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
+--TidyBar:HookScript( 'OnEvent', TidyBar_setup_petbattle_area )
+
 local function TidyBar_setup_main_area()
   debug( ' TidyBar_setup_main_area()' )
-
+  TidyBar_setup_petbattle_area()
   -- Fixes #54 reputation bar jumping.
   -- Though throttled, oh god is this a harsh solution.
   local TidyBar_TimeSinceLastUpdate = 0
@@ -685,32 +717,6 @@ TidyBar:SetScript( 'OnEvent', function( self )
   --SLASH_TIDYBAR1 = '/tidybar'
   --SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
 end )
-
-
-
-function TidyBar_PetBattleSetup()
-  debug( 'TidyBar_PetBattleSetup()' )
-  -- Re-use the micro buttons from the regular game world.
-  CharacterMicroButton:ClearAllPoints()
-  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
-  for i, name in pairs( MenuButtonFrames ) do
-    name:SetParent( TidyBar_frame_corner.MicroButtons )
-  end
-  TidyBar_frame_corner:SetAlpha( 0 )
-  -- Hide the micro buttons from the pet battle UI
-  PetBattleFrame.BottomFrame.MicroButtonFrame:Hide()
-  -- Hide art
-  hide( PetBattleFrame.BottomFrame.Background )
-  hide( PetBattleFrame.BottomFrame.LeftEndCap )
-  hide( PetBattleFrame.BottomFrame.RightEndCap )
-  -- Shift the UI
-  PetBattleFrame.BottomFrame:ClearAllPoints()
-  PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
-  PetBattleFrame.BottomFrame.TurnTimer:ClearAllPoints()
-  PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
-end
-TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
-TidyBar:HookScript( 'OnEvent', TidyBar_PetBattleSetup )
 
 
 

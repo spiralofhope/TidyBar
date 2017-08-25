@@ -10,6 +10,9 @@
 
 - Fixed #58 - Move pet bar
   -  It's now positioned the same as the main bar.
+  -  These could be made to be configured independently, but I'm not going to bother.
+- The bet battle UI is now scaled the same as the main bar.
+  -  These could be made to be configured independently, but I'm not going to bother.
 
 
 ### 7.2.0.5
