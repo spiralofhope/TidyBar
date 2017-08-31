@@ -58,8 +58,7 @@ end
 
 local function debug( text )
   if not TidyBar_options.debug then return end
-  if not text then text = '' end
-  print( 'TidyBar - ' .. GetTime() .. ' - ' .. text )
+  print( 'TidyBar - ' .. GetTime() .. ' - ' .. tostring ( text ) )
 end
 
 
