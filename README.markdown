@@ -2,8 +2,9 @@
 
 A 
 [World of Warcraft](http://blog.spiralofhope.com/?p=2987) 
-[addon](http://blog.spiralofhope.com/?p=17845) 
-which simplifies the game buttons, giving much more screen space.  
+[addon](http://blog.spiralofhope.com/?p=17845).
+
+Simplifies the game buttons, giving much more screen space.  
 
 A fork of 
 [danltiger](http://wow.curseforge.com/profiles/danltiger/)
