@@ -3,6 +3,12 @@
 `git log` is another good way to peer into the innards of this repository.
 
 
+## 7.3 series
+
+### 7.3.0.1
+
+- TOC bump
+
 
 ## 7.2 series
 
