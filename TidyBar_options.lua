@@ -1,3 +1,21 @@
+do  --  Default options
+  TidyBar_options = {}
+  TidyBar_options.show_experience_bar = true
+  TidyBar_options.show_artifact_power_bar = true
+  TidyBar_options.show_honor_bar = true
+  TidyBar_options.show_gryphons = false
+  TidyBar_options.hide_side_on_mouseout = true
+  TidyBar_options.show_textured_backgrounds = false
+  TidyBar_options.show_macro_text = false
+  TidyBar_options.scale = 1
+  TidyBar_options.bar_spacing = 4
+  TidyBar_options.main_area_positioning = 425
+  TidyBar_options.debug = false
+  TidyBar_options.bar_height = 8
+end
+
+
+
 function TidyBar_setup_options_pane()
 
 TidyBar = {}
