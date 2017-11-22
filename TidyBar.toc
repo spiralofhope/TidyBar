@@ -4,17 +4,17 @@
 
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
-## Interface:       70300
-## Author:          spiralofhope
-## Title:           Tidy Bar
-## Notes:           Simplifies your button bars, saving screen real estate.
-## Version:         7.3.2.0
-## SavedVariables:  TidyBar_options
-## DefaultState:    enabled
+## Interface:             70300
+## Author:                spiralofhope
+## Title:                 Tidy Bar
+## Notes:                 Simplifies your button bars, saving screen real estate.
+## Version:               7.3.2.0
+## SavedVariables:        TidyBar_options
+## DefaultState:          enabled
 
-## X-Date:          2017-11-21
-## X-Website:       https://github.com/spiralofhope/TidyBar/
-## X-Feedback:      https://github.com/spiralofhope/TidyBar/issues/new
+## X-Date:                2017-11-21
+## X-Website:             https://github.com/spiralofhope/TidyBar/
+## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
 
 TidyBar_options.lua
 TidyBar.lua
