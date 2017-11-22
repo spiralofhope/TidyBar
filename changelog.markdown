@@ -5,6 +5,11 @@
 
 ## 7.3 series
 
+## 7.3.2.0
+
+- TOC bump
+
+
 ### 7.3.0.1
 
 - TOC bump
