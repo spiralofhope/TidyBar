@@ -288,9 +288,8 @@ local function TidyBar_refresh_main_area()
   end
 
   do  --  ArtifactWatchBar
-    -- If Legion
-    if  GetExpansionLevel() > 5
-    and UnitLevel( 'player' ) > 99
+    -- If max level for Legion
+    if  UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ 6 ]
     and C_ArtifactUI.GetEquippedArtifactInfo()
     then
       can_display_artifact_bar = true
