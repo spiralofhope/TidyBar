@@ -38,16 +38,21 @@ I think it might be a solution to have a `Show()` attached via a [hook](http://w
 
 # Transparent icon
 
+Accurate as of 2018-05-15 - `8.0.1 (26629) (Beta x64)`
+
+When `TidyBar_options.show_textured_backgrounds = true`
+
 One solution would be to create a 'blank' icon.
 
 - `/macro` and make a macro.  Call it something like `blank`.  Give it the default questionmark icon.
 - Exit the game
-- Copy `hotkeys on main buttons - 30%.tga` to `\Interface\ICONS`  You will probably have to make that directory.
-- Rename `hotkeys on main buttons - 30%.tga` to `INV_MISC_QUESTIONMARK.tga`
+- Copy `INV_MISC_QUESTIONMARK.tga` to `\Interface\ICONS`  You will probably have to make that directory.
 - Start the game.
 
-Now all macros which use that questionmark icon will instead be mostly-transparent.  If you want 0% opacity, try TidyBar's `empty.tga`
+Now all macros which use that questionmark icon will instead be mostly-transparent.  If you want 0% opacity, copy `empty.tga` located in TidyBar's directory and rename it to `INV_MISC_QUESTIONMARK.tga`.
 
 It might be possible to do some extra work to make the buttons even more like the above ones, it's really not worth the work and run into all the same bugs as this 'missing hotkey buttons' caused.
 
 As of `7.0.3 (22345) x64` it doesn't seem possible to just make a new icon in that icons list.  People are saying it worked before `7.0.3`
+TODO - re-check.
+TODO - link to that forum post.

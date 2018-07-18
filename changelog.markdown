@@ -2,6 +2,32 @@
 
 `git log` is another good way to peer into the innards of this repository.
 
+# 8.x - Battle for Azeroth (BfA)
+
+## 8.0 series
+
+## 8.0.1.1
+
+- Major rewrite
+  -  Not just a rewrite for 8.x, but a general code audit and simplification.  TidyBar is now easier to maintain.  Probably.
+- Hardening
+  -  When WoW is updated, and as the API changes (and addons break), TidyBar will try to avoid "exploding with errors", and will offer suggestions for maintainers.
+- Fixed the main area positioning code.
+- Old experience, honor and artifact power code was removed.
+  -  Blizzard made a combined bar, and it's stuck underneath the main buttons.  I don't understand it well enough to move it around.  It really does act different.
+  -  As there was some hackery to fix a "wiggle" issue, related code removal slightly reduces some CPU load.
+  -  Bar height functionality removed.
+  -  Bar spacing removed.  It wasn't working all that well in the first place; I couldn't fix it properly, and I never even used it.
+- Removed show/hide the main bar background.
+  -  Blizzard has made this one large texture.  As I don't know how to deal with it, I'll revisit this in the future.
+- Partially-fixed #30 - Hide global cooldowns in sidebar, when hidden-on-mouseout
+- Gryphons have been hidden
+  -  After much struggle, I simply cannot properly manipulate them.
+  -  One stays stuck to one frame, and the other stays stuck to a different frame.
+  -  They stretch and squish when I move them.
+
+
+# 7.x - Legion
 
 ## 7.3 series
 

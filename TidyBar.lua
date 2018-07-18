@@ -1,4 +1,32 @@
-﻿--  Technically adjustable, but I don't want to support that without a request.
+﻿-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
+-- The scaling feature was removed; use the Blizzard feature.
+-- TODO - create a custom tidybar frame and put all the middle bars into it.
+
+
+
+
+-- KNOWN ISSUES
+--  The bars remain during cutscenes!
+--  The background texture is now one single bar.  I have to learn how to show only part of a texture.
+
+
+-- TODO SOONER
+--  Test combat pet bars
+--  Test vehicles
+
+
+-- TODO - investigate replacing the empty 30% tga with a backdrop:
+--  https://wow.gamepedia.com/API_Frame_SetBackdrop
+--  See the function frame_debug_overlay and apply it to the whole region
+--  I cannot apply it to each icon space, because there's nothing there when it's empty.
+
+-- However, if I keep my side frame, and then instead use the alpha code on VerticalMultiBarsContainer, then I might be able to completely resolve issue #30 (cooldown flash).  Investigate.
+
+-- Style and move ExtraActionButton1
+
+
+
+--  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
 local MenuButtonFrames = {
@@ -15,27 +43,42 @@ local MenuButtonFrames = {
   MainMenuMicroButton,      -- Game Menu
 }
 
---  It'll be checked-for later on.
-local can_display_artifact_bar = nil
-local bar_width  = 500
+local BagButtonFrameList = {
+  MainMenuBarBackpackButton,  --  The big backpack
+  CharacterBag0Slot,
+  CharacterBag1Slot,
+  CharacterBag2Slot,
+  CharacterBag3Slot,
+}
+
+local bar_width = 500
 
 
-local function hide( thing )
+
+
+local function hide( thing, parameter )
+  if thing == nil then print( 'TidyBar hide() error using ' .. parameter .. ' attempting to continue..' ); return end
   thing:SetHeight( 0.001 )
   thing:SetAlpha( 0 )
   thing:Hide()
 end
 
-local function hide_more( thing )
-  hide( thing )
+local function hide_more( thing, parameter )
+  if thing == nil then print( 'TidyBar hide_more() error using ' .. parameter .. ' attempting to continue..' ); return end
+  hide( thing, 'thing' )
   thing:SetTexture( Empty_Art )
 end
 
-local function frame_debug_overlay( frame )
+local function frame_debug_overlay( frame, parameter )
+  if not parameter then print( 'TidyBar frame_debug_overlay() error using ' .. parameter .. ' attempting to continue..' ); return end
   if not TidyBar_options.debug then return end
   local frame = frame:CreateTexture( nil, 'BACKGROUND' )
-        frame:SetAllPoints()
-        frame:SetColorTexture( 1, 1, 1, 0.2 )
+  --local frame = frame:CreateTexture( nil, 'BORDER' )
+  --local frame = frame:CreateTexture( nil, 'ARTWORK' )
+  --local frame = frame:CreateTexture( nil, 'OVERLAY' )
+  --local frame = frame:CreateTexture( nil, 'HIGHLIGHT' )
+  frame:SetAllPoints()
+  frame:SetColorTexture( 1, 1, 1, 0.1 )
 end
 
 local function debug( text )
@@ -45,349 +88,336 @@ end
 
 
 
-local function TidyBar_refresh_side( mouse_inside )
-  if not MultiBarRight:IsShown() then
-    -- if MultiBarRight isn't there, then neither is MultiBarLeft.  May as well hide TidyBar_frame_side. 
-    TidyBar_frame_side:Hide()
-    _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    return
-  end
-
-  debug( ' TidyBar_refresh_side() ' .. tostring( mouse_inside ) .. ' ' .. tostring( TidyBar_options.always_show_side ) .. ' ' .. tostring( SpellFlyout:IsShown() ) )
-  -- Oh god, all the verbosities:
-  --debug( ' TidyBar_refresh_side()' )
-  --debug( '  mouse_inside  -  '                     .. tostring( mouse_inside ) )
-  --debug( '  TidyBar_options.always_show_side  -  ' .. tostring( TidyBar_options.always_show_side ) )
-  --debug( '  SpellFlyout:IsShown()  -  '            .. tostring( SpellFlyout:IsShown() ) )
-
-  TidyBar_frame_side:Show()
-
-  MultiBarRight:ClearAllPoints()
-  MultiBarRight:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-
-  TidyBar_frame_side:SetPoint( 'BottomRight', MultiBarRight, 'BottomRight' )
-
-  if MultiBarLeft:IsShown() then
-    TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarLeft,  'TopLeft' )
-  else
-    TidyBar_frame_side:SetPoint( 'TopLeft', MultiBarRight, 'TopLeft' )
-  end
-
-  -- Doing this somehow reduces the height of the objective tracker, showing only a few items:
-  --_G[ 'ObjectiveTrackerFrame' ]:ClearAllPoints()
-  -- Yes, this shifts the objectives tracker over, leaving space on the right.  I am not happy about this.
-  --   However, this is what is needed, because the user needs to click the right of the tracker for any quest-actions.  Hovering the mouse over those items would then shift the objectives tracker, making it impossible to click them!
-  _G[ 'ObjectiveTrackerFrame' ]:SetPoint( 'TopRight', TidyBar_frame_side, 'TopLeft' )
-
-  local Alpha = 0
-  if    mouse_inside
-    or  TidyBar_options.always_show_side
-        -- Some spells have an arrow, and clicking on them reveals a list of spells.  This is a "flyout".
-        --   .. examples include Shaman Hex Variants and various Mage teleports and portals.
-    or  SpellFlyout:IsShown()
-  then
-    Alpha = 1
-  end
-  for i = 1, 12 do
-    _G[ 'MultiBarRightButton' .. i ]:SetAlpha( Alpha )
-    _G[ 'MultiBarLeftButton'  .. i ]:SetAlpha( Alpha )
-  end
-end
-
-local function TidyBar_setup_side()
-  debug()
-  debug( ' TidyBar_setup_side()' )
-  debug()
-
-  do  --  mouse in/out
-    local function TidyBar_SetScript_frame_side( frame )
-      -- Spammy
-      --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frame ) .. ' )' )
-      frame:SetScript( 'OnEnter', function() TidyBar_refresh_side( true  ) end )
-      frame:SetScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
-    end
-    local function TidyBar_HookScript_frame_side( frame )
-      -- Spammy
-      --debug( GetTime() .. ' TidyBar_SetScript_frame_side( ' .. tostring( frame ) .. ' )' )
-      frame:HookScript( 'OnEnter', function() TidyBar_refresh_side( true  ) end )
-      frame:HookScript( 'OnLeave', function() TidyBar_refresh_side( false ) end )
-    end
-
-    TidyBar_SetScript_frame_side( TidyBar_frame_side )
-    TidyBar_HookScript_frame_side( MultiBarRight )
-    TidyBar_HookScript_frame_side( MultiBarLeft )
-    for i = 1, 12 do TidyBar_HookScript_frame_side( _G[ 'MultiBarRightButton' .. i ] ) end
-    for i = 1, 12 do TidyBar_HookScript_frame_side( _G[ 'MultiBarLeftButton'  .. i ] ) end
-  end
-end
-
-
-
-local function TidyBar_refresh_corner()
-  debug( ' TidyBar_refresh_corner()' )
-  TidyBar_frame_corner:SetFrameStrata( 'LOW' )
-  TidyBar_frame_corner:SetWidth( 300 )
-  TidyBar_frame_corner:SetHeight( 128 )
-  TidyBar_frame_corner:SetPoint( 'BottomRight' )
-  TidyBar_frame_corner:SetScale( TidyBar_options.scale )
-
-  -- Required in order to move the frames around
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'MultiBarBottomRight' ]     = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
-
-  -- Set Pet Bars
-  PetActionBarFrame:SetAttribute( 'unit', 'pet' )
-  RegisterUnitWatch( PetActionBarFrame )
-  
-  TidyBar_frame_corner:SetAlpha( 0 )
-
-  hide_more( MainMenuBarTexture2 )
-  hide_more( MainMenuBarTexture3 )
-
-  CharacterMicroButton:ClearAllPoints()
-  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
-  for i, name in pairs( MenuButtonFrames ) do
-    name:SetParent( TidyBar_frame_corner.MicroButtons )
-  end
-end
-
-local function TidyBar_setup_corner()
-  debug()
-  debug( ' TidyBar_setup_corner()' )
-  debug()
-
-  local BagButtonFrameList = {
-    MainMenuBarBackpackButton,
-    CharacterBag0Slot,
-    CharacterBag1Slot,
-    CharacterBag2Slot,
-    CharacterBag3Slot,
-  }
-
-  for i, name in pairs( BagButtonFrameList ) do
-    name:SetParent( TidyBar_frame_corner.BagButtonFrame )
-  end
-  
-  MainMenuBarBackpackButton:ClearAllPoints()
-  MainMenuBarBackpackButton:SetPoint( 'Bottom' )
-  MainMenuBarBackpackButton:SetPoint( 'Right', -60, 0 )
-
-  local function TidyBar_SetScript_frame_corner( frameTarget )
-    -- Spammy
-    --debug( ' TidyBar_SetScript_frame_corner( ' .. tostring( frameTarget ) .. ' )'  )
-    frameTarget:HookScript( 'OnEnter', function() TidyBar_frame_corner:SetAlpha( 1 ) end )
-    frameTarget:HookScript( 'OnLeave', function() TidyBar_frame_corner:SetAlpha( 0 ) end )
-  end
-  
-  -- Setup the Corner Buttons
-  for i, name in pairs( BagButtonFrameList ) do TidyBar_SetScript_frame_corner( name ) end
-  for i, name in pairs( MenuButtonFrames   ) do TidyBar_SetScript_frame_corner( name ) end
-  
-  -- Setup the Corner Menu Artwork
-  TidyBar_frame_corner:SetScale( TidyBar_options.scale )
-  TidyBar_frame_corner.MicroButtons:SetAllPoints( TidyBar_frame_corner )
-  TidyBar_frame_corner.BagButtonFrame:SetPoint( 'TopRight', 2, -18 )
-  TidyBar_frame_corner.BagButtonFrame:SetHeight( 64 )
-  TidyBar_frame_corner.BagButtonFrame:SetWidth( 256 )
-  TidyBar_frame_corner.BagButtonFrame:SetScale( 1.02 )
-  
-  -- Setup the Corner Menu Mouseover frame
-  TidyBar_frame_corner:SetPoint( 'BottomRight', WORLDFRAME, 'BottomRight' )
-  TidyBar_frame_corner:SetScript( 'OnEnter', function() TidyBar_frame_corner:SetAlpha( 1 ) end )
-  TidyBar_frame_corner:SetScript( 'OnLeave', function() TidyBar_frame_corner:SetAlpha( 0 ) end )
-end
-
-
 
 local function TidyBar_refresh_main_area()
-  -- This would be nice, but it won't work unless/until I code the main area setup differently:
-  --if PetBattleFrame.BottomFrame:IsShown() then return end
-
-  do  --  PetBattleFrame
-    if PetBattleFrame.BottomFrame:IsShown() then 
-      -- Positioning
-      PetBattleFrame.BottomFrame:ClearAllPoints()
-      PetBattleFrame.BottomFrame:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
-      -- Scaling for everything.  Somehow.
-      PetBattleFrame:SetScale( TidyBar_options.scale )
-      -- The background art
-      if TidyBar_options.show_textured_backgrounds then
-        PetBattleFrame.BottomFrame.FlowFrame:Show()
-        PetBattleFrame.BottomFrame.Delimiter:Show()
-        PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Show()
-        PetBattleFrame.TopVersusText:Show()
-        PetBattleFrame.TopArtLeft:Show()
-        PetBattleFrame.TopArtRight:Show()
-      else
-        PetBattleFrame.BottomFrame.FlowFrame:Hide()
-        PetBattleFrame.BottomFrame.Delimiter:Hide()
-        PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Hide()
-        PetBattleFrame.TopVersus:Hide()
-        PetBattleFrame.TopVersusText:Hide()
-        PetBattleFrame.TopArtLeft:Hide()
-        PetBattleFrame.TopArtRight:Hide()
-      end
-    end
-  end
-
   debug( ' TidyBar_refresh_main_area()' )
-  -- I seem to need to force this..
-  OverrideActionBar:SetWidth( bar_width )
-  OverrideActionBar:SetPoint( 'Left', ChatFrame1, 'BottomRight', 4, 18 )
 
-  -- MainMenuBar textured background
-  -- Has to be repositioned and nudged to the left since ActionButton1 was moved.  =/
-  MainMenuBarTexture0:ClearAllPoints()
-  MainMenuBarTexture1:ClearAllPoints()
-  MainMenuBarTexture0:SetPoint( 'Left', MainMenuBar,         'Left', -8, -5 )
-  MainMenuBarTexture1:SetPoint( 'Left', MainMenuBarTexture0, 'Right' )
+  -- Textured background
+  -- Has to be repositioned and nudged to the left since ActionButton1 gets moved.
 
-  ActionButton1:ClearAllPoints()
-  ActionButton1:SetPoint( 'BottomLeft', MainMenuBarOverlayFrame, 'BottomLeft' )
+  --  MainMenuBarArtFrameBackground is protected in combat.
+  --MainMenuBarArtFrameBackground:ClearAllPoints()
+  --MainMenuBarArtFrameBackground:SetPoint( 'Left', MainMenuBar, 'Left', -8, -5 )
 
-  -- The nagging talent popup
-  hide( TalentMicroButtonAlert )
+  -- It does nothing anyway.
+  MainMenuBarArtFrameBackground:Hide()
 
-  local function set_bar_dimensions( bar )
-    --print( bar )
-    bar:ClearAllPoints()
-    bar:SetWidth( bar_width )
-    bar:SetHeight( TidyBar_options.bar_height )
-  end
 
-  do  --  MainMenuExpBar
-    if      TidyBar_options.show_experience_bar
-    and     UnitXPMax( 'player' ) > 0
-    and not IsXPUserDisabled()
-    and not TidyBar_character_is_max_level
-    then
-      set_bar_dimensions( MainMenuExpBar )
-      set_bar_dimensions( MainMenuBarExpText )
-      -- The XP 'bubbles'
-      for i=1, 19 do hide( _G[ 'MainMenuXPBarDiv' .. i ] ) end
-      do  -- Hide the "zomg I killed a wolf" animation.
-        hide( MainMenuExpBar.BarTrailGlow )
-        hide( MainMenuExpBar.SparkBurstMove )
-      end
+  do  --  The stack of bars
+    local __
 
-      do  -- The border around the XP bar
-        hide( MainMenuXPBarTextureMid )
-        hide( MainMenuXPBarTextureLeftCap )
-        hide( MainMenuXPBarTextureRightCap )
-      end
+   --  What's this for?
+    TimerTracker:Hide()
 
-      do  -- The rested state
-        hide_more( ExhaustionLevelFillBar )
-        -- Re-shows itself, but OnUpdate code elsewhere takes care of this:
-        hide( ExhaustionTick )
-        hide( ExhaustionTickNormal )
-        hide( ExhaustionTickHighlight )
+  if InCombatLockdown() == false then
+
+    do  --  StatusTrackingBarManager
+      --  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
+      __ = StatusTrackingBarManager
+      if TidyBar_options.show_StatusTrackingBarManager == false then
+        __:Hide()
+      else
+        __:Show()
       end
     end
-  end
 
-  do  --  ArtifactWatchBar
-    -- If max level for Legion
-    if  UnitLevel( 'player' ) == MAX_PLAYER_LEVEL_TABLE[ 6 ]
-    and C_ArtifactUI.GetEquippedArtifactInfo()
-    then
-      can_display_artifact_bar = true
-      set_bar_dimensions( ArtifactWatchBar )
-      set_bar_dimensions( ArtifactWatchBar.StatusBar )
-      set_bar_dimensions( ArtifactWatchBar.OverlayFrame )
-      set_bar_dimensions( ArtifactWatchBar.OverlayFrame.Text )
-      set_bar_dimensions( ArtifactWatchBar.StatusBar.Background )
 
-      do  --  ArtifactWatchBar animations
-        hide( ArtifactWatchBar.StatusBar.BarGlow )
-        hide( ArtifactWatchBar.StatusBar.BarTrailGlow )
-        hide( ArtifactWatchBar.StatusBar.SparkBurstMove )
-        hide( ArtifactWatchBar.Tick )
+    do  --  main area texture
+      --  FIXME - If shown, show only the relevant part.
+      if TidyBar_options.show_textured_background_main == true then
+        MainMenuBarArtFrameBackground:Show()
+      else
+        MainMenuBarArtFrameBackground:Hide()
       end
-
-      do  --  hide ArtifactWatchBar.StatusBar.WatchBarTexture*
-        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture0 )
-        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture1 )
-        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture2 )
-        hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture3 )
-      end
-
-      do  --  hide ArtifactWatchBar.StatusBar.XPBarTexture*
-        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture0 )
-        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture1 )
-        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture2 )
-        hide_more( ArtifactWatchBar.StatusBar.XPBarTexture3 )
-      end
-    end  --  can_display_artifact_bar
-  end
-
-  do  --  HonorWatchBar
-    set_bar_dimensions( HonorWatchBar )
-    set_bar_dimensions( HonorWatchBar.StatusBar )
-    set_bar_dimensions( HonorWatchBar.StatusBar.Background )
-  end
-
-  do  --  ReputationWatchBar
-    set_bar_dimensions( ReputationWatchBar )
-    set_bar_dimensions( ReputationWatchBar.StatusBar )
-    set_bar_dimensions( ReputationWatchBar.OverlayFrame )
-    set_bar_dimensions( ReputationWatchBar.OverlayFrame.Text )
-    hide( ReputationWatchBar.StatusBar.BarGlow )
-    do  --  hide ReputationWatchBar.StatusBar.WatchBarTexture*
-      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture0 )
-      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture1 )
-      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture2 )
-      hide_more( ReputationWatchBar.StatusBar.WatchBarTexture3 )
     end
-  end
+
+
+    -- BUGGED - Everything is tied to MainMenuBarArtFrame and then MainMenuBar, which automatically widen if the ActionBarPage is changed in combat, shifting everything.
+--[[
+    -- IDEA - Move everything's parent to MainMenuBar and hide MainMenuBarArtFrame.
+    local bars={
+      'MultiBarBottomLeft',
+      'MultiBarBottomRight',
+      'Action',
+    }
+    for button=1, #bars do
+      for i=1, 12 do
+        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:SetParent( MainMenuBar )
+      end
+    end
+    --MainMenuBarArtFrame:Hide()
+    MainMenuBarArtFrame:Show()
+]]
+
+
+    --  Left-right placement
+    MainMenuBar:SetWidth( bar_width )
+    -- nil = the entire screen, but not WorldFrame, as that would keep it visible when the UI is hidden with alt-z
+    if   StatusTrackingBarManager:IsShown() then
+      MainMenuBar:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 2 + StatusTrackingBarManager:GetHeight() )
+    else
+      MainMenuBar:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 2 )
+    end
+
+    --  bottom row
+    --  Shift them into place.
+    ActionButton1:SetPoint( 'BottomLeft', MainMenuBar, 'BottomLeft', 2, 4 )
+
+
+    -- New simple method.
+    -- middle row
+    MultiBarBottomLeftButton1:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, 2 )
+    -- top row
+    --  It's not used for anything, but may as well move it.
+    MultiBarBottomRight:SetPoint( 'BottomLeft', MultiBarBottomLeft, 'TopLeft' )
+    MultiBarBottomRightButton1:SetPoint( 'BottomLeft', MultiBarBottomLeftButton1, 'TopLeft', 2, 2 )
+    -- Buttons 7-12 are a separate block from 1-6
+    MultiBarBottomRightButton7:ClearAllPoints()
+    MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
+
+
+--[[
+-- This is the old way, which works, but seems to be unnecessary.
+    ----  I hotkey this row to shift
+    --__ = MultiBarBottomLeft
+    --if __:IsShown() then
+      --__:SetParent( MainMenuBar )
+      --__:ClearAllPoints()
+      ---- It just gets reset in combat, because reasons.
+      ----__:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, -3 )
+      --__:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, 2 )
+      -- Buttons 7-12 are a separate block from 1-6
+      --MultiBarBottomRightButton7:ClearAllPoints()
+      --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
+    --end
+
+
+    ----  I hotkey this row to alt
+    --__ = MultiBarBottomRightButton1
+    --if __:IsShown() then
+      --__:ClearAllPoints()
+      --__:SetPoint( 'BottomLeft', MultiBarBottomLeftButton1, 'TopLeft', 0, 6 )
+      ---- Buttons 7-12 are a separate block from 1-6
+      --MultiBarBottomRightButton7:ClearAllPoints()
+      --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
+    --end
+--]]
+
+
+    do  --  main area texture
+      --  FIXME - If shown, show only the relevant part.
+      if TidyBar_options.show_textured_background_main == true then
+        MainMenuBarArtFrameBackground:Show()
+      else
+        MainMenuBarArtFrameBackground:Hide()
+      end
+    end
+
+
+  end  --  if not InCombatLockdown()
+  --  If either in or out of combat:
+
+
+    --MainMenuBar:SetWidth( bar_width )
+
+
+
+
+
+-- Does nothing
+--__:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning, 2 )
+
+
+
+--[[
+    do  --  StatusTrackingBarManager
+      --  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
+      __ = StatusTrackingBarManager
+      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
+      if TidyBar_options.show_StatusTrackingBarManager == false then
+        __:Hide()
+      else
+        __:Show()
+        --__:ClearAllPoints()
+        --  Does nothing
+        --__:SetWidth( bar_width )
+        __:SetScale( TidyBar_options.scale )
+        --__:SetParent( anchor )
+        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
+        --anchor = __
+      end
+    end
+
+--]]
+
+
+
+
+
+
+--anchor=MainMenuBarArtFrame
+--__=ActionButton1
+      --__ = MultiBarBottomRightButton1
+      --if __:IsShown() then
+        --__:ClearAllPoints()
+        --__:SetParent( anchor )
+        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, 6 )
+      --end
+
+
+    --__ = MainMenuBar
+    --__:ClearAllPoints()
+    --__:SetWidth( bar_width )
+    --__:SetScale( TidyBar_options.scale )
+    --if TidyBar_options.show_StatusTrackingBarManager == true then
+      ----  Because StatusTrackingBarManager is stuck to the bottom of MainMenuBar, I have to shift MainMenuBar up.
+      --__:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, StatusTrackingBarManager:GetHeight() + 2 )
+    --else
+      --__:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, 4 )
+    --end
+    --anchor = __
+
+
+--anchor = MainMenuBarArtFrame
+
+    --do  --  StatusTrackingBarManager
+      ----  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
+      --__ = StatusTrackingBarManager
+      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
+      --if TidyBar_options.show_StatusTrackingBarManager == false then
+        --__:Hide()
+      --else
+        --__:Show()
+        --__:ClearAllPoints()
+        --__:SetWidth( bar_width )
+        --__:SetScale( TidyBar_options.scale )
+        ----__:SetParent( anchor )
+        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
+        --anchor = __
+      --end
+    --end
+
+--StatusTrackingBarManager:ClearAllPoints()
+--StatusTrackingBarManager:SetWidth( 500 )
+--StatusTrackingBarManager:SetScale( TidyBar_options.scale )
+--StatusTrackingBarManager:SetParent( MainMenuBar )
+--StatusTrackingBarManager:SetPoint( 'BottomLeft', UIParent, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
+
+
+-- This is default above the MultiActionBar (1 to =)
+-- Middle row (my hotkey:  shift)
+
+    --do  --  MultiBarBottomLeft
+      --__ = MultiBarBottomLeft
+      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
+      --if __:IsShown() then
+        --debug( '___ MultiBarBottomLeft repositioning' )
+        --__:ClearAllPoints()
+        --__:SetParent( anchor )
+        ----  I don't know why MainMenuBar is so tall.  Nudge MultiBarBottomLeft down.
+        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, -19 )
+        --anchor = __
+      --end
+    --end
+
+--anchor=MultiBarBottomLeft
+
+-- Top row (my hotkey: alt)
+
+    --do  --  MultiBarBottomRight
+      --__ = MultiBarBottomRight
+      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
+      --if __:IsShown() then
+        --debug( 'MultiBarBottomRight debugging' )
+        --__:ClearAllPoints()
+        --__:SetParent( anchor )
+        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, 4 )
+        --anchor = __
+        ---- I don't understand why buttons 7-12 are a separate block from 1-6, but this fixes that.
+        ---- FIXME - MultiBarBottomRight moves around!
+        --MultiBarBottomRightButton7:ClearAllPoints()
+        --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
+      --end
+    --end
+
+--point, relativeTo, relativePoint, xOfs, yOfs = MultiBarBottomRight:GetPoint()
+--print( point )
+--print( relativeTo:GetName() )
+--print( relativePoint )
+--print( xOfs )
+--print( yOfs )
+
+
+
+
+--[[
+    if StanceBarFrame:IsShown() then
+      StanceButton1:ClearAllPoints()
+      StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
+      anchor = StanceButton1
+    end
+--]]
+
+
+
+--[[
+    if MainMenuBarVehicleLeaveButton:IsShown() then
+      MainMenuBarVehicleLeaveButton:ClearAllPoints()
+      MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
+      anchor = MainMenuBarVehicleLeaveButton
+    end
+--]]
+
+
+--[[
+    if FramerateText:IsShown() then  --  FPS text
+      --FramerateLabel:ClearAllPoints()
+      --FramerateText:ClearAllPoints()
+      --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top' )
+      --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
+      --anchor = FramerateText
+
+
+      FramerateText:ClearAllPoints()
+      FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
+      FramerateLabel:Hide()
+      anchor = FramerateText
+    end
+--]]
+
+  end  --  The stack of bars
+
+
+
+
+  --  Hide the main bar bubbles
+  StatusTrackingBarManager.SingleBarLarge:Hide()
+
+  --  Hide the gryphons
+  MainMenuBarArtFrame.LeftEndCap:Hide()
+  MainMenuBarArtFrame.RightEndCap:Hide()
+
+
 
   do  -- Hide the fiddly bits on the main bar
-    hide( MainMenuBarPageNumber )
-    hide( ActionBarUpButton )
-    hide( ActionBarDownButton )
+    hide( MainMenuBarArtFrame.PageNumber, 'MainMenuBarArtFrame.PageNumber' )
+    hide( ActionBarUpButton, 'ActionBarUpButton' )
+    hide( ActionBarDownButton, 'ActionBarDownButton' )
   end
 
-  MultiBarBottomRight:ClearAllPoints()
-  PetActionButton1:ClearAllPoints()
-  StanceButton1:ClearAllPoints()
 
-  do -- Hide the background behind the stance bar
-    hide( StanceBarLeft )
-    hide( StanceBarRight )
+  do  -- Hide the background behind the stance bar
+    hide( StanceBarLeft,  'StanceBarLeft' )
+    hide( StanceBarRight, 'StanceBarRight' )
   end
 
-  -- Hide the border around buttons
-  for i=1,10 do
-    hide( _G[ 'StanceButton' .. i .. 'NormalTexture2' ] )
-  end
 
-  do  --  Gryphons
-    if TidyBar_options.show_gryphons then
-      MainMenuBarLeftEndCap:Show()
-      MainMenuBarRightEndCap:Show()
-      MainMenuBarLeftEndCap:ClearAllPoints()
-      MainMenuBarRightEndCap:ClearAllPoints()
-      MainMenuBarLeftEndCap:SetPoint( 'BottomRight', MainMenuBar,  'BottomLeft', -4, 0 )
-      MainMenuBarRightEndCap:SetPoint( 'BottomLeft', ActionButton12, 'BottomRight', 4, 0 )
-    else
-      MainMenuBarLeftEndCap:Hide()
-      MainMenuBarRightEndCap:Hide()
+  do  -- Hide the border around buttons
+    for i=1,10 do
+      hide( _G[ 'StanceButton' .. i .. 'NormalTexture2' ], "_G[ 'StanceButton' .. i .. 'NormalTexture2' ]" )
     end
   end
 
-----------------------------------------------------------------------
-
-
-  hide( MainMenuBarMaxLevelBar )
-
-
-  MainMenuBar:SetWidth( bar_width )
-  -- Scaling for everything.  Somehow.
-  MainMenuBar:SetScale( TidyBar_options.scale )
-
-  MainMenuBar:ClearAllPoints()
-  MainMenuBar:SetPoint( 'BottomLeft', WorldFrame, 'BottomLeft', TidyBar_options.main_area_positioning, 0 )
 
   do  --  TidyBar_options.show_macro_text
     local bars={
@@ -408,255 +438,255 @@ local function TidyBar_refresh_main_area()
     end
   end
 
-
-
-
-  if TidyBar_options.show_textured_backgrounds then
-    MainMenuBarTexture0:Show()
-    MainMenuBarTexture1:Show()
-  else
-    MainMenuBarTexture0:Hide()
-    MainMenuBarTexture1:Hide()
-  end
-
-
-  local anchor = ActionButton1
-  local the_first_bar = true
-  local space_between_bottom_bar_and_buttons = 6
-
-
-  if      TidyBar_options.show_experience_bar
-  and     UnitXPMax( 'player' ) > 0
-  and not IsXPUserDisabled()
-  and not TidyBar_character_is_max_level
-  then
-    if the_first_bar then
-      bar_spacing = space_between_bottom_bar_and_buttons
-    else
-      bar_spacing = 0
-    end
-    MainMenuExpBar:Show()
-    MainMenuBarExpText:Show()
-
-    MainMenuExpBar:SetPoint(          'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    MainMenuBarExpText:SetPoint(      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    MainMenuXPBarTextureMid:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-
-    the_first_bar = false
-    anchor = MainMenuExpBar
-  else
-    MainMenuExpBar:Hide()
-    MainMenuBarExpText:Hide()
-  end
-
-
-  if  TidyBar_options.show_artifact_power_bar
-  and can_display_artifact_bar
-  then
-    if the_first_bar then
-      bar_spacing = space_between_bottom_bar_and_buttons
-    else
-      bar_spacing = 0
-    end
-
-    ArtifactWatchBar:Show()
-    ArtifactWatchBar:SetPoint(                      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.StatusBar:SetPoint(            'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.StatusBar.Overlay:SetPoint(    'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.OverlayFrame:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.OverlayFrame.Text:SetPoint(    'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    ArtifactWatchBar.StatusBar.Background:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-
-    -- The colour underneath the ArtifactWatchBar
-    hide( ArtifactWatchBar.StatusBar.Underlay )
-
-    if TidyBar_character_is_max_level then
-      -- For reasons unknown, this doesn't stick at max level:
-      ArtifactWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-      hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture2 )
-      hide_more( ArtifactWatchBar.StatusBar.WatchBarTexture3 )
-    end
-
-    the_first_bar = false
-    anchor = ArtifactWatchBar.StatusBar
-  else
-    ArtifactWatchBar:Hide()
-  end
-
-
-  if  TidyBar_options.show_honor_bar
-  and HonorWatchBar:IsShown() 
-  then
-    if the_first_bar then
-      bar_spacing = space_between_bottom_bar_and_buttons
-    else
-      bar_spacing = 0
-    end
-
-    HonorWatchBar:Show()
-    HonorWatchBar:SetPoint(                      'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    HonorWatchBar.StatusBar:SetPoint(            'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    HonorWatchBar.StatusBar.Background:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-    HonorWatchBar.OverlayFrame:SetPoint(         'BottomLeft', anchor, 'TopLeft', 0, bar_spacing )
-
-    -- This may not be a thing
-    HonorWatchBar.StatusBar.BarGlow:SetHeight( TidyBar_options.bar_height )
-    HonorWatchBar.StatusBar.BarGlow:ClearAllPoints()
-
-    HonorWatchBar.OverlayFrame:SetHeight( TidyBar_options.bar_height )
-    HonorWatchBar.OverlayFrame:ClearAllPoints()
-
-    HonorWatchBar.OverlayFrame.Text:SetHeight( TidyBar_options.bar_height )
-    HonorWatchBar.OverlayFrame.Text:ClearAllPoints()
-
-    hide_more( HonorWatchBar.StatusBar.WatchBarTexture0 )
-    hide_more( HonorWatchBar.StatusBar.WatchBarTexture1 )
-    hide_more( HonorWatchBar.StatusBar.WatchBarTexture2 )
-    hide_more( HonorWatchBar.StatusBar.WatchBarTexture3 )
-
-    the_first_bar = false
-    anchor = ArtifactWatchBar.StatusBar
-  else
-    HonorWatchBar:Hide()
-  end
-
-
-  if ReputationWatchBar:IsShown() then
-    if the_first_bar then
-      bar_spacing = space_between_bottom_bar_and_buttons
-    else
-      bar_spacing = 0
-    end
-
-    ReputationWatchBar.StatusBar:SetHeight( TidyBar_options.bar_height )
-
-    if TidyBar_options.show_experience_bar then
-      ReputationWatchBar_bar_spacing = 0
-    else
-      ReputationWatchBar_bar_spacing = bar_spacing
-    end
-    if can_display_artifact_bar then
-      ReputationWatchBar:SetPoint( 'BottomLeft', ArtifactWatchBar, 'TopLeft', 0, ReputationWatchBar_bar_spacing )
-    else
-      ReputationWatchBar:SetPoint( 'BottomLeft', anchor,           'TopLeft', 0, ReputationWatchBar_bar_spacing )
-    end
-    ReputationWatchBar.StatusBar:SetPoint(         'BottomLeft', ReputationWatchBar, 'BottomLeft' )
-    ReputationWatchBar.StatusBar.BarGlow:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
-    ReputationWatchBar.OverlayFrame:SetPoint(      'BottomLeft', ReputationWatchBar, 'BottomLeft' )
-    ReputationWatchBar.OverlayFrame.Text:SetPoint( 'BottomLeft', ReputationWatchBar, 'BottomLeft' )
-
-    the_first_bar = false
-    anchor = ReputationWatchBar
-  end
-
-
-  if MultiBarBottomLeft:IsShown() then
-    MultiBarBottomLeft:ClearAllPoints()
-    MultiBarBottomLeft:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    anchor = MultiBarBottomLeft
-  end
-
-
-  if MultiBarBottomRight:IsShown() then
-    MultiBarBottomRight:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    anchor = MultiBarBottomRight
-  end
-
-
-  if StanceBarFrame:IsShown() then
-    StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    anchor = StanceButton1
-  end
-
-
-  if PetActionBarFrame:IsShown() then
-    PetActionButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    anchor = PetActionButton1
-  end
-
-
-  if MainMenuBarVehicleLeaveButton:IsShown() then
-    MainMenuBarVehicleLeaveButton:ClearAllPoints()
-    MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    anchor = MainMenuBarVehicleLeaveButton
-  end
-
-  if FramerateText:IsShown() then  --  FPS text
-    --FramerateLabel:ClearAllPoints()
-    --FramerateText:ClearAllPoints()
-    --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top',  0, TidyBar_options.bar_spacing )
-    --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
-    --anchor = FramerateText
-
-
-    FramerateText:ClearAllPoints()
-    FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, TidyBar_options.bar_spacing )
-    FramerateLabel:Hide()
-    anchor = FramerateText
-  end
 end
 
-function TidyBar_setup_petbattle_area()
-  debug( 'TidyBar_PetBattleSetup()' )
-  -- Re-use the micro buttons from the regular game world.
-  CharacterMicroButton:ClearAllPoints()
-  CharacterMicroButton:SetPoint( 'BottomRight', TidyBar_frame_corner.MicroButtons, 'BottomRight', -270, 0 )
-  for i, name in pairs( MenuButtonFrames ) do
-    name:SetParent( TidyBar_frame_corner.MicroButtons )
-  end
-  TidyBar_frame_corner:SetAlpha( 0 )
-  -- Hide the micro buttons from the pet battle UI
-  PetBattleFrame.BottomFrame.MicroButtonFrame:Hide()
-  -- Hide art
-  hide( PetBattleFrame.BottomFrame.Background )
-  hide( PetBattleFrame.BottomFrame.LeftEndCap )
-  hide( PetBattleFrame.BottomFrame.RightEndCap )
-  -- Shift the UI
-  PetBattleFrame.BottomFrame.TurnTimer:ClearAllPoints()
-  PetBattleFrame.BottomFrame.TurnTimer:SetPoint( 'BottomLeft', PetBattleFrame.BottomFrame, 'TopLeft' )
-end
--- Loading it this way somehow screws up the options panel:
---TidyBar:RegisterEvent( 'PET_BATTLE_OPENING_START' )
---TidyBar:HookScript( 'OnEvent', TidyBar_setup_petbattle_area )
 
-local function TidyBar_setup_main_area()
-  debug( ' TidyBar_setup_main_area()' )
-  TidyBar_setup_petbattle_area()
-  -- Fixes #54 reputation bar jumping.
-  -- Though throttled, oh god is this a harsh solution.
-  local TidyBar_TimeSinceLastUpdate = 0
-  local percentage_of_fps = 100
-  if TidyBar_character_is_max_level then
-    WorldFrame:HookScript( 'OnUpdate', function()
-      -- TESTING - I wonder if this is needed.
-      --if InCombatLockdown() then return end
-      local __, relativeTo, __, __, __ = ReputationWatchBar:GetPoint()
-      if not relativeTo == MainMenuBar then return end
-      TidyBar_TimeSinceLastUpdate = TidyBar_TimeSinceLastUpdate + percentage_of_fps + 1
-      if ( TidyBar_TimeSinceLastUpdate > 100 ) then
-        --print( GetTime() )
-        TidyBar_refresh_main_area()
-        TidyBar_TimeSinceLastUpdate = 0
+
+local function TidyBar_refresh_side( is_mouse_inside_side )
+  -- if MultiBarRight isn't there, then neither is MultiBarLeft; just exit.
+  if MultiBarRight:IsShown() == false then
+    ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+    return
+  end
+
+  do  --  debugging
+    if is_mouse_inside_side == true then
+      debug( ' mouse entered the side' )
+    else
+      debug( ' mouse exited the side' )
+    end
+    debug( ' SpellFlyout:IsShown( ' .. tostring( SpellFlyout:IsShown() ) .. ' )' )
+  end
+
+
+  -- Doing the following somehow reduces the height of the objective tracker, showing only a few items:
+  -- Works in combat.
+  ObjectiveTrackerFrame:ClearAllPoints()
+  ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
+
+  if not InCombatLockdown() then
+    --  Attempting to more thorougly solve issue #30, but nothing works.
+--[[
+    for i = 1, 12 do
+      local frame = 'MultiBarRightButton' .. i
+      -- How much more aggressive could I be?
+      _G[ frame ]:Hide()
+      _G[ frame .. 'Shine' ]:Hide()
+      _G[ frame .. 'Border' ]:Hide()
+      _G[ frame .. 'Count' ]:Hide()
+      _G[ frame .. 'Flash' ]:Hide()
+      _G[ frame .. 'FlyoutArrow' ]:Hide()
+      _G[ frame .. 'Name' ]:Hide()
+      _G[ frame .. 'FlyoutBorder' ]:Hide()
+      _G[ frame .. 'FlyoutBorderShadow' ]:Hide()
+      _G[ frame .. 'NormalTexture' ]:Hide()
+      _G[ frame .. 'Cooldown' ]:Hide()
+      _G[ frame .. 'Icon' ]:Hide()
+      _G[ frame .. 'FloatingBG' ]:Hide()
+
+      --local frame = 'MultiBarLeftButton' .. i
+
+      --_G[ frame ]:SetAlpha( alpha )
+    end
+--]]
+
+    end
+
+
+
+  local alpha
+  if    TidyBar_options.hide_side_on_mouseout == false
+    or  is_mouse_inside_side
+    or  SpellFlyout:IsShown()
+  then  --  Show
+    alpha = 1
+  else  --  Hide
+    alpha = 0
+  end
+  VerticalMultiBarsContainer:SetAlpha( alpha )
+  --for i = 1, 12 do
+    --_G[ 'MultiBarRightButton' .. i ]:SetAlpha( alpha )
+    --_G[ 'MultiBarLeftButton'  .. i ]:SetAlpha( alpha )
+  --end
+
+    --  Attempting to more thorougly solve issue #30, but nothing works.
+--[[
+    -- Don't work
+    _G[ frame .. 'Shine' ]:SetAlpha( alpha )
+    _G[ frame .. 'Border' ]:SetAlpha( alpha )
+    _G[ frame .. 'Count' ]:SetAlpha( alpha )
+    _G[ frame .. 'Flash' ]:SetAlpha( alpha )
+    _G[ frame .. 'FlyoutArrow' ]:SetAlpha( alpha )
+    _G[ frame .. 'Name' ]:SetAlpha( alpha )
+    _G[ frame .. 'FlyoutBorder' ]:SetAlpha( alpha )
+    _G[ frame .. 'FlyoutBorderShadow' ]:SetAlpha( alpha )
+    _G[ frame .. 'NormalTexture' ]:SetAlpha( alpha )
+    _G[ frame .. 'Cooldown' ]:SetAlpha( alpha )
+    _G[ frame .. 'Icon' ]:SetAlpha( alpha )
+
+    -- bugged:
+    --_G[ frame .. 'AutoCastable' ]:SetAlpha( alpha )
+    --_G[ frame .. 'NewActionTexture' ]:SetAlpha( alpha )
+    --_G[ frame .. 'Hotkey' ]:SetAlpha( alpha )
+    --_G[ frame .. 'SpellHighlightAnim' ]:SetAlpha( alpha )
+    --_G[ frame .. 'SpellHighlightTexture' ]:SetAlpha( alpha )
+--]]
+
+
+end
+
+
+
+local function TidyBar_refresh_corner( is_mouse_inside_corner )
+
+  do  --  debugging
+    if is_mouse_inside_corner == true then
+      debug( ' mouse entered the corner' )
+    else
+      debug( ' mouse exited the corner' )
+    end
+  end
+
+  if not InCombatLockdown() then
+    local __ = MicroButtonAndBagsBar
+    do  --  parent frame size
+      --  TODO - get the first entry in the MenuButtonFrames array
+      __:SetHeight( CharacterMicroButton:GetHeight() + MainMenuBarBackpackButton:GetHeight() + 20 )
+
+      local MicroButtonAndBagsBar_width = 0
+      for i, name in pairs( MenuButtonFrames ) do
+        MicroButtonAndBagsBar_width = ( MicroButtonAndBagsBar_width + name:GetWidth() )
       end
-    end ) -- HookScript
-  end -- if TidyBar_character_is_max_level
+      __:SetWidth( MicroButtonAndBagsBar_width + 10 )
+    end
+
+    MicroButtonAndBagsBar:ClearAllPoints()
+    --  It's intentionally shifted away from the edges.
+    --  .. in case there's something the user stuffed into that corner.
+    MicroButtonAndBagsBar:SetPoint( 'BottomRight', WorldFrame, 'BottomRight', 3, 3 )
+
+    do  --  The corner background art
+      --[[
+          --  TODO - I have to make a custom background, or figure out how to manipuluate the existing one.
+          if TidyBar_options.show_textured_background_corner == true then
+            MicroButtonAndBagsBar.MicroBagBar:Show()
+          else
+            MicroButtonAndBagsBar.MicroBagBar:Hide()
+          end
+        end
+      ]]--
+      MicroButtonAndBagsBar.MicroBagBar:Hide()
+    end
+
+
+
+    do  --  Bottom buttons repositioning
+      local anchor = MicroButtonAndBagsBar
+      for i, name in pairs( MenuButtonFrames ) do
+        name:ClearAllPoints()
+        name:SetPoint( 'BottomLeft', anchor, 'BottomRight' )
+        anchor = name
+        --frame_debug_overlay( name, 'frame_debug_overlay( ' .. tostring( name ) .. ' )' )
+      end
+      for i, name in pairs( MenuButtonFrames ) do
+        name:SetParent( MicroButtonAndBagsBar )
+      end
+      --  BUG - when the UI is hidden/shown, this is out of place.
+      CharacterMicroButton:SetPoint( 'BottomLeft', MicroButtonAndBagsBar, 'BottomLeft' )
+    end
+
+
+    do  --  Bags / backpack repositioning
+      --  Chain the bags together, in reverse order.
+      local separation = 4
+      CharacterBag3Slot:ClearAllPoints() ; CharacterBag3Slot:SetPoint( 'BottomLeft', MainMenuBarBackpackButton, 'BottomRight', separation, 0 )
+      CharacterBag2Slot:ClearAllPoints() ; CharacterBag2Slot:SetPoint( 'BottomLeft', CharacterBag3Slot,         'BottomRight', separation, 0 )
+      CharacterBag1Slot:ClearAllPoints() ; CharacterBag1Slot:SetPoint( 'BottomLeft', CharacterBag2Slot,         'BottomRight', separation, 0 )
+      CharacterBag0Slot:ClearAllPoints() ; CharacterBag0Slot:SetPoint( 'BottomLeft', CharacterBag1Slot,         'BottomRight', separation, 0 )
+
+      --  Link them above the bottom buttons
+      MainMenuBarBackpackButton:ClearAllPoints()
+      MainMenuBarBackpackButton:SetPoint( 'BottomLeft', CharacterMicroButton, 'TopLeft', 0, 4 )
+    end
+
+  end  --  not InCombatLockdown() then
+
+
+
+  local alpha
+  if  is_mouse_inside_corner
+  or  TidyBar_options.hide_corner_on_mouseout  ==  false
+  then
+    alpha = 1
+  else
+    alpha = 0
+  end
+  MicroButtonAndBagsBar:SetAlpha( alpha )
+
+--[[  -- TODO - is this stuff still needed?
+  -- Required in order to move the frames around
+  UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
+  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
+  -- Set Pet Bars
+  PetActionBarFrame:SetAttribute( 'unit', 'pet' )
+  RegisterUnitWatch( PetActionBarFrame )
+--]]
+end
+
+
+
+local function TidyBar_refresh_petbattle()
+  if not PetBattleFrame:IsShown() then return end
+
+  -- Positioning
+  PetBattleFrame.BottomFrame:ClearAllPoints()
+  PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, 0 )
+  -- The background art
+  if TidyBar_options.show_textured_background_petbattle == false then
+    PetBattleFrame.TopVersus:Hide()
+    PetBattleFrame.TopVersusText:Hide()
+    PetBattleFrame.TopArtLeft:Hide()
+    PetBattleFrame.TopArtRight:Hide()
+    PetBattleFrame.BottomFrame.Background:Hide()
+    PetBattleFrame.BottomFrame.LeftEndCap:Hide()
+    PetBattleFrame.BottomFrame.RightEndCap:Hide()
+    PetBattleFrame.BottomFrame.FlowFrame:Hide()
+    PetBattleFrame.BottomFrame.Delimiter:Hide()
+    --PetBattleFrame.BottomFrame.MicroButtonFrame:SetAlpha( 0 )
+    --PetBattleFrame.BottomFrame.MicroButtonFrame:Hide()
+    --  FIXME - this isn't hidden unless I shift-up to refresh.
+    PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Hide()
+  else
+    PetBattleFrame.TopVersus:Show()
+    PetBattleFrame.TopVersusText:Show()
+    PetBattleFrame.TopArtLeft:Show()
+    PetBattleFrame.TopArtRight:Show()
+    PetBattleFrame.BottomFrame.Background:Show()
+    PetBattleFrame.BottomFrame.LeftEndCap:Show()
+    PetBattleFrame.BottomFrame.RightEndCap:Show()
+    PetBattleFrame.BottomFrame.FlowFrame:Show()
+    PetBattleFrame.BottomFrame.Delimiter:Show()
+    --PetBattleFrame.BottomFrame.MicroButtonFrame:Show()
+    PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:Show()
+  end
+
+  if TidyBar_options.show_StatusTrackingBarManager == false then
+    PetBattleFrameXPBar:Hide()
+  else
+    PetBattleFrameXPBar:Show()
+  end
+
 end
 
 
 
 function TidyBar_refresh_everything()
-  debug( ' TidyBar_refresh_everything()' )
+  if not MainMenuBar:IsVisible() == true then return end
+  debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
   TidyBar_refresh_main_area()
-  -- FIXME - I want to remove this, it's bad code.
-  -- However, this is needed to make the sidebar area (between buttons) keep the area open.  INVESTIGATE.
-  -- :
-  --TidyBar_setup_side()
-
-  TidyBar_refresh_corner()
+  TidyBar_refresh_corner( false )
   TidyBar_refresh_side( false )
-
-  -- FIXME - the overlay is missing without this.
-  --TidyBar_setup_side()
+  TidyBar_refresh_petbattle()
 end
 
 
@@ -670,81 +700,151 @@ TidyBar:SetScript( 'OnEvent', function( self )
   --print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
   debug( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
 
-  do  --  learn if max level
-    local level_player    = UnitLevel( 'player' )
-    local level_expansion = MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
-    if level_player == level_expansion then
-      TidyBar_character_is_max_level = true
-      debug( 'TidyBar:  Character level ' .. level_player .. ' (max)' )
-    else
-      TidyBar_character_is_max_level = false
-      debug( 'TidyBar:  Character level ' .. level_player .. '/' .. level_expansion )
+  do  --  Set up the side
+
+    do  --  Frame
+      --  Not setting up a TidyBar frame just for the side, since I can use VerticalMultiBarsContainer
+      --  Not moving VerticalMultiBarsContainer, since I'm not really sure where it should go or if I should bother.
+      frame_debug_overlay( VerticalMultiBarsContainer, 'frame_debug_overlay( TidyBar_frame_side )' )
+      MultiBarRight:SetParent( VerticalMultiBarsContainer )
+      MultiBarLeft:SetParent(  VerticalMultiBarsContainer )
+      -- TODO? - Make it slightly wider.  Check the width of the buttons, if Shown(), and add to it.
     end
+
+
+    do  --  Scripting
+      local function VerticalMultiBarsContainer_scripting( frame, parameter )
+        if frame == nil then print( 'VerticalMultiBarsContainer_scripting() error using ' .. parameter .. ' attempting to continue..' ); return end
+        -- Spammy
+        --debug( GetTime() .. ' VerticalMultiBarsContainer_scripting( ' .. tostring( frame ) .. ' )' )
+        frame:SetScript( 'OnEnter',  function() TidyBar_refresh_side( true  ) end )
+        frame:SetScript( 'OnLeave',  function() TidyBar_refresh_side( false ) end )
+      end
+
+      VerticalMultiBarsContainer_scripting( VerticalMultiBarsContainer, 'VerticalMultiBarsContainer_scripting( VerticalMultiBarsContainer )' )
+      VerticalMultiBarsContainer_scripting( MultiBarRight,              'VerticalMultiBarsContainer_scripting( MultiBarRight )' )
+      VerticalMultiBarsContainer_scripting( MultiBarLeft,               'VerticalMultiBarsContainer_scripting( MultiBarLeft )' )
+
+      for i = 1, 12 do
+        VerticalMultiBarsContainer_scripting( _G[ 'MultiBarRightButton' .. i ] )
+        VerticalMultiBarsContainer_scripting( _G[ 'MultiBarLeftButton'  .. i ] )
+      end
+    end
+
   end
 
-  do  --  Create and set up the secondary frames.
-    TidyBar_frame_side                  = CreateFrame( 'Frame', 'TidyBar_frame_side',   UIParent )
-    TidyBar_frame_corner                = CreateFrame( 'Frame', 'TidyBar_frame_corner', UIParent )
-    TidyBar_frame_corner.MicroButtons   = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
-    TidyBar_frame_corner.BagButtonFrame = CreateFrame( 'Frame', nil,                    TidyBar_frame_corner )
 
-    TidyBar_frame_side:EnableMouse()
-    TidyBar_frame_corner:EnableMouse()
+  do  --  Set up the corner
 
-    TidyBar_frame_side:SetFrameStrata(   'BACKGROUND' )
-    TidyBar_frame_corner:SetFrameStrata( 'BACKGROUND' )
+    do  --  frame
+      -- Not setting up a TidyBar frame just for the corner, since I can use MicroButtonAndBagsBar
+      MicroButtonAndBagsBar:EnableMouse()
+      frame_debug_overlay( MicroButtonAndBagsBar, 'frame_debug_overlay( MicroButtonAndBagsBar )' )
+    end
 
-    frame_debug_overlay( TidyBar_frame_side )
-    frame_debug_overlay( TidyBar_frame_corner )
-    frame_debug_overlay( TidyBar_frame_corner.MicroButtons )
-    frame_debug_overlay( TidyBar_frame_corner.BagButtonFrame )
+
+    do  --  Scripting
+      local function TidyBar_frame_corner_scripting( frame, parameter )
+        if frame == nil then print( 'TidyBar TidyBar_frame_corner_scripting() error using ' .. parameter .. ' attempting to continue..' ); return end
+        frame:SetScript( 'OnEnter',  function() if not PetBattleFrame:IsShown() then TidyBar_refresh_corner( true  ) end end )
+        frame:SetScript( 'OnLeave',  function() if not PetBattleFrame:IsShown() then TidyBar_refresh_corner( false ) end end )
+      end
+
+      TidyBar_frame_corner_scripting( MicroButtonAndBagsBar, 'TidyBar_frame_corner_scripting( MicroButtonAndBagsBar )' )
+      --MicroButtonAndBagsBar:SetScript( 'OnEnter',  function() print( 'it enters' ) ; TidyBar_refresh_corner( true  ) end )
+      --MicroButtonAndBagsBar:SetScript( 'OnLeave',  function() print( 'it exits'  ) ; TidyBar_refresh_corner( false ) end )
+
+      --  LUA has no functionality to iterate over two tables simultaneously; they would have to be combined.
+      for i, name in pairs( MenuButtonFrames ) do
+        --name:SetParent( MicroButtonAndBagsBar )
+        TidyBar_frame_corner_scripting( name, 'TidyBar_frame_corner: ' .. tostring( name ) )
+      end
+      for i, name in pairs( BagButtonFrameList ) do
+        --name:SetParent( MicroButtonAndBagsBar )
+        TidyBar_frame_corner_scripting( name, 'TidyBar_frame_corner: ' .. tostring( name ) )
+      end
+    end
+
+
+
   end
 
-  do  --  Set up the various components of TidyBar.
-    TidyBar_setup_corner()
-    TidyBar_setup_side()
-    TidyBar_setup_options_pane()
-    TidyBar_setup_main_area()
+
+  do  --  Pet Battle scripting
+    TidyBar_PetBattle = CreateFrame( 'Frame', 'TidyBar_PetBattle', WorldFrame )
+    TidyBar_PetBattle:SetFrameStrata( 'BACKGROUND' )
+    TidyBar_PetBattle:RegisterEvent( 'PET_BATTLE_OPENING_START' )
+    TidyBar_PetBattle:SetScript( 'OnEvent', function( self )
+      self:Show()
+      TidyBar_refresh_petbattle()
+    end )
   end
+
+
+  TidyBar_setup_options_pane()
+  --TidyBar_refresh_everything()
+
+
+  --TidyBar_Frame_refresh_everything = CreateFrame( 'Frame', 'TidyBar_Frame_refresh_everything', WorldFrame )
+  --TidyBar_Frame_refresh_everything:SetFrameStrata( 'BACKGROUND' )
+  ---- If I can find a trigger that fires after the UI is shown (alt-z twice), then I can force-refresh..
+  ----TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_SHOWGRID' )
+  --TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_PAGE_CHANGED' )
+  --TidyBar_Frame_refresh_everything:SetScript( 'OnEvent', function( self )
+    --self:Show()
+    --print( 'refresh 02 ' .. GetTime() )
+    --TidyBar_refresh_everything()
+  --end )
+
 
   -- Call Update Function when the default UI makes changes
-  -- FIXME - Isn't this a terrible, terrible, idea?
-  hooksecurefunc( 'UIParent_ManageFramePositions', TidyBar_refresh_everything )
+  -- This isn't needed for the corner code, so maybe that's something to learn from.  That's really strange, since the corner code is based on the side code!
+  -- I don't understand, but throttling just magically started happening while I was screwing around elsewhere.
+  --local throttle = GetTime()
+  hooksecurefunc( 'UIParent_ManageFramePositions', function( self )
+    if throttle == GetTime() then
+      debug( 'refresh from UIParent_ManageFramePositions - ' .. GetTime() )
+      TidyBar_refresh_everything()
+    end
+    throttle = GetTime()
+  end )
 
-  -- Slash commands are added bulk.
-  -- Shift-up/down will do the same thing.
-  --SLASH_TIDYBAR1 = '/tidybar'
-  --SlashCmdList[ 'TIDYBAR' ] = TidyBar_refresh_everything
+  --hooksecurefunc( 'BuffFrame_Update', function( self )
+    --debug( 'refresh from BuffFrame_Update - ' .. GetTime() )
+    --TidyBar_refresh_everything()
+  --end )
+
 end )
 
 
-
+--UNIT_ENTERED_VEHICLE
+--[[
 local function TidyBar_VehicleSetup()
   if not UnitHasVehicleUI( 'player' ) then return nil end
   debug( ' TidyBar_VehicleSetup()' )
 
   do  --  hide stuff
-    hide( OverrideActionBarEndCapL )
-    hide( OverrideActionBarEndCapR )
+    hide( OverrideActionBarEndCapL, 'OverrideActionBarEndCapL' )
+    hide( OverrideActionBarEndCapR, 'OverrideActionBarEndCapR' )
 
-    hide( OverrideActionBarBG )
-    hide( OverrideActionBarMicroBGL )
-    hide( OverrideActionBarMicroBGMid )
-    hide( OverrideActionBarMicroBGR )
+    hide( OverrideActionBarBG, 'OverrideActionBarBG' )
+    hide( OverrideActionBarMicroBGL, 'OverrideActionBarMicroBGL' )
+    hide( OverrideActionBarMicroBGMid, 'OverrideActionBarMicroBGMid' )
+    hide( OverrideActionBarMicroBGR, 'OverrideActionBarMicroBGR' )
 
     -- The box around the buttons
-    hide( OverrideActionBarButtonBGL )
-    hide( OverrideActionBarButtonBGMid )
-    hide( OverrideActionBarButtonBGR )
+    hide( OverrideActionBarButtonBGL, 'OverrideActionBarButtonBGL' )
+    hide( OverrideActionBarButtonBGMid, 'OverrideActionBarButtonBGMid' )
+    hide( OverrideActionBarButtonBGR, 'OverrideActionBarButtonBGR' )
 
-    hide( OverrideActionBarDivider2 )
-    hide( OverrideActionBarBorder )
-    hide( OverrideActionBarLeaveFrameDivider3 )
-    hide( OverrideActionBarLeaveFrameExitBG )
+    hide( OverrideActionBarDivider2, 'OverrideActionBarDivider2' )
+    hide( OverrideActionBarBorder, 'OverrideActionBarBorder' )
+    hide( OverrideActionBarLeaveFrameDivider3, 'OverrideActionBarLeaveFrameDivider3' )
+    hide( OverrideActionBarLeaveFrameExitBG, 'OverrideActionBarLeaveFrameExitBG' )
 
-    hide( OverrideActionBarExpBarXpL )
-    hide( OverrideActionBarExpBarXpMid )
-    hide( OverrideActionBarExpBarXpR )
+    hide( OverrideActionBarExpBarXpL, 'OverrideActionBarExpBarXpL' )
+    hide( OverrideActionBarExpBarXpMid, 'OverrideActionBarExpBarXpMid' )
+    hide( OverrideActionBarExpBarXpR, 'OverrideActionBarExpBarXpR' )
   end
 
   do  --  health/power bars
@@ -760,19 +860,14 @@ local function TidyBar_VehicleSetup()
     OverrideActionBarPowerBar:SetWidth( 8 )
     OverrideActionBarHealthBarOverlay:SetWidth( 8 )
     OverrideActionBarPowerBarOverlay:SetWidth( 8 )
-    hide( OverrideActionBarHealthBarBackground )
-    hide( OverrideActionBarPowerBarBackground )
+    hide( OverrideActionBarHealthBarBackground, 'OverrideActionBarHealthBarBackground' )
+    hide( OverrideActionBarPowerBarBackground, 'OverrideActionBarPowerBarBackground' )
   end
 
   do  --  experience bar
-    -- FIXME? - The width doesn't seem to work.  I can't even force it during a refresh.  This doesn't seem to matter though.
-    OverrideActionBarExpBar:SetWidth( bar_width )
-    OverrideActionBarExpBar:SetHeight( TidyBar_options.bar_height )
-    OverrideActionBarExpBar:ClearAllPoints()
-    OverrideActionBarExpBar:SetPoint( 'BottomLeft', OverrideActionBarButton1, 'TopLeft', 0, 4  )
     -- The vehicle XP 'bubbles'.
     for i=1,19 do
-      hide( _G[ 'OverrideActionBarXpDiv' .. i ] )
+      hide( _G[ 'OverrideActionBarXpDiv' .. i ], "_G[ 'OverrideActionBarXpDiv' .. i ]" )
     end
   end
 
@@ -783,5 +878,50 @@ local function TidyBar_VehicleSetup()
   OverrideActionBarButton1:SetPoint( 'BottomLeft', OverrideActionBar, 'BottomLeft', 24, 16 )
 end
 TidyBar:RegisterEvent( 'UNIT_ENTERED_VEHICLE' )
--- FIXME - this will keep re-hooking, which is a bad idea, right?
 TidyBar:HookScript( 'OnEvent', TidyBar_VehicleSetup )
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

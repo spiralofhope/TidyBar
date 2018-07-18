@@ -1,17 +1,18 @@
 do  --  Default options
   TidyBar_options = {}
-  TidyBar_options.show_experience_bar = true
-  TidyBar_options.show_artifact_power_bar = true
-  TidyBar_options.show_honor_bar = true
-  TidyBar_options.show_gryphons = false
+
+  TidyBar_options.show_StatusTrackingBarManager = true
+  TidyBar_options.hide_corner_on_mouseout = true
   TidyBar_options.hide_side_on_mouseout = true
-  TidyBar_options.show_textured_backgrounds = false
   TidyBar_options.show_macro_text = false
-  TidyBar_options.scale = 1
-  TidyBar_options.bar_spacing = 4
-  TidyBar_options.main_area_positioning = 425
+
+  TidyBar_options.show_textured_background_main = false
+  TidyBar_options.show_textured_background_corner = false
+  TidyBar_options.show_textured_background_petbattle = false
+
+  TidyBar_options.main_area_positioning = 0
+
   TidyBar_options.debug = false
-  TidyBar_options.bar_height = 8
 end
 
 
@@ -37,14 +38,7 @@ end
 position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormal' )
 Text:SetPoint( 'TopLeft', 20, -25 * position )
-Text:SetText( 'TidyBar' )
-
-
-
-position = position + 1
-Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormalSmall' )
-Text:SetPoint( 'TopLeft', 20, -25 * position )
-Text:SetText( 'Version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) )
+Text:SetText( 'TidyBar - Version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) )
 
 
 
@@ -52,10 +46,6 @@ position = position + 1
 Text = TidyBar.panel:CreateFontString( nil, UIParent, 'GameFontNormal' )
 Text:SetPoint( 'TopLeft', 20, -25 * position )
 Text:SetText( tostring( GetAddOnMetadata( 'TidyBar', 'Notes' ) ) )
-
-
-
-space()
 
 
 
@@ -74,19 +64,23 @@ space()
 
 
 
-do  --  TidyBar_options.show_experience_bar
+do  --  TidyBar_options.show_StatusTrackingBarManager
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_experience_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_StatusTrackingBarManager', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Experience Bar' )
-  --CheckButton.tooltipText = ''
-  CheckButton:SetChecked( TidyBar_options.show_experience_bar )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Status Tracking Bar' )
+  CheckButton.tooltipText = 'The combined experience/etc bar, at the bottom.'
+  CheckButton:SetChecked( TidyBar_options.show_StatusTrackingBarManager )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
-      TidyBar_options.show_experience_bar = true
+    if self:GetChecked() then
+      TidyBar_options.show_StatusTrackingBarManager = true
+      -- I don't know why TidyBar_refresh_everything() doesn't do this..
+      MainMenuBar:SetPoint( 'Bottom', UIParent, 'Bottom', TidyBar_options.main_area_positioning, StatusTrackingBarManager.SingleBarLarge:GetHeight() )
     else
-      TidyBar_options.show_experience_bar = false
+      TidyBar_options.show_StatusTrackingBarManager = false
+      -- I don't know why TidyBar_refresh_everything() doesn't do this..
+      MainMenuBar:SetPoint( 'Bottom', UIParent, 'Bottom', TidyBar_options.main_area_positioning )
     end
     TidyBar_refresh_everything()
   end)
@@ -94,19 +88,21 @@ end
 
 
 
-do  --  TidyBar_options.show_artifact_power_bar
+do  --  TidyBar_options.hide_side_on_mouseout
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_artifact_power_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_side_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Artifact Power Bar' )
-  --CheckButton.tooltipText = ''
-  CheckButton:SetChecked( TidyBar_options.show_artifact_power_bar )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Hide the side bar' )
+  CheckButton.tooltipText = 'When enabled, auto-hide the right-hand vertical bars on MouseOut.'
+  CheckButton:SetChecked( TidyBar_options.hide_side_on_mouseout )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
-      TidyBar_options.show_artifact_power_bar = true
+    if self:GetChecked() then
+      TidyBar_options.hide_side_on_mouseout = true
+      TidyBar_options.mouseout_alpha_side = 0
     else
-      TidyBar_options.show_artifact_power_bar = false
+      TidyBar_options.hide_side_on_mouseout = false
+      TidyBar_options.mouseout_alpha_side = 1
     end
     TidyBar_refresh_everything()
   end)
@@ -114,19 +110,19 @@ end
 
 
 
-do  --  TidyBar_options.show_honor_bar
+do  --  TidyBar_options.hide_corner_on_mouseout
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_honor_bar', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.hide_corner_on_mouseout', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Honor Bar' )
-  --CheckButton.tooltipText = ''
-  CheckButton:SetChecked( TidyBar_options.show_honor_bar )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Hide the corner bar' )
+  CheckButton.tooltipText = 'When enabled, auto-hide the bottom-left buttons and bags on MouseOut.'
+  CheckButton:SetChecked( TidyBar_options.hide_corner_on_mouseout )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
-      TidyBar_options.show_honor_bar = true
+    if self:GetChecked() then
+      TidyBar_options.hide_corner_on_mouseout = true
     else
-      TidyBar_options.show_honor_bar = false
+      TidyBar_options.hide_corner_on_mouseout = false
     end
     TidyBar_refresh_everything()
   end)
@@ -134,71 +130,66 @@ end
 
 
 
-do  --  TidyBar_options.always_show_side
+do  --  TidyBar_options.show_textured_background_petbattle
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.always_show_side', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_petbattle', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Always show the side bar(s)' )
-  CheckButton.tooltipText = 'When disabled, auto-hide the right-hand vertical bars on MouseOut.'
-  CheckButton:SetChecked( TidyBar_options.always_show_side )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show pet battle background' )
+  CheckButton.tooltipText = 'Show the background behind the pet battle UI.'
+  CheckButton:SetChecked( TidyBar_options.show_textured_background_petbattle )
   CheckButton:SetScript( 'OnClick', function( self )
-    local alpha
-    if self:GetChecked()then
-      TidyBar_options.always_show_side = true
-      alpha = 0
+    if self:GetChecked() then
+      TidyBar_options.show_textured_background_petbattle = true
     else
-      TidyBar_options.always_show_side = false
-      alpha = 1
-    end
-    for i = 1, 12 do
-      _G[ 'MultiBarRightButton'..i ]:SetAlpha( alpha )
-      _G[ 'MultiBarLeftButton' ..i ]:SetAlpha( alpha )
+      TidyBar_options.show_textured_background_petbattle = false
     end
     TidyBar_refresh_everything()
   end)
 end
 
 
-
-do  --  TidyBar_options.show_gryphons
+-- TODO - textures would need to be reworked..
+--[[
+do  --  TidyBar_options.show_textured_background_main
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_gryphons', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_main', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show gryphons' )
-  CheckButton.tooltipText = 'Show the gryphons to the left and right of the main buttons.'
-  CheckButton:SetChecked( TidyBar_options.show_gryphons )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show main bar background' )
+  CheckButton.tooltipText = 'Show the background behind the main buttons.'
+  CheckButton:SetChecked( TidyBar_options.show_textured_background_main )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
-      TidyBar_options.show_gryphons = true
+    if self:GetChecked() then
+      TidyBar_options.show_textured_background_main = true
     else
-      TidyBar_options.show_gryphons = false
+      TidyBar_options.show_textured_background_main = false
     end
     TidyBar_refresh_everything()
   end)
 end
+--]]
 
 
-
-do  --  TidyBar_options.show_textured_backgrounds
+--[[
+do  --  TidyBar_options.show_textured_background_corner
   position = position + 1
   local CheckButton
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_backgrounds', TidyBarPanel, 'OptionsCheckButtonTemplate' )
+  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_corner', TidyBarPanel, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show background textures' )
-  CheckButton.tooltipText = 'Show the textures behind the main buttons and pet battle UI.'
-  CheckButton:SetChecked( TidyBar_options.show_textured_backgrounds )
+  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show corner background' )
+  CheckButton.tooltipText = 'Show the  behind the corner micro buttons and bags.'
+  CheckButton:SetChecked( TidyBar_options.show_textured_background_corner )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
-      TidyBar_options.show_textured_backgrounds = true
+    if self:GetChecked() then
+      TidyBar_options.show_textured_background_corner = true
     else
-      TidyBar_options.show_textured_backgrounds = false
+      TidyBar_options.show_textured_background_corner = false
     end
     TidyBar_refresh_everything()
   end)
 end
-
+--]]
 
 
 do  --  TidyBar_options.show_macro_text
@@ -210,125 +201,11 @@ do  --  TidyBar_options.show_macro_text
   CheckButton.tooltipText = 'For any macros dragged out into any bar, show its name.'
   CheckButton:SetChecked( TidyBar_options.show_macro_text )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
+    if self:GetChecked() then
       TidyBar_options.show_macro_text = true
     else
       TidyBar_options.show_macro_text = false
     end
-    TidyBar_refresh_everything()
-  end)
-end
-
-
-
-space()
-
-
-
-do  --  TidyBar_options.scale
-  position = position + 1
-  local scale_slider
-  scale_slider = CreateFrame( 'Slider', 'TidyBar_options.scale', TidyBarPanel, 'OptionsSliderTemplate' )
-  scale_slider:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( scale_slider:GetName() .. 'Text' ):SetText( 'Scale' )
-  scale_slider.tooltipText = 'The scale of the buttons.  Default 1'
-  scale_slider:SetMinMaxValues( 0.1, 3 )
-  scale_slider:SetValueStep( 0.1 )
-  scale_slider:SetValue( TidyBar_options.scale )
-  scale_slider:SetScript( 'OnValueChanged', function()
-    TidyBar_options.scale = scale_slider:GetValue()
-    TidyBar_refresh_everything()
-    if TidyBar_options.debug then
-      print( 'TidyBar_options.scale ' .. tostring( TidyBar_options.scale ) )
-    end
-  end)
-
-
-  position = position + 1
-  local Button
-  Button = CreateFrame( 'Button', 'TidyBar_options.scale2', TidyBarPanel, 'OptionsButtonTemplate' )
-  Button:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
-  Button.tooltipText = 'Reset the scale to 1'
-  Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.scale = 1
-    scale_slider:SetValue( TidyBar_options.scale )
-    TidyBar_refresh_everything()
-  end)
-end
-
-
-
-space()
-
-
-
-do  --  TidyBar_options.bar_spacing
-  position = position + 1
-  local bar_spacing_slider
-  bar_spacing_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_spacing', TidyBarPanel, 'OptionsSliderTemplate' )
-  bar_spacing_slider:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( bar_spacing_slider:GetName() .. 'Text' ):SetText( 'Bar spacing' )
-  bar_spacing_slider.tooltipText = 'The vertical spacing between the bars.  Default 4.  Note that the experience bar (if shown) and artifact bar are not separated.'
-  bar_spacing_slider:SetMinMaxValues( 0.1, 10 )
-  bar_spacing_slider:SetValueStep( 0.1 )
-  bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
-  bar_spacing_slider:SetScript( 'OnValueChanged', function()
-    TidyBar_options.bar_spacing = ( bar_spacing_slider:GetValue() * TidyBar_options.scale )
-    TidyBar_refresh_everything()
-    if TidyBar_options.debug then
-      print( 'TidyBar_options.bar_spacing ' .. tostring( TidyBar_options.bar_spacing ) )
-    end
-  end)
-
-
-  position = position + 1
-  local Button
-  Button = CreateFrame( 'Button', 'TidyBar_options.bar_spacing2', TidyBarPanel, 'OptionsButtonTemplate' )
-  Button:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
-  Button.tooltipText = 'Reset the bar spacing to 4'
-  Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.bar_spacing = ( 4 * TidyBar_options.scale )
-    bar_spacing_slider:SetValue( TidyBar_options.bar_spacing )
-    TidyBar_refresh_everything()
-  end)
-end
-
-
-
-space()
-
-
-
-do  --  TidyBar_options.bar_height
-  position = position + 1
-  local main_area_positioning_slider
-  main_area_positioning_slider = CreateFrame( 'Slider', 'TidyBar_options.bar_height', TidyBarPanel, 'OptionsSliderTemplate' )
-  main_area_positioning_slider:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( main_area_positioning_slider:GetName() .. 'Text' ):SetText( 'Bar height' )
-  main_area_positioning_slider.tooltipText = 'The height of the experience, reputation, honor and artifact bars.'
-  main_area_positioning_slider:SetMinMaxValues( 1, 24 )
-  main_area_positioning_slider:SetValueStep( 1 )
-  main_area_positioning_slider:SetValue( TidyBar_options.bar_height )
-  main_area_positioning_slider:SetScript( 'OnValueChanged', function()
-    TidyBar_options.bar_height = main_area_positioning_slider:GetValue()
-    TidyBar_refresh_everything()
-    if TidyBar_options.debug then
-      print( 'TidyBar_options.main_area_positioning ' .. tostring( TidyBar_options.bar_height ) )
-    end
-  end)
-
-
-  position = position + 1
-  local Button
-  Button = CreateFrame( 'Button', 'TidyBar_options.bar_height2', TidyBarPanel, 'OptionsButtonTemplate' )
-  Button:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
-  Button.tooltipText = 'Reset the bar height to 8.'
-  Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.bar_height = 8
-    main_area_positioning_slider:SetValue( TidyBar_options.bar_height )
     TidyBar_refresh_everything()
   end)
 end
@@ -346,15 +223,15 @@ do  --  TidyBar_options.main_area_positioning
   main_area_positioning_slider:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( main_area_positioning_slider:GetName() .. 'Text' ):SetText( 'Main area positioning' )
   main_area_positioning_slider.tooltipText = 'The position of the main area.'
-  main_area_positioning_slider:SetMinMaxValues( 1, GetScreenWidth() )
-  -- You'd think this would prevent the area from moving off the screen to the wrong.  It does not.
-  -- .. even if it did, I may have scaling issues.
-  --main_area_positioning_slider:SetMinMaxValues( 1, ( GetScreenWidth() - MainMenuBar:GetWidth() ) )
+  local width = ( ( GetScreenWidth() - MainMenuBar:GetWidth() ) / 2 )
+  main_area_positioning_slider:SetMinMaxValues( ( -1 * width ), width )
   main_area_positioning_slider:SetValueStep( 1 )
   main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
   main_area_positioning_slider:SetScript( 'OnValueChanged', function()
     TidyBar_options.main_area_positioning = main_area_positioning_slider:GetValue()
     TidyBar_refresh_everything()
+    -- Show the corner while positioning the main area.
+    MicroButtonAndBagsBar:SetAlpha( 1 )
     if TidyBar_options.debug then
       print( 'TidyBar_options.main_area_positioning ' .. tostring( TidyBar_options.main_area_positioning ) )
     end
@@ -366,11 +243,9 @@ do  --  TidyBar_options.main_area_positioning
   Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning2', TidyBarPanel, 'OptionsButtonTemplate' )
   Button:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
-  Button.tooltipText = 'Reset the main area positioning to (roughly) the middle.'
-  -- Maybe I should have it actually reset to the middle.
-  --   .. or perhaps alongside the chat window, but that'll be bad for a tweaked layout.
+  Button.tooltipText = 'Reset the main area positioning to the middle.'
   Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.main_area_positioning = 425
+    TidyBar_options.main_area_positioning = 0
     main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
     TidyBar_refresh_everything()
   end)
@@ -395,7 +270,7 @@ do  --  TidyBar_options.debug
   CheckButton.tooltipText = ''
   CheckButton:SetChecked( TidyBar_options.debug )
   CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked()then
+    if self:GetChecked() then
       print( 'TidyBar:  Debugging enabled' )
       TidyBar_options.debug = true
     else

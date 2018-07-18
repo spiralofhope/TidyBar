@@ -50,6 +50,7 @@ Perhaps your game is installed to one of:
 
 - `Interface > Addons > TidyBar` will give a number of options.
 - By default, `shift-up` / `shift-down` will change your actionbar.  TidyBar will force-update itself when it sees this.
+- `TidyBar\extras\hotkeys on main buttons` has instructions for putting text on empty buttons.
 
 
 # Issues and suggestions
