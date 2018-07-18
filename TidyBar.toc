@@ -16,5 +16,5 @@
 ## X-Website:             https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
 
+TidyBar_main.lua
 TidyBar_options.lua
-TidyBar.lua

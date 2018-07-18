@@ -110,7 +110,9 @@ local function TidyBar_refresh_main_area()
         __:Show()
         --  Hide the main bar bubbles
         StatusTrackingBarManager.SingleBarLarge:Hide()
-        -- FIXME?  I am unable to move or reduce the width of StatusTrackingBarManager.  It's tied to MainMenuBar.
+        -- Implement StatusTrackingBarManager functionality
+        --   https://github.com/spiralofhope/TidyBar/issues/67
+        --   I am unable to move or reduce the width of StatusTrackingBarManager.  It's tied to MainMenuBar.
         --   .. In combat, when the ActionBarPage is changed, MainMenuBar will reset.  This is why I completely detached from using MainMenuBar and don't even try to manipulate StatusTrackingBarManager.
         --__:ClearAllPoints()
         --__:SetWidth( 500 )
@@ -199,7 +201,8 @@ local function TidyBar_refresh_main_area()
   --  If either in or out of combat...
 
   do  --  main area texture
-    --  FIXME - If shown, show only the relevant part.
+    -- Implement main bar texture
+    --   https://github.com/spiralofhope/TidyBar/issues/68
     if TidyBar_options.show_textured_background_main == true then
       MainMenuBarArtFrameBackground:Show()
     else
@@ -248,6 +251,9 @@ local function TidyBar_refresh_main_area()
     end
   end
 
+
+  --  Hide the bubbles on the status bar (xp etc)
+  StatusTrackingBarManager.SingleBarLarge:Hide()
 
   -- It does nothing anyway.
   MainMenuBarArtFrameBackground:Hide()
@@ -309,7 +315,7 @@ local function TidyBar_refresh_side( is_mouse_inside_side )
 
 
   local alpha
-  if    TidyBar_options.hide_side_on_mouseout == false
+  if    TidyBar_options.always_show_side == true
     or  is_mouse_inside_side
     or  SpellFlyout:IsShown()
   then  --  Show
@@ -429,7 +435,7 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
 
   local alpha
   if  is_mouse_inside_corner
-  or  TidyBar_options.hide_corner_on_mouseout  ==  false
+  or  TidyBar_options.always_show_corner  ==  true
   then
     alpha = 1
   else
@@ -496,7 +502,7 @@ end
 
 function TidyBar_refresh_everything()
   -- FIXME/change?
-  if not MainMenuBar:IsVisible() == true then return end
+  if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
@@ -524,7 +530,7 @@ TidyBar:SetScript( 'OnEvent', function( self )
     __:SetFrameStrata( 'BACKGROUND' )
     __:SetWidth( 1 )
     __:SetHeight( 1 )
-    __:EnableMouse( false )
+    __:EnableMouse( true )
     __:SetPoint( 'Bottom', nil, 'Bottom' )
   end
 
@@ -609,9 +615,8 @@ TidyBar:SetScript( 'OnEvent', function( self )
     end )
   end
 
-
-  TidyBar_setup_options_pane()
   --TidyBar_refresh_everything()
+  TidyBar_setup_options_pane()
 
 
   --TidyBar_Frame_refresh_everything = CreateFrame( 'Frame', 'TidyBar_Frame_refresh_everything', WorldFrame )
