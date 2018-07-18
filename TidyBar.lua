@@ -1,4 +1,6 @@
-﻿-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
+﻿-- TODO - if the gryphons are enabled, restrict the main area's left-right positioning.
+
+-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
 -- The scaling feature was removed; use the Blizzard feature.
 -- TODO - create a custom tidybar frame and put all the middle bars into it.
 
@@ -51,9 +53,6 @@ local BagButtonFrameList = {
   CharacterBag3Slot,
 }
 
-local bar_width = 500
-
-
 
 
 local function hide( thing, parameter )
@@ -91,307 +90,124 @@ end
 
 local function TidyBar_refresh_main_area()
   debug( ' TidyBar_refresh_main_area()' )
+  local __
 
-  -- Textured background
-  -- Has to be repositioned and nudged to the left since ActionButton1 gets moved.
-
-  --  MainMenuBarArtFrameBackground is protected in combat.
-  --MainMenuBarArtFrameBackground:ClearAllPoints()
-  --MainMenuBarArtFrameBackground:SetPoint( 'Left', MainMenuBar, 'Left', -8, -5 )
-
-  -- It does nothing anyway.
-  MainMenuBarArtFrameBackground:Hide()
-
-
-  do  --  The stack of bars
-    local __
-
-   --  What's this for?
-    TimerTracker:Hide()
-
+  --  If out of combat:
   if InCombatLockdown() == false then
+    local anchor
+
+    do  --  Left/right positioning
+      TidyBar_main_frame:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 0 )
+    end
+
 
     do  --  StatusTrackingBarManager
-      --  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
-      __ = StatusTrackingBarManager
+      --  NOTE - No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
+      local __ = StatusTrackingBarManager
       if TidyBar_options.show_StatusTrackingBarManager == false then
         __:Hide()
       else
         __:Show()
+        --  Hide the main bar bubbles
+        StatusTrackingBarManager.SingleBarLarge:Hide()
+        -- FIXME?  I am unable to move or reduce the width of StatusTrackingBarManager.  It's tied to MainMenuBar.
+        --   .. In combat, when the ActionBarPage is changed, MainMenuBar will reset.  This is why I completely detached from using MainMenuBar and don't even try to manipulate StatusTrackingBarManager.
+        --__:ClearAllPoints()
+        --__:SetWidth( 500 )
+        --__:SetParent( TidyBar_main_frame )
+        --__:SetPoint( 'BottomLeft', UIParent, 'BottomLeft' )
+        --anchor = StatusTrackingBarManager
       end
+
     end
 
 
-    do  --  main area texture
-      --  FIXME - If shown, show only the relevant part.
-      if TidyBar_options.show_textured_background_main == true then
-        MainMenuBarArtFrameBackground:Show()
+    --  This is Blizzard's choice
+    --  FIXME - Height seems somewhat wrong compared to the width.
+    --          I bet it's different because the screen height is different.
+    local space_between_buttons = 6
+    local height_offset
+
+    do  --  bottom row
+      if TidyBar_options.show_StatusTrackingBarManager == true then
+        -- For some reason, StatusTrackingBarManager doesn't have a proper height.. so I'll add 2.
+        height_offset = StatusTrackingBarManager:GetHeight() + space_between_buttons + 2
       else
-        MainMenuBarArtFrameBackground:Hide()
+        height_offset = space_between_buttons
+      end
+      -- Note that StatusTrackingBarManager has an untrustworthy position.
+      ActionButton1:SetPoint( 'BottomLeft', TidyBar_main_frame, 'BottomLeft', 0, height_offset )
+      anchor = ActionButton1
+    end
+
+    do  --  Middle row
+      if MultiBarBottomLeft:IsShown() then
+        -- MultiBarBottomLeftButton1 is already somewhat attached, but let's be more specific.
+        MultiBarBottomLeftButton1:ClearAllPoints()
+        MultiBarBottomLeftButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        anchor = MultiBarBottomLeftButton1
       end
     end
 
-
-    -- BUGGED - Everything is tied to MainMenuBarArtFrame and then MainMenuBar, which automatically widen if the ActionBarPage is changed in combat, shifting everything.
---[[
-    -- IDEA - Move everything's parent to MainMenuBar and hide MainMenuBarArtFrame.
-    local bars={
-      'MultiBarBottomLeft',
-      'MultiBarBottomRight',
-      'Action',
-    }
-    for button=1, #bars do
-      for i=1, 12 do
-        _G[ bars[ button ] .. 'Button' .. i .. 'Name' ]:SetParent( MainMenuBar )
-      end
-    end
-    --MainMenuBarArtFrame:Hide()
-    MainMenuBarArtFrame:Show()
-]]
-
-
-    --  Left-right placement
-    MainMenuBar:SetWidth( bar_width )
-    -- nil = the entire screen, but not WorldFrame, as that would keep it visible when the UI is hidden with alt-z
-    if   StatusTrackingBarManager:IsShown() then
-      MainMenuBar:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 2 + StatusTrackingBarManager:GetHeight() )
-    else
-      MainMenuBar:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 2 )
-    end
-
-    --  bottom row
-    --  Shift them into place.
-    ActionButton1:SetPoint( 'BottomLeft', MainMenuBar, 'BottomLeft', 2, 4 )
-
-
-    -- New simple method.
-    -- middle row
-    MultiBarBottomLeftButton1:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, 2 )
-    -- top row
-    --  It's not used for anything, but may as well move it.
-    MultiBarBottomRight:SetPoint( 'BottomLeft', MultiBarBottomLeft, 'TopLeft' )
-    MultiBarBottomRightButton1:SetPoint( 'BottomLeft', MultiBarBottomLeftButton1, 'TopLeft', 2, 2 )
-    -- Buttons 7-12 are a separate block from 1-6
-    MultiBarBottomRightButton7:ClearAllPoints()
-    MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
-
-
---[[
--- This is the old way, which works, but seems to be unnecessary.
-    ----  I hotkey this row to shift
-    --__ = MultiBarBottomLeft
-    --if __:IsShown() then
-      --__:SetParent( MainMenuBar )
-      --__:ClearAllPoints()
-      ---- It just gets reset in combat, because reasons.
-      ----__:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, -3 )
-      --__:SetPoint( 'BottomLeft', MainMenuBar, 'TopLeft', 2, 2 )
-      -- Buttons 7-12 are a separate block from 1-6
-      --MultiBarBottomRightButton7:ClearAllPoints()
-      --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
-    --end
-
-
-    ----  I hotkey this row to alt
-    --__ = MultiBarBottomRightButton1
-    --if __:IsShown() then
-      --__:ClearAllPoints()
-      --__:SetPoint( 'BottomLeft', MultiBarBottomLeftButton1, 'TopLeft', 0, 6 )
-      ---- Buttons 7-12 are a separate block from 1-6
-      --MultiBarBottomRightButton7:ClearAllPoints()
-      --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
-    --end
---]]
-
-
-    do  --  main area texture
-      --  FIXME - If shown, show only the relevant part.
-      if TidyBar_options.show_textured_background_main == true then
-        MainMenuBarArtFrameBackground:Show()
-      else
-        MainMenuBarArtFrameBackground:Hide()
+    do  --  Top row
+      if MultiBarBottomLeft:IsShown() then
+        MultiBarBottomRightButton1:ClearAllPoints()
+        MultiBarBottomRightButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        --  It's not used for anything, but may as well move it.
+        MultiBarBottomRight:ClearAllPoints()
+        MultiBarBottomRight:SetPoint( 'BottomLeft', MultiBarBottomRightButton1, 'BottomLeft', 0, 0 )
+        --  Buttons 7-12 are a separate block from 1-6, so move them.
+        MultiBarBottomRightButton7:ClearAllPoints()
+        MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', space_between_buttons, 0 )
+        anchor = MultiBarBottomRightButton1
       end
     end
 
+    do  --  StanceBar
+      if StanceBarFrame:IsShown() then
+        StanceButton1:ClearAllPoints()
+        StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        -- Hide its background
+        hide( StanceBarLeft,  'StanceBarLeft'  )
+        hide( StanceBarRight, 'StanceBarRight' )
+        anchor = StanceButton1
+      end
+    end
+
+    do  --  MainMenuBarVehicleLeaveButton
+      if MainMenuBarVehicleLeaveButton:IsShown() then
+        MainMenuBarVehicleLeaveButton:ClearAllPoints()
+        MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        anchor = MainMenuBarVehicleLeaveButton
+      end
+    end
+
+    do  --  FramerateText (fps meter)
+      if FramerateText:IsShown() then  --  FPS text
+        --FramerateLabel:ClearAllPoints()
+        --FramerateText:ClearAllPoints()
+        --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top' )
+        --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
+        FramerateText:ClearAllPoints()
+        FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        FramerateLabel:Hide()
+        anchor = FramerateText
+      end
+    end
 
   end  --  if not InCombatLockdown()
-  --  If either in or out of combat:
+  --  If either in or out of combat...
 
-
-    --MainMenuBar:SetWidth( bar_width )
-
-
-
-
-
--- Does nothing
---__:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning, 2 )
-
-
-
---[[
-    do  --  StatusTrackingBarManager
-      --  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
-      __ = StatusTrackingBarManager
-      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
-      if TidyBar_options.show_StatusTrackingBarManager == false then
-        __:Hide()
-      else
-        __:Show()
-        --__:ClearAllPoints()
-        --  Does nothing
-        --__:SetWidth( bar_width )
-        __:SetScale( TidyBar_options.scale )
-        --__:SetParent( anchor )
-        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
-        --anchor = __
-      end
+  do  --  main area texture
+    --  FIXME - If shown, show only the relevant part.
+    if TidyBar_options.show_textured_background_main == true then
+      MainMenuBarArtFrameBackground:Show()
+    else
+      MainMenuBarArtFrameBackground:Hide()
     end
-
---]]
-
+  end
 
 
-
-
-
---anchor=MainMenuBarArtFrame
---__=ActionButton1
-      --__ = MultiBarBottomRightButton1
-      --if __:IsShown() then
-        --__:ClearAllPoints()
-        --__:SetParent( anchor )
-        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, 6 )
-      --end
-
-
-    --__ = MainMenuBar
-    --__:ClearAllPoints()
-    --__:SetWidth( bar_width )
-    --__:SetScale( TidyBar_options.scale )
-    --if TidyBar_options.show_StatusTrackingBarManager == true then
-      ----  Because StatusTrackingBarManager is stuck to the bottom of MainMenuBar, I have to shift MainMenuBar up.
-      --__:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, StatusTrackingBarManager:GetHeight() + 2 )
-    --else
-      --__:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, 4 )
-    --end
-    --anchor = __
-
-
---anchor = MainMenuBarArtFrame
-
-    --do  --  StatusTrackingBarManager
-      ----  No matter what I do, StatusTrackingBarManager is stuck to the bottom of MainMenuBar.
-      --__ = StatusTrackingBarManager
-      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
-      --if TidyBar_options.show_StatusTrackingBarManager == false then
-        --__:Hide()
-      --else
-        --__:Show()
-        --__:ClearAllPoints()
-        --__:SetWidth( bar_width )
-        --__:SetScale( TidyBar_options.scale )
-        ----__:SetParent( anchor )
-        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
-        --anchor = __
-      --end
-    --end
-
---StatusTrackingBarManager:ClearAllPoints()
---StatusTrackingBarManager:SetWidth( 500 )
---StatusTrackingBarManager:SetScale( TidyBar_options.scale )
---StatusTrackingBarManager:SetParent( MainMenuBar )
---StatusTrackingBarManager:SetPoint( 'BottomLeft', UIParent, 'TopLeft', TidyBar_options.main_area_positioning, 2 )
-
-
--- This is default above the MultiActionBar (1 to =)
--- Middle row (my hotkey:  shift)
-
-    --do  --  MultiBarBottomLeft
-      --__ = MultiBarBottomLeft
-      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
-      --if __:IsShown() then
-        --debug( '___ MultiBarBottomLeft repositioning' )
-        --__:ClearAllPoints()
-        --__:SetParent( anchor )
-        ----  I don't know why MainMenuBar is so tall.  Nudge MultiBarBottomLeft down.
-        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, -19 )
-        --anchor = __
-      --end
-    --end
-
---anchor=MultiBarBottomLeft
-
--- Top row (my hotkey: alt)
-
-    --do  --  MultiBarBottomRight
-      --__ = MultiBarBottomRight
-      --UIPARENT_MANAGED_FRAME_POSITIONS[ __ ] = nil
-      --if __:IsShown() then
-        --debug( 'MultiBarBottomRight debugging' )
-        --__:ClearAllPoints()
-        --__:SetParent( anchor )
-        --__:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, 4 )
-        --anchor = __
-        ---- I don't understand why buttons 7-12 are a separate block from 1-6, but this fixes that.
-        ---- FIXME - MultiBarBottomRight moves around!
-        --MultiBarBottomRightButton7:ClearAllPoints()
-        --MultiBarBottomRightButton7:SetPoint( 'BottomLeft', MultiBarBottomRightButton6, 'BottomRight', 6, 0 )
-      --end
-    --end
-
---point, relativeTo, relativePoint, xOfs, yOfs = MultiBarBottomRight:GetPoint()
---print( point )
---print( relativeTo:GetName() )
---print( relativePoint )
---print( xOfs )
---print( yOfs )
-
-
-
-
---[[
-    if StanceBarFrame:IsShown() then
-      StanceButton1:ClearAllPoints()
-      StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
-      anchor = StanceButton1
-    end
---]]
-
-
-
---[[
-    if MainMenuBarVehicleLeaveButton:IsShown() then
-      MainMenuBarVehicleLeaveButton:ClearAllPoints()
-      MainMenuBarVehicleLeaveButton:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
-      anchor = MainMenuBarVehicleLeaveButton
-    end
---]]
-
-
---[[
-    if FramerateText:IsShown() then  --  FPS text
-      --FramerateLabel:ClearAllPoints()
-      --FramerateText:ClearAllPoints()
-      --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top' )
-      --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
-      --anchor = FramerateText
-
-
-      FramerateText:ClearAllPoints()
-      FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft' )
-      FramerateLabel:Hide()
-      anchor = FramerateText
-    end
---]]
-
-  end  --  The stack of bars
-
-
-
-
-  --  Hide the main bar bubbles
-  StatusTrackingBarManager.SingleBarLarge:Hide()
 
   --  Hide the gryphons
   MainMenuBarArtFrame.LeftEndCap:Hide()
@@ -403,12 +219,6 @@ local function TidyBar_refresh_main_area()
     hide( MainMenuBarArtFrame.PageNumber, 'MainMenuBarArtFrame.PageNumber' )
     hide( ActionBarUpButton, 'ActionBarUpButton' )
     hide( ActionBarDownButton, 'ActionBarDownButton' )
-  end
-
-
-  do  -- Hide the background behind the stance bar
-    hide( StanceBarLeft,  'StanceBarLeft' )
-    hide( StanceBarRight, 'StanceBarRight' )
   end
 
 
@@ -437,6 +247,10 @@ local function TidyBar_refresh_main_area()
       end
     end
   end
+
+
+  -- It does nothing anyway.
+  MainMenuBarArtFrameBackground:Hide()
 
 end
 
@@ -681,6 +495,7 @@ end
 
 
 function TidyBar_refresh_everything()
+  -- FIXME/change?
   if not MainMenuBar:IsVisible() == true then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
   TidyBar_refresh_main_area()
@@ -699,6 +514,20 @@ TidyBar:SetScript( 'OnEvent', function( self )
   self:Show()
   --print( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.' )
   debug( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
+
+
+  do  --  Set up the main area
+    --  The MainMenuBar is insane, and repositions mid-combat when the ActionBarPage is changed, so I'm forced to set up my own frame.
+    local __
+    __ = TidyBar_main_frame
+    __ = CreateFrame( 'Frame', 'TidyBar_main_frame', nil )
+    __:SetFrameStrata( 'BACKGROUND' )
+    __:SetWidth( 1 )
+    __:SetHeight( 1 )
+    __:EnableMouse( false )
+    __:SetPoint( 'Bottom', nil, 'Bottom' )
+  end
+
 
   do  --  Set up the side
 
@@ -880,6 +709,7 @@ end
 TidyBar:RegisterEvent( 'UNIT_ENTERED_VEHICLE' )
 TidyBar:HookScript( 'OnEvent', TidyBar_VehicleSetup )
 --]]
+
 
 
 
