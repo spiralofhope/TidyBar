@@ -1,33 +1,46 @@
 --  Understanding the screen width and bars
 --  This is Blizzard's choice
 local space_between_buttons = 6
-local half_of_screen = GetScreenWidth() / 2
+local half_of_screen_width = GetScreenWidth() / 2
 
-local position_left = ( -1 * ( GetScreenWidth() / 2 ) ) + space_between_buttons
+local maximum_position_left = ( -1 * ( GetScreenWidth() / 2 ) ) + space_between_buttons
 
 local number_of_buttons = 12
-local position_right = ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) )
-local position_right = half_of_screen - position_right - space_between_buttons
+local maximum_position_right = ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) )
+local maximum_position_right = half_of_screen_width - maximum_position_right - space_between_buttons
+
+local maximum_position_bottom = -4
+local maximum_position_top    = GetScreenHeight()
+
+--  TODO - less the height of all the other things.
+local position_top = GetScreenHeight()
+local position_bottom = 0
 
 
+--[[
+/run print( TidyBar_options.main_area_positioning_y )
+/run TidyBar_options.main_area_positioning_y = nil
+/run TidyBar_options.main_area_positioning_y = -6
+--]]
 
 do  --  Default options
   TidyBar_options = {}
-
-  TidyBar_options.show_StatusTrackingBarManager = true
-  TidyBar_options.always_show_corner = true
-  TidyBar_options.always_show_side = true
-  TidyBar_options.show_macro_text = false
-  TidyBar_options.main_area_positioning = position_left + position_right + position_right
-
-  TidyBar_options.show_textured_background_petbattle = false
-
-  TidyBar_options.debug = false
+  if TidyBar_options.show_StatusTrackingBarManager      == nil then   TidyBar_options.show_StatusTrackingBarManager      =   false                                                    end
+  if TidyBar_options.always_show_corner                 == nil then   TidyBar_options.always_show_corner                 =   false                                                    end
+  if TidyBar_options.always_show_side                   == nil then   TidyBar_options.always_show_side                   =   false                                                    end
+  if TidyBar_options.show_macro_text                    == nil then   TidyBar_options.show_macro_text                    =   false                                                    end
+  if TidyBar_options.main_area_positioning_x            == nil then   TidyBar_options.main_area_positioning_x            =   maximum_position_left + ( maximum_position_right * 2 )   end
+  if TidyBar_options.main_area_positioning_y            == nil then   TidyBar_options.main_area_positioning_y            =   0                                                        end
+  if TidyBar_options.show_textured_background_petbattle == nil then   TidyBar_options.show_textured_background_petbattle =   false                                                    end
+  if TidyBar_options.debug                              == nil then   TidyBar_options.debug                              =   false                                                    end
 end
 
 
 
+
+
 function TidyBar_setup_options_pane()
+--  Called by Tidybar_main.lua during its initialization.
 
 
 TidyBar = {}
@@ -177,37 +190,76 @@ end
 space()
 
 
-
-do  --  TidyBar_options.main_area_positioning
+do  --  TidyBar_options.main_area_positioning_x
   position = position + 1
-  local main_area_positioning_slider
-  main_area_positioning_slider = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning', TidyBar_options_panel_frame, 'OptionsSliderTemplate' )
-  main_area_positioning_slider:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( main_area_positioning_slider:GetName() .. 'Text' ):SetText( 'Main area positioning' )
-  main_area_positioning_slider.tooltipText = 'The position of the main area.'
-  main_area_positioning_slider:SetMinMaxValues( position_left, position_right )
-  main_area_positioning_slider:SetValueStep( 1 )
-  main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
-  main_area_positioning_slider:SetScript( 'OnValueChanged', function()
-    TidyBar_options.main_area_positioning = main_area_positioning_slider:GetValue()
+  local main_area_positioning_slider_x
+  main_area_positioning_slider_x = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning_x', TidyBar_options_panel_frame, 'OptionsSliderTemplate' )
+  main_area_positioning_slider_x:SetPoint( 'TopLeft', 20, -20 * position )
+  getglobal( main_area_positioning_slider_x:GetName() .. 'Text' ):SetText( 'Main area positioning (x)' )
+  main_area_positioning_slider_x.tooltipText = 'The position of the main area (left/right).'
+  main_area_positioning_slider_x:SetMinMaxValues( maximum_position_left, maximum_position_right )
+  main_area_positioning_slider_x:SetValueStep( 1 )
+  main_area_positioning_slider_x:SetValue( TidyBar_options.main_area_positioning_x )
+  main_area_positioning_slider_x:SetScript( 'OnValueChanged', function()
+    TidyBar_options.main_area_positioning_x = main_area_positioning_slider_x:GetValue()
     TidyBar_refresh_everything()
     -- Show the corner while positioning the main area.
     MicroButtonAndBagsBar:SetAlpha( 1 )
     if TidyBar_options.debug then
-      print( 'TidyBar_options.main_area_positioning ' .. TidyBar_options.main_area_positioning )
+      print( 'TidyBar_options.main_area_positioning_x ' .. TidyBar_options.main_area_positioning_x )
     end
   end)
 
 
   position = position + 1
   local Button
-  Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning2', TidyBar_options_panel_frame, 'OptionsButtonTemplate' )
+  Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning_x2', TidyBar_options_panel_frame, 'OptionsButtonTemplate' )
   Button:SetPoint( 'TopLeft', 20, -20 * position )
   getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
   Button.tooltipText = 'Reset the main area positioning to the middle.'
   Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.main_area_positioning = position_left + position_right + position_right
-    main_area_positioning_slider:SetValue( TidyBar_options.main_area_positioning )
+    TidyBar_options.main_area_positioning_x = maximum_position_left + maximum_position_right + maximum_position_right
+    main_area_positioning_slider_x:SetValue( TidyBar_options.main_area_positioning_x )
+    TidyBar_refresh_everything()
+  end)
+end
+
+
+
+space()
+
+
+do  --  TidyBar_options.main_area_positioning_y
+
+  position = position + 1
+  local main_area_positioning_slider_y
+  main_area_positioning_slider_y = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning_y', TidyBar_options_panel_frame, 'OptionsSliderTemplate' )
+  main_area_positioning_slider_y:SetPoint( 'TopLeft', 20, -20 * position )
+  getglobal( main_area_positioning_slider_y:GetName() .. 'Text' ):SetText( 'Main area positioning (y)' )
+  main_area_positioning_slider_y.tooltipText = 'The position of the main area (top/bottom).'
+  main_area_positioning_slider_y:SetMinMaxValues( maximum_position_bottom, maximum_position_top )
+  main_area_positioning_slider_y:SetValueStep( 1 )
+  main_area_positioning_slider_y:SetValue( TidyBar_options.main_area_positioning_y )
+  main_area_positioning_slider_y:SetScript( 'OnValueChanged', function()
+    TidyBar_options.main_area_positioning_y = main_area_positioning_slider_y:GetValue()
+    TidyBar_refresh_everything()
+    -- Show the corner while positioning the main area.
+    MicroButtonAndBagsBar:SetAlpha( 1 )
+    if TidyBar_options.debug then
+      print( 'TidyBar_options.main_area_positioning_y ' .. TidyBar_options.main_area_positioning_y )
+    end
+  end)
+
+
+  position = position + 1
+  local Button
+  Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning_y2', TidyBar_options_panel_frame, 'OptionsButtonTemplate' )
+  Button:SetPoint( 'TopLeft', 20, -20 * position )
+  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
+  Button.tooltipText = 'Reset the main area positioning to the bottom.'
+  Button:SetScript( 'OnClick', function( self )
+    TidyBar_options.main_area_positioning_y = 0
+    main_area_positioning_slider_y:SetValue( TidyBar_options.main_area_positioning_y )
     TidyBar_refresh_everything()
   end)
 end
@@ -242,4 +294,4 @@ do  --  TidyBar_options.debug
   end)
 end
 
-end
+end  --  TidyBar_setup_options_pane()

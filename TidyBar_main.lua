@@ -96,8 +96,8 @@ local function TidyBar_refresh_main_area()
   if InCombatLockdown() == false then
     local anchor
 
-    do  --  Left/right positioning
-      TidyBar_main_frame:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning, 0 )
+    do  --  Positioning
+      TidyBar_main_frame:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
     end
 
 
@@ -460,7 +460,7 @@ local function TidyBar_refresh_petbattle()
 
   -- Positioning
   PetBattleFrame.BottomFrame:ClearAllPoints()
-  PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning, 0 )
+  PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning_x, 0 )
   -- The background art
   if TidyBar_options.show_textured_background_petbattle == false then
     PetBattleFrame.TopVersus:Hide()
