@@ -1,3 +1,9 @@
+function TidyBar_setup_options_pane()
+--  Called by Tidybar_main.lua during its initialization.
+
+local Button
+local CheckButton
+
 --  Understanding the screen width and bars
 --  This is Blizzard's choice
 local space_between_buttons = 6
@@ -17,33 +23,23 @@ local position_top = GetScreenHeight()
 local position_bottom = 0
 
 
---[[
-/run print( TidyBar_options.main_area_positioning_y )
-/run TidyBar_options.main_area_positioning_y = nil
-/run TidyBar_options.main_area_positioning_y = -6
---]]
-
 do  --  Default options
-  TidyBar_options = {}
+  if TidyBar_options                                    == nil then   TidyBar_options                                    =   {}                                                       end
   if TidyBar_options.show_StatusTrackingBarManager      == nil then   TidyBar_options.show_StatusTrackingBarManager      =   false                                                    end
   if TidyBar_options.always_show_corner                 == nil then   TidyBar_options.always_show_corner                 =   false                                                    end
   if TidyBar_options.always_show_side                   == nil then   TidyBar_options.always_show_side                   =   false                                                    end
   if TidyBar_options.show_macro_text                    == nil then   TidyBar_options.show_macro_text                    =   false                                                    end
   if TidyBar_options.main_area_positioning_x            == nil then   TidyBar_options.main_area_positioning_x            =   maximum_position_left + ( maximum_position_right * 2 )   end
   if TidyBar_options.main_area_positioning_y            == nil then   TidyBar_options.main_area_positioning_y            =   0                                                        end
+  if TidyBar_options.bags_area_positioning_x            == nil then   TidyBar_options.bags_area_positioning_x            =   3                                                        end
+-- fixme
+  if TidyBar_options.bags_area_positioning_y            == nil then   TidyBar_options.bags_area_positioning_y            =   0                                                        end
   if TidyBar_options.show_textured_background_petbattle == nil then   TidyBar_options.show_textured_background_petbattle =   false                                                    end
   if TidyBar_options.debug                              == nil then   TidyBar_options.debug                              =   false                                                    end
 end
 
 
 
-
-
-function TidyBar_setup_options_pane()
---  Called by Tidybar_main.lua during its initialization.
-
-
-TidyBar = {}
 TidyBar_options_panel = CreateFrame( 'Frame', 'TidyBar_options_panel_frame', UIParent )
 TidyBar_options_panel.name = 'TidyBar'
 InterfaceOptions_AddCategory( TidyBar_options_panel )
@@ -90,11 +86,10 @@ space()
 
 do  --  TidyBar_options.always_show_side
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.always_show_side', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Always show the side bars' )
-  --CheckButton.tooltipText = 'Auto-hide the right-hand vertical bars on MouseOut.'
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Always show the side bars' )
+  --CheckButton.tooltipText = ''
   CheckButton:SetChecked( TidyBar_options.always_show_side )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked() then
@@ -110,11 +105,10 @@ end
 
 do  --  TidyBar_options.always_show_corner
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.always_show_corner', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Always show the corner bars' )
-  --CheckButton.tooltipText = 'When enabled, auto-hide the bottom-left buttons and bags on MouseOut.'
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Always show the corner bars' )
+  --CheckButton.tooltipText = ''
   CheckButton:SetChecked( TidyBar_options.always_show_corner )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked() then
@@ -130,10 +124,9 @@ end
 
 do  --  TidyBar_options.show_StatusTrackingBarManager
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_StatusTrackingBarManager', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show Status Tracking Bar' )
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show Status Tracking Bar' )
   CheckButton.tooltipText = 'The combined experience/etc bar, at the bottom.  Note that this cannot be changed in combat.'
   CheckButton:SetChecked( TidyBar_options.show_StatusTrackingBarManager )
   CheckButton:SetScript( 'OnClick', function( self )
@@ -150,10 +143,9 @@ end
 
 do  --  TidyBar_options.show_macro_text
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_macro_text', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show macro text' )
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show macro text' )
   CheckButton.tooltipText = 'For any macros dragged out into any bar, show its name.'
   CheckButton:SetChecked( TidyBar_options.show_macro_text )
   CheckButton:SetScript( 'OnClick', function( self )
@@ -170,10 +162,9 @@ end
 
 do  --  TidyBar_options.show_textured_background_petbattle
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_petbattle', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show pet battle background' )
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show pet battle background' )
   CheckButton.tooltipText = 'Show the background behind the pet battle UI.'
   CheckButton:SetChecked( TidyBar_options.show_textured_background_petbattle )
   CheckButton:SetScript( 'OnClick', function( self )
@@ -195,7 +186,7 @@ do  --  TidyBar_options.main_area_positioning_x
   local main_area_positioning_slider_x
   main_area_positioning_slider_x = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning_x', TidyBar_options_panel_frame, 'OptionsSliderTemplate' )
   main_area_positioning_slider_x:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( main_area_positioning_slider_x:GetName() .. 'Text' ):SetText( 'Main area positioning (x)' )
+  _G[ main_area_positioning_slider_x:GetName() .. 'Text' ]:SetText( 'Main area positioning (x)' )
   main_area_positioning_slider_x.tooltipText = 'The position of the main area (left/right).'
   main_area_positioning_slider_x:SetMinMaxValues( maximum_position_left, maximum_position_right )
   main_area_positioning_slider_x:SetValueStep( 1 )
@@ -212,10 +203,9 @@ do  --  TidyBar_options.main_area_positioning_x
 
 
   position = position + 1
-  local Button
   Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning_x2', TidyBar_options_panel_frame, 'OptionsButtonTemplate' )
   Button:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
+  _G[ Button:GetName() .. 'Text' ]:SetText( 'Reset' )
   Button.tooltipText = 'Reset the main area positioning to the middle.'
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.main_area_positioning_x = maximum_position_left + maximum_position_right + maximum_position_right
@@ -235,7 +225,7 @@ do  --  TidyBar_options.main_area_positioning_y
   local main_area_positioning_slider_y
   main_area_positioning_slider_y = CreateFrame( 'Slider', 'TidyBar_options.main_area_positioning_y', TidyBar_options_panel_frame, 'OptionsSliderTemplate' )
   main_area_positioning_slider_y:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( main_area_positioning_slider_y:GetName() .. 'Text' ):SetText( 'Main area positioning (y)' )
+  _G[ main_area_positioning_slider_y:GetName() .. 'Text' ]:SetText( 'Main area positioning (y)' )
   main_area_positioning_slider_y.tooltipText = 'The position of the main area (top/bottom).'
   main_area_positioning_slider_y:SetMinMaxValues( maximum_position_bottom, maximum_position_top )
   main_area_positioning_slider_y:SetValueStep( 1 )
@@ -252,10 +242,9 @@ do  --  TidyBar_options.main_area_positioning_y
 
 
   position = position + 1
-  local Button
   Button = CreateFrame( 'Button', 'TidyBar_options.main_area_positioning_y2', TidyBar_options_panel_frame, 'OptionsButtonTemplate' )
   Button:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( Button:GetName() .. 'Text' ):SetText( 'Reset' )
+  _G[ Button:GetName() .. 'Text' ]:SetText( 'Reset' )
   Button.tooltipText = 'Reset the main area positioning to the bottom.'
   Button:SetScript( 'OnClick', function( self )
     TidyBar_options.main_area_positioning_y = 0
@@ -276,11 +265,10 @@ space()
 
 do  --  TidyBar_options.debug
   position = position + 1
-  local CheckButton
   CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.debug', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
   CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  getglobal( CheckButton:GetName() .. 'Text' ):SetText( 'Show debug messages' )
-  CheckButton.tooltipText = ''
+  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show debug messages' )
+  --CheckButton.tooltipText = ''
   CheckButton:SetChecked( TidyBar_options.debug )
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked() then

@@ -1,15 +1,4 @@
-﻿-- TODO - if the gryphons are enabled, restrict the main area's left-right positioning.
-
--- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
--- The scaling feature was removed; use the Blizzard feature.
--- TODO - create a custom tidybar frame and put all the middle bars into it.
-
-
-
-
--- KNOWN ISSUES
---  The bars remain during cutscenes!
---  The background texture is now one single bar.  I have to learn how to show only part of a texture.
+﻿-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
 
 
 -- TODO SOONER
@@ -24,7 +13,9 @@
 
 -- However, if I keep my side frame, and then instead use the alpha code on VerticalMultiBarsContainer, then I might be able to completely resolve issue #30 (cooldown flash).  Investigate.
 
--- Style and move ExtraActionButton1
+-- Test ExtraActionButton1
+  --  style it.
+  --  I'd love to move it to the middle, above all the bars.. but I'm not sure how to pull that off, offhand.
 
 
 
@@ -152,7 +143,7 @@ local function TidyBar_refresh_main_area()
     end
 
     do  --  Top row
-      if MultiBarBottomLeft:IsShown() then
+      if MultiBarBottomRight:IsShown() then
         MultiBarBottomRightButton1:ClearAllPoints()
         MultiBarBottomRightButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
         --  It's not used for anything, but may as well move it.
@@ -167,6 +158,8 @@ local function TidyBar_refresh_main_area()
 
     do  --  StanceBar
       if StanceBarFrame:IsShown() then
+        --  The background texture
+        StanceBarMiddle:Hide()
         StanceButton1:ClearAllPoints()
         StanceButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
         -- Hide its background
@@ -185,15 +178,24 @@ local function TidyBar_refresh_main_area()
     end
 
     do  --  FramerateText (fps meter)
-      if FramerateText:IsShown() then  --  FPS text
+      if FramerateText:IsShown() then
         --FramerateLabel:ClearAllPoints()
         --FramerateText:ClearAllPoints()
         --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top' )
         --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
-        FramerateText:ClearAllPoints()
-        FramerateText:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
-        FramerateLabel:Hide()
+        FramerateLabel:ClearAllPoints()
+        FramerateLabel:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        --FramerateLabel:Hide()
         anchor = FramerateText
+      end
+    end
+
+    -- Untested
+    do  --  ExtraActionButton1 (the big button)
+      if ExtraActionButton1:IsShown() then
+        ExtraActionButton1:ClearAllPoints()
+        ExtraActionButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        anchor = ExtraActionButton1
       end
     end
 
@@ -385,6 +387,7 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
     --  .. in case there's something the user stuffed into that corner.
     MicroButtonAndBagsBar:SetPoint( 'BottomRight', WorldFrame, 'BottomRight', 3, 3 )
 
+
     do  --  The corner background art
       --[[
           --  TODO - I have to make a custom background, or figure out how to manipuluate the existing one.
@@ -432,6 +435,8 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
   end  --  not InCombatLockdown() then
 
 
+  -- The nagging talent popup.
+  TalentMicroButtonAlert:Hide()
 
   local alpha
   if  is_mouse_inside_corner

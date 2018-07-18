@@ -16,15 +16,18 @@
 - Old experience, honor and artifact power code was removed.
   -  Blizzard made a combined bar, and it's stuck underneath the main buttons.  I don't understand it well enough to move it around.  It really does act different.
   -  As there was some hackery to fix a "wiggle" issue, related code removal slightly reduces some CPU load.
-  -  Bar height functionality removed.
+  -  Bar height functionality removed.  I don't use it, and that code wasn't very happy.
   -  Bar spacing removed.  It wasn't working all that well in the first place; I couldn't fix it properly, and I never even used it.
 - Removed show/hide the main bar background.
   -  Blizzard has made this one large texture.  As I don't know how to deal with it, I'll revisit this in the future.
+  -  See also #68 - Implement main bar texture
+  -  See also #49 - Implement bars texture changing
 - Partially-fixed #30 - Hide global cooldowns in sidebar, when hidden-on-mouseout
 - Gryphons have been hidden
-  -  After much struggle, I simply cannot properly manipulate them.
-  -  One stays stuck to one frame, and the other stays stuck to a different frame.
-  -  They stretch and squish when I move them.
+  -  See #70 - Re-implement gryphon functionality
+- Mostly-implemented #60 - Main bar vertical positioning
+  -  See also #69 - Implement a better maximum y position
+
 
 
 # 7.x - Legion
