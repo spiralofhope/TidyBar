@@ -2,9 +2,17 @@
 
 `git log` is another good way to peer into the innards of this repository.
 
+
+
 # 8.x - Battle for Azeroth (BfA)
 
 ## 8.0 series
+
+## 8.0.1.2
+
+- Stacked the pet bar.
+- Shifted a hidden bar that was preventing mouseover and clicking in part of the chat area.
+
 
 ## 8.0.1.1
 

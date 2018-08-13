@@ -169,6 +169,15 @@ local function TidyBar_refresh_main_area()
       end
     end
 
+    do  --  Pet bar
+      if PetActionButton1:IsShown() then
+        --  The background texture
+        PetActionButton1:ClearAllPoints()
+        PetActionButton1:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
+        anchor = PetActionButton1
+      end
+    end
+
     do  --  MainMenuBarVehicleLeaveButton
       if MainMenuBarVehicleLeaveButton:IsShown() then
         MainMenuBarVehicleLeaveButton:ClearAllPoints()
@@ -509,6 +518,8 @@ function TidyBar_refresh_everything()
   -- FIXME/change?
   if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
+  -- There's a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
+  MainMenuBar:SetWidth( 500 )
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
   TidyBar_refresh_side( false )
