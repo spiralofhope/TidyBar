@@ -8,6 +8,12 @@
 
 ## 8.0 series
 
+### 8.0.1.5
+
+- Entirely removed objectives tracker code.
+  -  I don't understand what parts to manipulate.
+
+
 ### 8.0.1.4
 
 - Fixed the objectives tracker code, again.

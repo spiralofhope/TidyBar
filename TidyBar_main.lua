@@ -276,14 +276,15 @@ end
 local function TidyBar_refresh_side( is_mouse_inside_side )
 
   do  --  Quest tracker
+    -- Code removed.  I can't figure out what elements to manipulate, and I don't want to make this code complex since it'll just break things anyway.
     if MultiBarRight:IsShown() == false then
       -- if MultiBarRight isn't there, then neither is MultiBarLeft, and TidyBar doesn't have anything to do.  Just exit.
-      ObjectiveTrackerFrame:ClearAllPoints()
-      ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+      --ObjectiveTrackerFrame:ClearAllPoints()
+      --ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
       return
     end
-    ObjectiveTrackerFrame:ClearAllPoints()
-    ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
+    --ObjectiveTrackerFrame:ClearAllPoints()
+    --ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
   end
 
   do  --  debugging
