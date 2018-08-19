@@ -8,7 +8,7 @@
 ## Author:                spiralofhope
 ## Title:                 Tidy Bar
 ## Notes:                 Simplifies your button bars, saving screen real estate.
-## Version:               8.0.1.4
+## Version:               8.0.1.5
 ## SavedVariables:        TidyBar_options
 ## DefaultState:          enabled
 
