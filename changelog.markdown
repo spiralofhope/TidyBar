@@ -10,7 +10,7 @@
 
 ## 8.0.1.3
 
-- Fixed the objectives tracker being removed 
+- Fixed parts of the objectives tracker being constantly removed.
   -  This unintentionally fixed the positioning of the multi-seat vehicle UI (e.g. the Grand Expedition Yak).
 
 
