@@ -8,19 +8,24 @@
 
 ## 8.0 series
 
-## 8.0.1.3
+### 8.0.1.4
+
+- Fixed the objectives tracker code, again.
+
+
+### 8.0.1.3
 
 - Fixed parts of the objectives tracker being constantly removed.
   -  This unintentionally fixed the positioning of the multi-seat vehicle UI (e.g. the Grand Expedition Yak).
 
 
-## 8.0.1.2
+### 8.0.1.2
 
 - Stacked the pet bar.
 - Shifted a hidden bar that was preventing mouseover and clicking in part of the chat area.
 
 
-## 8.0.1.1
+### 8.0.1.1
 
 - Major rewrite
   -  Not just a rewrite for 8.x, but a general code audit and simplification.  TidyBar is now easier to maintain.  Probably.

@@ -275,22 +275,16 @@ end
 
 local function TidyBar_refresh_side( is_mouse_inside_side )
 
-  if MultiBarRight:IsShown() == false then
-    ObjectiveTrackerFrame.QuestHeader.Background:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    return
-  end
-
-  do  --  Objective Tracker
-    -- if MultiBarRight isn't there, then neither is MultiBarLeft, and TidyBar doesn't have anything to do.  Just exit.
+  do  --  Quest tracker
     if MultiBarRight:IsShown() == false then
-      ObjectiveTrackerFrame.QuestHeader.Background:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-    else
-      -- Doing the following somehow reduces the height of the objective tracker, showing only a few items:
-      ObjectiveTrackerBlocksFrame.QuestHeaer.Background:ClearAllPoints()
-      ObjectiveTrackerBlocksFrame.QuestHeaer.Background:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
+      -- if MultiBarRight isn't there, then neither is MultiBarLeft, and TidyBar doesn't have anything to do.  Just exit.
+      ObjectiveTrackerFrame:ClearAllPoints()
+      ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+      return
     end
+    ObjectiveTrackerFrame:ClearAllPoints()
+    ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
   end
-
 
   do  --  debugging
     if is_mouse_inside_side == true then
