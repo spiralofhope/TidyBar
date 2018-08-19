@@ -477,9 +477,12 @@ end
 
 
 local function TidyBar_refresh_petbattle()
+
   -- Positioning
   PetBattleFrame.BottomFrame:ClearAllPoints()
-  PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning_x, 0 )
+  -- FIXME - this isn't working for some reason.
+  PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
+
   -- The background art
   if TidyBar_options.show_textured_background_petbattle == false then
     PetBattleFrame.TopVersus:Hide()
