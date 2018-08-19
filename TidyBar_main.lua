@@ -477,8 +477,6 @@ end
 
 
 local function TidyBar_refresh_petbattle()
-  if not PetBattleFrame:IsShown() then return end
-
   -- Positioning
   PetBattleFrame.BottomFrame:ClearAllPoints()
   PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning_x, 0 )
@@ -526,11 +524,11 @@ function TidyBar_refresh_everything()
   if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
   -- There's a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
-  MainMenuBar:SetWidth( 500 )
+  MainMenuBar:SetWidth( 1 )
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
   TidyBar_refresh_side( false )
-  TidyBar_refresh_petbattle()
+  if PetBattleFrame:IsShown() then TidyBar_refresh_petbattle() end
 end
 
 
