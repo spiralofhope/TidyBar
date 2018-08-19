@@ -274,11 +274,23 @@ end
 
 
 local function TidyBar_refresh_side( is_mouse_inside_side )
-  -- if MultiBarRight isn't there, then neither is MultiBarLeft; just exit.
+
   if MultiBarRight:IsShown() == false then
-    ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+    ObjectiveTrackerFrame.QuestHeader.Background:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
     return
   end
+
+  do  --  Objective Tracker
+    -- if MultiBarRight isn't there, then neither is MultiBarLeft, and TidyBar doesn't have anything to do.  Just exit.
+    if MultiBarRight:IsShown() == false then
+      ObjectiveTrackerFrame.QuestHeader.Background:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
+    else
+      -- Doing the following somehow reduces the height of the objective tracker, showing only a few items:
+      ObjectiveTrackerBlocksFrame.QuestHeaer.Background:ClearAllPoints()
+      ObjectiveTrackerBlocksFrame.QuestHeaer.Background:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
+    end
+  end
+
 
   do  --  debugging
     if is_mouse_inside_side == true then
@@ -289,11 +301,6 @@ local function TidyBar_refresh_side( is_mouse_inside_side )
     debug( ' SpellFlyout:IsShown( ' .. tostring( SpellFlyout:IsShown() ) .. ' )' )
   end
 
-
-  -- Doing the following somehow reduces the height of the objective tracker, showing only a few items:
-  -- Works in combat.
-  ObjectiveTrackerFrame:ClearAllPoints()
-  ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
 
   if not InCombatLockdown() then
     --  Attempting to more thorougly solve issue #30, but nothing works.

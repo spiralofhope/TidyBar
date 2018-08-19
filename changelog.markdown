@@ -8,6 +8,12 @@
 
 ## 8.0 series
 
+## 8.0.1.3
+
+- Fixed the objectives tracker being removed 
+  -  This unintentionally fixed the positioning of the multi-seat vehicle UI (e.g. the Grand Expedition Yak).
+
+
 ## 8.0.1.2
 
 - Stacked the pet bar.
