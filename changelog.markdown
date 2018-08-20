@@ -8,6 +8,11 @@
 
 ## 8.0 series
 
+### 8.0.1.6
+
+- Styling the power bar area.
+
+
 ### 8.0.1.5
 
 - Entirely removed objectives tracker code.

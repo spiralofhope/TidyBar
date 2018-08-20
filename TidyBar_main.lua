@@ -263,6 +263,17 @@ local function TidyBar_refresh_main_area()
   end
 
 
+  do  --  Power bar
+    --  Reproducable by going to BfA > Kul Tiras > Stormstrong Valley > (The Brineworks), "Strain"
+    --  This is some sort of left-side bar.  Even with the default UI this looks terrible.
+    --PlayerPowerBarAltFill:Hide()
+    --  The background
+    PlayerPowerBarAlt.frame:Hide()
+    --  This would remove the background texture.
+    --PlayerPowerBarAlt.background:Hide()
+  end
+
+
   --  Hide the bubbles on the status bar (xp etc)
   StatusTrackingBarManager.SingleBarLarge:Hide()
 
