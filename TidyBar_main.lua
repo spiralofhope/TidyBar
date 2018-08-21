@@ -274,10 +274,13 @@ local function TidyBar_refresh_main_area()
   end
 
 
+  --  Hide the background/side styling of the ExtraActionButton
+  ExtraActionButton1.style:Hide()
+
   --  Hide the bubbles on the status bar (xp etc)
   StatusTrackingBarManager.SingleBarLarge:Hide()
 
-  -- It does nothing anyway.
+  -- This does nothing anyway
   MainMenuBarArtFrameBackground:Hide()
 
 end
