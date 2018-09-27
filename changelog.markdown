@@ -8,6 +8,11 @@
 
 ## 8.0 series
 
+### 8.0.1.8
+
+- Fix an in-combat error from `MainMenuBar:SetWidth()`
+
+
 ### 8.0.1.7
 
 - Hide the background/side styling of the ExtraActionButton

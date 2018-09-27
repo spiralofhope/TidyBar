@@ -536,7 +536,9 @@ function TidyBar_refresh_everything()
   if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
   -- There's a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
-  MainMenuBar:SetWidth( 1 )
+  if InCombatLockdown() == false then
+    MainMenuBar:SetWidth( 1 )
+  end
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
   TidyBar_refresh_side( false )
