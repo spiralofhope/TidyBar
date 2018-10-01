@@ -132,6 +132,7 @@ do  --  TidyBar_options.show_StatusTrackingBarManager
   CheckButton:SetScript( 'OnClick', function( self )
     if self:GetChecked() then
       TidyBar_options.show_StatusTrackingBarManager = true
+      print( 'TidyBar:  NOTE - This is bugged.  See issue #67' )
     else
       TidyBar_options.show_StatusTrackingBarManager = false
     end

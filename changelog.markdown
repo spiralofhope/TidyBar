@@ -8,6 +8,11 @@
 
 ## 8.0 series
 
+### 8.0.1.9
+
+- Implemented a hackish workaround for #67 - Implement StatusTrackingBarManager functionality
+
+
 ### 8.0.1.8
 
 - Fix an in-combat error from `MainMenuBar:SetWidth()`

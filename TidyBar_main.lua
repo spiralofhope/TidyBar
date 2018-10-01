@@ -535,9 +535,19 @@ function TidyBar_refresh_everything()
   -- FIXME/change?
   if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
-  -- There's a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
+  -- Because everything is attached to the MainMenuBar, this is the only way to usually-resize StatusTrackingBarManager.
   if InCombatLockdown() == false then
-    MainMenuBar:SetWidth( 1 )
+    if TidyBar_options.show_StatusTrackingBarManager == false then
+      -- This solves a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
+      MainMenuBar:SetWidth( 1 )
+    else
+      -- It's terrible, but this is better than nothing..
+      -- This may still have the too-left problem.
+      --   .. offhand, I can see that  `StatusBar.BarTrailGlow`  and  `StatusBar.SparkBurstMove`  are too-left.
+      local number_of_buttons = 12
+      local space_between_buttons = 6
+      MainMenuBar:SetWidth( ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) ) )
+    end
   end
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
