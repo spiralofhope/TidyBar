@@ -118,15 +118,35 @@ local function TidyBar_refresh_main_area()
     --  This is Blizzard's choice
     --  FIXME - Height seems somewhat wrong compared to the width.
     --          I bet it's different because the screen height is different.
+    local number_of_buttons = 12
     local space_between_buttons = 6
-    local height_offset
+
+    local height_offset = space_between_buttons
+
+
+    do  --  everything
+      --  Hide the bubbles on the status bar (xp etc)
+      StatusTrackingBarManager.SingleBarLarge:Hide()
+
+      -- This does nothing anyway
+      MainMenuBarArtFrameBackground:Hide()
+
+      -- Because everything is attached to the MainMenuBar, this is the only way to usually-resize StatusTrackingBarManager.
+      if TidyBar_options.show_StatusTrackingBarManager == false then
+        -- This solves a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
+        MainMenuBar:SetWidth( 1 )
+      else
+        -- It's terrible, but this is better than nothing..
+        -- This may still have the too-left problem.
+        --   .. offhand, I can see that  `StatusBar.BarTrailGlow`  and  `StatusBar.SparkBurstMove`  are too-left.
+        MainMenuBar:SetWidth( ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) ) )
+      end
+    end
 
     do  --  bottom row
       if TidyBar_options.show_StatusTrackingBarManager == true then
         -- For some reason, StatusTrackingBarManager doesn't have a proper height.. so I'll add 2.
         height_offset = StatusTrackingBarManager:GetHeight() + space_between_buttons + 2
-      else
-        height_offset = space_between_buttons
       end
       -- Note that StatusTrackingBarManager has an untrustworthy position.
       ActionButton1:SetPoint( 'BottomLeft', TidyBar_main_frame, 'BottomLeft', 0, height_offset )
@@ -276,12 +296,6 @@ local function TidyBar_refresh_main_area()
 
   --  Hide the background/side styling of the ExtraActionButton
   ExtraActionButton1.style:Hide()
-
-  --  Hide the bubbles on the status bar (xp etc)
-  StatusTrackingBarManager.SingleBarLarge:Hide()
-
-  -- This does nothing anyway
-  MainMenuBarArtFrameBackground:Hide()
 
 end
 
@@ -532,23 +546,8 @@ end
 
 
 function TidyBar_refresh_everything()
-  -- FIXME/change?
   if MainMenuBar:IsVisible() == false then return end
   debug( 'TidyBar_refresh_everything() - ' .. GetTime() )
-  -- Because everything is attached to the MainMenuBar, this is the only way to usually-resize StatusTrackingBarManager.
-  if InCombatLockdown() == false then
-    if TidyBar_options.show_StatusTrackingBarManager == false then
-      -- This solves a problem with it being too far to the left, making it impossible to mouseover or click items in the chat box.
-      MainMenuBar:SetWidth( 1 )
-    else
-      -- It's terrible, but this is better than nothing..
-      -- This may still have the too-left problem.
-      --   .. offhand, I can see that  `StatusBar.BarTrailGlow`  and  `StatusBar.SparkBurstMove`  are too-left.
-      local number_of_buttons = 12
-      local space_between_buttons = 6
-      MainMenuBar:SetWidth( ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) ) )
-    end
-  end
   TidyBar_refresh_main_area()
   TidyBar_refresh_corner( false )
   TidyBar_refresh_side( false )
