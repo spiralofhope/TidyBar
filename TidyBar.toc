@@ -1,20 +1,32 @@
 ﻿# TidyBar has most recently been tested against:
-#   Version 8.0.1 (27843) (Release x64)
-#   Sep 21 2018
+#   Version 8.1.0 (28833) (Release x64)
+#   Dec 19 2018
 
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
-## Interface:             80000
-## Author:                spiralofhope
+## Interface:             80100
 ## Title:                 Tidy Bar
+
 ## Notes:                 Simplifies your button bars, saving screen real estate.
-## Version:               8.0.1.9
+## Author:                spiralofhope
+## Version:               8.1.0.0
+## X-Date:                2018-12-31
+## X-Website:             https://github.com/spiralofhope/TidyBar/
+## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
+
+
 ## SavedVariables:        TidyBar_options
 ## DefaultState:          enabled
 
-## X-Date:                2018-09-30
-## X-Website:             https://github.com/spiralofhope/TidyBar/
-## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
+
+
+
+
+
+
+
+
+
 
 TidyBar_main.lua
 TidyBar_options.lua

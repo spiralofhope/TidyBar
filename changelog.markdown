@@ -8,6 +8,11 @@
 
 ## 8.0 series
 
+## 8.1.0.0
+
+- TOC bump
+
+
 ### 8.0.1.9
 
 - Implemented a hackish workaround for #67 - Implement StatusTrackingBarManager functionality
