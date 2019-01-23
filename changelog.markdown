@@ -6,11 +6,23 @@
 
 # 8.x - Battle for Azeroth (BfA)
 
-## 8.0 series
+
+
+## 8.1 series
+
+
+## 8.1.0.1
+
+- Move the hidden `PetActionBarFrame` so it's hidden frame is not overtop of everything.
+
 
 ## 8.1.0.0
 
 - TOC bump
+
+
+
+## 8.0 series
 
 
 ### 8.0.1.9
@@ -25,7 +37,7 @@
 
 ### 8.0.1.7
 
-- Hide the background/side styling of the ExtraActionButton
+- Hide the background/side styling of the `ExtraActionButton`
 
 
 ### 8.0.1.6
@@ -82,7 +94,10 @@
 
 # 7.x - Legion
 
+
+
 ## 7.3 series
+
 
 ## 7.3.2.0
 
@@ -94,7 +109,9 @@
 - TOC bump
 
 
+
 ## 7.2 series
+
 
 ### 7.2.5.1
 
@@ -115,14 +132,17 @@
 
 - Fixed #57 - Move FPS meter
 
+
 ### 7.2.0.3
 
 - Vehicle support
   -  It's hardcoded, but seems to be a reasonable default for me.  People with a chat box on the right are screwed.  Same with the pet UI.
 
+
 ### 7.2.0.2
 
 - Fixed the pet battle UI.
+
 
 ### 7.2.0.1
 
@@ -140,14 +160,17 @@
 
 ## 7.1 series
 
+
 ### 7.1.5.1
 
 - More aggressively remove the talent nag's transparent overlay.
 - Code cleanup and style improvements.
 
+
 ### 7.1.0.3
 
 - Fixed the experience bar appearing with a max-level character.
+
 
 ### 7.1.0.2
 
@@ -167,6 +190,7 @@
   -  I's been commented-out for some time now, to check if it would be missed.  That code is no longer, or was never, needed.  Probably.
 - I think TidyBar may have been broken for users who were not max level.
 
+
 ### 7.1.0.1
 
 - Fixed an unpredictable error message when first logging in.
@@ -175,10 +199,12 @@
 
 ## 7.0.3 series
 
+
 ### 7.0.3.23
 
 - Fixed a probable bug with a global/local variable.
   -  Releasing with just this fix, since it's likely a bad issue for some people.
+
 
 ### 7.0.3.22
 
@@ -192,10 +218,12 @@
   -  I have no way of testing this, as I do not and will never PvP or get in a circumstance where I can even be flagged.
 - Implemented an option to show/hide the HonorWatchBar.
 
+
 ### 7.0.3.21
 
 - Fixed #41 - Fix reputation bar when at max-xp
 - Fixed #26 - Fix artifact experience bar backdrop
+
 
 ### 7.0.3.20
 
@@ -203,6 +231,7 @@
   -  It was working well, but imperfectly and caused some jumpyness.
 - Removed some misaligned sparklies when experience or artifact points are gained.
 - Fixed the horizontal movement for the main area.
+
 
 ### 7.0.3.19
 
@@ -212,28 +241,34 @@
   -  As of 22522, I've learned that the "reputation as experience bar" feature is gone, though the checkbox still exists in the UI.
   -  I don't know if the UI needs to be updated, or if the feature will return in some form.  I'm guessing the former.
 
+
 ### 7.0.3.18
 
 - Fixed ArtifactWatchBar on characters with no legendary weapon.
 
+
 ### 7.0.3.17
 
 - ArtifactWatchBar support.
+
 
 ### 7.0.3.16
 
 - Implemented a reasonable simplification of the vehicle UI.
 - Hid the overly-loud spark that appears when experience is gained.
 
+
 ### 7.0.3.15
 
 - Fixed the sidebar scaling.
 - Fixed the mainbar texture, when `TidyBar_options.show_textured_backgrounds = true`
 
+
 ### 7.0.3.14
 
 - Implemented an option to force the reputation bar height, even when changing them.
   -  This uses 'OnUpdate', which I hate.
+
 
 ### 7.0.3.13
 
@@ -248,12 +283,14 @@
 - Fixed #22 - Reposition 'request stop' when on a taxi
 - Fixed #25 - Reposition the gryphons
 
+
 ### 7.0.3.12
 
 - Implemented #14 - Implement global configuration
   -  Implemented an options panel.
   -  No more editing `TidyBar.lua` !
 - Fixed an issue with the gryphon hiding option.
+
 
 ### 7.0.3.11
 
@@ -267,6 +304,7 @@
 - Fixed #21 - Fix reputation bar height when max experience
   -  It's easy to fix these sorts of things, when focus is on code clarity.
 
+
 ### 7.0.3.10
 
 - Fixed alignment issues with the right bars.  Again.
@@ -276,15 +314,18 @@
 - Implemented an option to hide macro text.
   -  Default `true`
 
+
 ### 7.0.3.9
 
 - Fixed alignment issues with the right bars.
 - Fixed the objective tracker placement with/without the right bars.
 
+
 ### 7.0.3.8
 
 - Fixed the reputation/etc bars jumping around when entering/exiting rested (city), and world.
 - Code style changes.
+
 
 ### 7.0.3.7
 
@@ -294,10 +335,12 @@
 - Fixed objectives positioning when TidyBar scaling is used.
 - Renamed `Empty.tga` to `empty.tga`.
 
+
 ### 7.0.3.6
 
 - Fixed the height and separation of the experience and reputation bars.
 - Fixed the objectives tracker only showing a few items.
+
 
 ### 7.0.3.5
 
@@ -305,10 +348,12 @@
   -  `TidyBar_HideActionBarButtonsTexturedBackground`
   -  Default `true`
 
+
 ### 7.0.3.4
 
 - Fixed the reputation bar hanging off of the right-hand side.  Again.
 - Fixed the experience bar hanging off of the right-hand side.
+
 
 ### 7.0.3.3
 
@@ -316,13 +361,16 @@
 - Updated `TidyBar.toc`
   -  It lists the author as "Binny".  Curious.
 
+
 ### 7.0.3.2
 
 - Implemented an option to automatically/always show the right sidebar.
 
+
 ### 7.0.3.1
 
 - Implemented an option to show/hide the gryphons on either side the bars.
+
 
 ### 7.0.3
 
@@ -330,9 +378,12 @@
 - A major code style rewrite.  Thanks, Cynbe.
 - Removed old comments.
 
+Earlier than this, I had hacked on TidyBar here and there.
 
 
-## Earlier
+# 6.x - Warlords of Draenor (WoD)
+
+(no notes were taken)
 
 I had hacked on TidyBar here and there.
 
@@ -344,13 +395,19 @@ The following notes were by the original author.
 
 Note that these old releases may or may not be buried in this git repository.  I (spiralofhope) have kept those old archives if anyone is *that* interested.
 
+
+# 5.x - Mists of Pandaria (MoP)
+
+
 ## 5.2
 
 - Added the Store button to the Tidy Bar container so it gets hidden properly
 
+
 ## 5.1
 
 - TOC Bump
+
 
 ## 5.0
 
@@ -359,11 +416,17 @@ Note that these old releases may or may not be buried in this git repository.  I
 
 
 
+# 4.x - Cataclysm
+
+
 ## 4.9
 
 - Update to 4.3 TOC
+
 
 ## 4.8
 
 - Update to 4.2 TOC
 - Updated to 4.2 UI changes
+
+I have no notes from earlier than this.
