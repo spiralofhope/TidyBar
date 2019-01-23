@@ -115,6 +115,12 @@ local function TidyBar_refresh_main_area()
     end
 
 
+    do  --  PetActionBarFrame
+      local __ = PetActionBarFrame
+      PetActionBarFrame:SetPoint( 'BottomLeft', UIParent, 'BottomLeft' )
+    end
+
+
     --  This is Blizzard's choice
     --  FIXME - Height seems somewhat wrong compared to the width.
     --          I bet it's different because the screen height is different.
