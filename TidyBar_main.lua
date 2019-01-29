@@ -1,9 +1,13 @@
+--
+-- TODO - put all these in the issue tracker!
+--
+
 ﻿-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
 
-
 -- TODO SOONER
---  Test combat pet bars
 --  Test vehicles
+--  FIXME - move PetActionBarFrame
+--  FIXME - move MultiBarBottomRight
 
 
 -- TODO - investigate replacing the empty 30% tga with a backdrop:
