@@ -2,7 +2,7 @@
 -- TODO - put all these in the issue tracker!
 --
 
-﻿-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
+-- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
 
 -- TODO SOONER
 --  Test vehicles
