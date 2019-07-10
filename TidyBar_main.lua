@@ -91,9 +91,9 @@ local function TidyBar_refresh_main_area()
   if InCombatLockdown() == false then
     local anchor
 
-    do  --  Positioning
-      TidyBar_main_frame:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
-    end
+    --do  --  Positioning
+      --TidyBar_main_frame:SetPoint( 'Bottom', nil, 'Bottom', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
+    --end
 
 
     do  --  StatusTrackingBarManager
@@ -159,7 +159,15 @@ local function TidyBar_refresh_main_area()
         height_offset = StatusTrackingBarManager:GetHeight() + space_between_buttons + 2
       end
       -- Note that StatusTrackingBarManager has an untrustworthy position.
-      ActionButton1:SetPoint( 'BottomLeft', TidyBar_main_frame, 'BottomLeft', 0, height_offset )
+-- Broken in ~8.2.0
+      --ActionButton1:SetPoint( 'BottomLeft', TidyBar_main_frame, 'BottomLeft', 0, height_offset )
+
+
+
+      ActionButton1:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
+
+
+
       anchor = ActionButton1
     end
 
@@ -576,17 +584,17 @@ TidyBar:SetScript( 'OnEvent', function( self )
   debug( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
 
 
-  do  --  Set up the main area
-    --  The MainMenuBar is insane, and repositions mid-combat when the ActionBarPage is changed, so I'm forced to set up my own frame.
-    local __
-    __ = TidyBar_main_frame
-    __ = CreateFrame( 'Frame', 'TidyBar_main_frame', nil )
-    __:SetFrameStrata( 'BACKGROUND' )
-    __:SetWidth( 1 )
-    __:SetHeight( 1 )
-    __:EnableMouse( true )
-    __:SetPoint( 'Bottom', nil, 'Bottom' )
-  end
+  --do  --  Set up the main area
+    ----  The MainMenuBar is insane, and repositions mid-combat when the ActionBarPage is changed, so I'm forced to set up my own frame.
+    --local __
+    --__ = TidyBar_main_frame
+    --__ = CreateFrame( 'Frame', 'TidyBar_main_frame', nil )
+    --__:SetFrameStrata( 'BACKGROUND' )
+    --__:SetWidth( 1 )
+    --__:SetHeight( 1 )
+    --__:EnableMouse( true )
+    --__:SetPoint( 'Bottom', nil, 'Bottom' )
+  --end
 
 
   do  --  Set up the side

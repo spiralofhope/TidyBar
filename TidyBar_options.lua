@@ -9,16 +9,18 @@ local CheckButton
 local space_between_buttons = 6
 local half_of_screen_width = GetScreenWidth() / 2
 
-local maximum_position_left = ( -1 * ( GetScreenWidth() / 2 ) ) + space_between_buttons
+--local maximum_position_left = ( -1 * ( GetScreenWidth() / 2 ) ) + space_between_buttons
+local maximum_position_left = space_between_buttons
 
 local number_of_buttons = 12
-local maximum_position_right = ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) )
-local maximum_position_right = half_of_screen_width - maximum_position_right - space_between_buttons
+--local maximum_position_right = ( ActionButton1:GetWidth() * number_of_buttons ) + ( space_between_buttons * ( number_of_buttons - 1 ) )
+--local maximum_position_right = half_of_screen_width - maximum_position_right - space_between_buttons
+local maximum_position_right = ( GetScreenWidth() - ( ActionButton1:GetWidth() * number_of_buttons ) - ( space_between_buttons * ( number_of_buttons - 1 ) ) )
 
 local maximum_position_bottom = -4
-local maximum_position_top    = GetScreenHeight()
-
 --  TODO - less the height of all the other things.
+local maximum_position_top    = ( GetScreenHeight() - ActionButton1:GetHeight() )
+
 local position_top = GetScreenHeight()
 local position_bottom = 0
 
@@ -209,7 +211,8 @@ do  --  TidyBar_options.main_area_positioning_x
   _G[ Button:GetName() .. 'Text' ]:SetText( 'Reset' )
   Button.tooltipText = 'Reset the main area positioning to the middle.'
   Button:SetScript( 'OnClick', function( self )
-    TidyBar_options.main_area_positioning_x = maximum_position_left + maximum_position_right + maximum_position_right
+    --TidyBar_options.main_area_positioning_x = maximum_position_left + maximum_position_right + maximum_position_right
+    TidyBar_options.main_area_positioning_x = maximum_position_left + maximum_position_right
     main_area_positioning_slider_x:SetValue( TidyBar_options.main_area_positioning_x )
     TidyBar_refresh_everything()
   end)
