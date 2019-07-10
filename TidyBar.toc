@@ -1,16 +1,16 @@
 ﻿# TidyBar has most recently been tested against:
-#   Version 8.1.0 (28833) (Release x64)
-#   Dec 19 2018
+#   Version 8.2.0 (30993) (Release x64)
+#   Jul 2 2019
 
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
-## Interface:             80100
+## Interface:             80200
 ## Title:                 Tidy Bar
 
 ## Notes:                 Simplifies your button bars, saving screen real estate.
 ## Author:                spiralofhope
-## Version:               8.1.0.0
-## X-Date:                2018-12-31
+## Version:               8.2.0.1
+## X-Date:                2019-07-09
 ## X-Website:             https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
 

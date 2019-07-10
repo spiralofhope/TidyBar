@@ -8,6 +8,14 @@
 
 
 
+## 8.2 series
+
+## 8.2.0.1
+
+- Removed TidyBar-specific main area frame, now attaching to the world frame to solve a SetPoint() error.
+
+
+
 ## 8.1 series
 
 
