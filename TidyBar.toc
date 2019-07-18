@@ -9,8 +9,8 @@
 
 ## Notes:                 Simplifies your button bars, saving screen real estate.
 ## Author:                spiralofhope
-## Version:               8.2.0.1
-## X-Date:                2019-07-09
+## Version:               8.2.0.2
+## X-Date:                2019-07-18
 ## X-Website:             https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
 
