@@ -9,8 +9,6 @@
 --  See the function frame_debug_overlay and apply it to the whole region
 --  I cannot apply it to each icon space, because there's nothing there when it's empty.
 
--- However, if I keep my side frame, and then instead use the alpha code on VerticalMultiBarsContainer, then I might be able to completely resolve issue #30 (cooldown flash).  Investigate.
-
 
 
 --  Technically adjustable, but I don't want to support that without a request.
@@ -95,8 +93,7 @@ local function TidyBar_refresh_main_area()
         __:Show()
         --  Hide the main bar bubbles
         StatusTrackingBarManager.SingleBarLarge:Hide()
-        -- Implement StatusTrackingBarManager functionality
-        --   https://github.com/spiralofhope/TidyBar/issues/67
+        -- issue #67 - Implement StatusTrackingBarManager functionality
         --   I am unable to move or reduce the width of StatusTrackingBarManager.  It's tied to MainMenuBar.
         --   .. In combat, when the ActionBarPage is changed, MainMenuBar will reset.  This is why I completely detached from using MainMenuBar and don't even try to manipulate StatusTrackingBarManager.
         --__:ClearAllPoints()
@@ -149,14 +146,7 @@ local function TidyBar_refresh_main_area()
         height_offset = StatusTrackingBarManager:GetHeight() + space_between_buttons + 2
       end
       -- Note that StatusTrackingBarManager has an untrustworthy position.
--- Broken in ~8.2.0
-      --ActionButton1:SetPoint( 'BottomLeft', TidyBar_main_frame, 'BottomLeft', 0, height_offset )
-
-
-
       ActionButton1:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
-
-
 
       anchor = ActionButton1
     end
@@ -216,18 +206,12 @@ local function TidyBar_refresh_main_area()
 
     do  --  FramerateText (fps meter)
       if FramerateText:IsShown() then
-        --FramerateLabel:ClearAllPoints()
-        --FramerateText:ClearAllPoints()
-        --FramerateLabel:SetPoint( 'Bottom', anchor,        'Top' )
-        --FramerateText:SetPoint(  'Left',  FramerateText, 'Right', 0, 0 )
         FramerateLabel:ClearAllPoints()
         FramerateLabel:SetPoint( 'BottomLeft', anchor, 'TopLeft', 0, space_between_buttons )
-        --FramerateLabel:Hide()
         anchor = FramerateText
       end
     end
 
-    -- Untested
     do  --  ExtraActionButton1 (the big button)
       if ExtraActionButton1:IsShown() then
         ExtraActionButton1:ClearAllPoints()
@@ -252,6 +236,7 @@ local function TidyBar_refresh_main_area()
 
 
   --  Hide the gryphons
+  --  See issue #70 - Re-implement gryphon functionality
   MainMenuBarArtFrame.LeftEndCap:Hide()
   MainMenuBarArtFrame.RightEndCap:Hide()
 
@@ -292,12 +277,11 @@ local function TidyBar_refresh_main_area()
 
 
   do  --  Power bar
-    --  Reproducable by going to BfA > Kul Tiras > Stormstrong Valley > (The Brineworks), "Strain"
-    --  This is some sort of left-side bar.  Even with the default UI this looks terrible.
+    --  See issue #76 - Beautify alternate power bar
     --PlayerPowerBarAltFill:Hide()
     --  The background
     PlayerPowerBarAlt.frame:Hide()
-    --  This would remove the background texture.
+    --  This would remove the background texture:
     --PlayerPowerBarAlt.background:Hide()
   end
 
@@ -311,18 +295,6 @@ end
 
 local function TidyBar_refresh_side( is_mouse_inside_side )
 
-  do  --  Quest tracker
-    -- Code removed.  I can't figure out what elements to manipulate, and I don't want to make this code complex since it'll just break things anyway.
-    if MultiBarRight:IsShown() == false then
-      -- if MultiBarRight isn't there, then neither is MultiBarLeft, and TidyBar doesn't have anything to do.  Just exit.
-      --ObjectiveTrackerFrame:ClearAllPoints()
-      --ObjectiveTrackerFrame:SetPoint( 'TopRight', MinimapCluster, 'BottomRight', 0, -10 )
-      return
-    end
-    --ObjectiveTrackerFrame:ClearAllPoints()
-    --ObjectiveTrackerFrame:SetPoint( 'TopRight', VerticalMultiBarsContainer, 'TopLeft', -10, 0 )
-  end
-
   do  --  debugging
     if is_mouse_inside_side == true then
       debug( ' mouse entered the side' )
@@ -334,8 +306,8 @@ local function TidyBar_refresh_side( is_mouse_inside_side )
 
 
   if not InCombatLockdown() then
-    --  Attempting to more thorougly solve issue #30, but nothing works.
---[[
+--[[  issue #30 - Hide global cooldowns in sidebar, when hidden-on-mouseout
+      -- nothing works.
     for i = 1, 12 do
       local frame = 'MultiBarRightButton' .. i
       -- How much more aggressive could I be?
@@ -372,14 +344,21 @@ local function TidyBar_refresh_side( is_mouse_inside_side )
   else  --  Hide
     alpha = 0
   end
-  VerticalMultiBarsContainer:SetAlpha( alpha )
-  --for i = 1, 12 do
-    --_G[ 'MultiBarRightButton' .. i ]:SetAlpha( alpha )
-    --_G[ 'MultiBarLeftButton'  .. i ]:SetAlpha( alpha )
-  --end
 
-    --  Attempting to more thorougly solve issue #30, but nothing works.
---[[
+  for i = 1, 12 do
+    if MultiBarRight:IsShown() then _G[ 'MultiBarRightButton' .. i ]:SetAlpha( alpha ) end
+    if MultiBarLeft:IsShown()  then _G[ 'MultiBarLeftButton'  .. i ]:SetAlpha( alpha ) end
+  end
+  --Make the region around the sidebar slightly wider.  This lets the mouse reveal the side buttons more easily.
+  local __ = 10
+  if MultiBarRight:IsShown() then __ = __ + MultiBarRightButton1:GetWidth() end
+  if MultiBarLeft:IsShown()  then __ = __ + MultiBarLeftButton1:GetWidth()  end
+  VerticalMultiBarsContainer:SetWidth( __ )
+  --VerticalMultiBarsContainer:SetWidth( VerticalMultiBarsContainer:GetWidth() + 10 )
+
+
+--[[  issue #30 - Hide global cooldowns in sidebar, when hidden-on-mouseout
+    --  Attempting to more thorougly solve it, but nothing works.
     -- Don't work
     _G[ frame .. 'Shine' ]:SetAlpha( alpha )
     _G[ frame .. 'Border' ]:SetAlpha( alpha )
@@ -430,10 +409,12 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
     end
 
     MicroButtonAndBagsBar:ClearAllPoints()
+    --[[  TODO - issue #61 - Implement movable bags
+                 Blindly changing these values will mess up the positioning and scale of the side bars.
+    local y = 300
+    --]]
     --  It's intentionally shifted away from the edges.
     --  .. in case there's something the user stuffed into that corner.
-    --  TODO - issue #61 - Implement movable bags
-    --         FIXME - Blindly changing these values will mess up the positioning and size of the sidebar.
     local x = 3
     local y = 3
     MicroButtonAndBagsBar:SetPoint( 'BottomRight', WorldFrame, 'BottomRight', x, y )
@@ -448,7 +429,7 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
             MicroButtonAndBagsBar.MicroBagBar:Hide()
           end
         end
-      ]]--
+      --]]
       MicroButtonAndBagsBar.MicroBagBar:Hide()
     end
 
@@ -499,14 +480,6 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
   end
   MicroButtonAndBagsBar:SetAlpha( alpha )
 
---[[  -- TODO - is this stuff still needed?
-  -- Required in order to move the frames around
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'PetActionBarFrame' ]       = nil
-  UIPARENT_MANAGED_FRAME_POSITIONS[ 'ShapeshiftBarFrame' ]      = nil
-  -- Set Pet Bars
-  PetActionBarFrame:SetAttribute( 'unit', 'pet' )
-  RegisterUnitWatch( PetActionBarFrame )
---]]
 end
 
 
@@ -515,7 +488,8 @@ local function TidyBar_refresh_petbattle()
 
   -- Positioning
   PetBattleFrame.BottomFrame:ClearAllPoints()
-  -- FIXME - this isn't working for some reason.
+  -- See issue #71 - Fix PetBattleFrame.BottomFrame positioning
+  --   This isn't working for some reason:
   PetBattleFrame.BottomFrame:SetPoint( 'Bottom', WorldFrame, 'Bottom', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
 
   -- The background art
@@ -578,30 +552,32 @@ TidyBar:SetScript( 'OnEvent', function( self )
   debug( 'TidyBar version ' .. tostring( GetAddOnMetadata( 'TidyBar', 'Version' ) ) .. ' loaded.  Debugging mode enabled.' )
 
 
-  --do  --  Set up the main area
-    ----  The MainMenuBar is insane, and repositions mid-combat when the ActionBarPage is changed, so I'm forced to set up my own frame.
-    --local __
-    --__ = TidyBar_main_frame
-    --__ = CreateFrame( 'Frame', 'TidyBar_main_frame', nil )
-    --__:SetFrameStrata( 'BACKGROUND' )
-    --__:SetWidth( 1 )
-    --__:SetHeight( 1 )
-    --__:EnableMouse( true )
-    --__:SetPoint( 'Bottom', nil, 'Bottom' )
-  --end
+  do  --  Set up the main area
+    --[[  The MainMenuBar is insane, and repositions mid-combat when the ActionBarPage is changed, so I'm forced to set up my own frame.
+    local __
+    __ = TidyBar_main_frame
+    __ = CreateFrame( 'Frame', 'TidyBar_main_frame', nil )
+    __:SetFrameStrata( 'BACKGROUND' )
+    __:SetWidth( 1 )
+    __:SetHeight( 1 )
+    __:EnableMouse( true )
+    __:SetPoint( 'Bottom', nil, 'Bottom' )
+    --]]
+  end
 
 
   do  --  Set up the side
 
     do  --  Frame
-      --  Not setting up a TidyBar frame just for the side, since I can use VerticalMultiBarsContainer
-      --  Not moving VerticalMultiBarsContainer, since I'm not really sure where it should go or if I should bother.
+      -- I'm not setting up a TidyBar frame just for the side, since I can use VerticalMultiBarsContainer
       frame_debug_overlay( VerticalMultiBarsContainer, 'frame_debug_overlay( TidyBar_frame_side )' )
-      MultiBarRight:SetParent( VerticalMultiBarsContainer )
-      MultiBarLeft:SetParent(  VerticalMultiBarsContainer )
-      -- TODO? - Make it slightly wider.  Check the width of the buttons, if Shown(), and add to it.
-    end
 
+      --[[  The side bars can be positioned like so:
+      local x = 0  --  Setting this does nothing.  I don't understand.
+      local y = 30
+      VerticalMultiBarsContainer:SetPoint( 'BottomRight', UIParent, 'BottomRight', x, y )
+      --]]
+    end
 
     do  --  Scripting
       local function VerticalMultiBarsContainer_scripting( frame, parameter )
@@ -628,7 +604,7 @@ TidyBar:SetScript( 'OnEvent', function( self )
   do  --  Set up the corner
 
     do  --  frame
-      -- Not setting up a TidyBar frame just for the corner, since I can use MicroButtonAndBagsBar
+      -- I'm not setting up a TidyBar frame just for the corner, since I can use MicroButtonAndBagsBar
       MicroButtonAndBagsBar:EnableMouse()
       frame_debug_overlay( MicroButtonAndBagsBar, 'frame_debug_overlay( MicroButtonAndBagsBar )' )
     end
@@ -645,7 +621,6 @@ TidyBar:SetScript( 'OnEvent', function( self )
       --MicroButtonAndBagsBar:SetScript( 'OnEnter',  function() print( 'it enters' ) ; TidyBar_refresh_corner( true  ) end )
       --MicroButtonAndBagsBar:SetScript( 'OnLeave',  function() print( 'it exits'  ) ; TidyBar_refresh_corner( false ) end )
 
-      --  LUA has no functionality to iterate over two tables simultaneously; they would have to be combined.
       for i, name in pairs( MenuButtonFrames ) do
         --name:SetParent( MicroButtonAndBagsBar )
         TidyBar_frame_corner_scripting( name, 'TidyBar_frame_corner: ' .. tostring( name ) )
@@ -674,18 +649,18 @@ TidyBar:SetScript( 'OnEvent', function( self )
   --TidyBar_refresh_everything()
   TidyBar_setup_options_pane()
 
-
-  --TidyBar_Frame_refresh_everything = CreateFrame( 'Frame', 'TidyBar_Frame_refresh_everything', WorldFrame )
-  --TidyBar_Frame_refresh_everything:SetFrameStrata( 'BACKGROUND' )
-  ---- If I can find a trigger that fires after the UI is shown (alt-z twice), then I can force-refresh..
-  ----TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_SHOWGRID' )
-  --TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_PAGE_CHANGED' )
-  --TidyBar_Frame_refresh_everything:SetScript( 'OnEvent', function( self )
-    --self:Show()
-    --print( 'refresh 02 ' .. GetTime() )
-    --TidyBar_refresh_everything()
-  --end )
-
+--[[   issue #36 - Fix the corner partially reappearing when hiding/showing the UI
+  TidyBar_Frame_refresh_everything = CreateFrame( 'Frame', 'TidyBar_Frame_refresh_everything', WorldFrame )
+  TidyBar_Frame_refresh_everything:SetFrameStrata( 'BACKGROUND' )
+  -- If I can find a trigger that fires after the UI is shown (alt-z twice), then I can force-refresh..
+  --TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_SHOWGRID' )
+  TidyBar_Frame_refresh_everything:RegisterEvent( 'ACTIONBAR_PAGE_CHANGED' )
+  TidyBar_Frame_refresh_everything:SetScript( 'OnEvent', function( self )
+    self:Show()
+    print( 'refresh 02 ' .. GetTime() )
+    TidyBar_refresh_everything()
+  end )
+--]]
 
   -- Call Update Function when the default UI makes changes
   -- This isn't needed for the corner code, so maybe that's something to learn from.  That's really strange, since the corner code is based on the side code!
@@ -707,8 +682,8 @@ TidyBar:SetScript( 'OnEvent', function( self )
 end )
 
 
+--[[  issue #65 - Investigate Vehicle UI for 8.x
 --UNIT_ENTERED_VEHICLE
---[[
 local function TidyBar_VehicleSetup()
   if not UnitHasVehicleUI( 'player' ) then return nil end
   debug( ' TidyBar_VehicleSetup()' )

@@ -10,6 +10,12 @@
 
 ## 8.2 series
 
+## 8.2.0.2
+
+- Minor code audit and cleanup.
+- Slightly widened the reveal region for the side bars area; when the mouse approaches the side, the buttons will show sooner.
+
+
 ## 8.2.0.1
 
 - Removed TidyBar-specific main area frame, now attaching to the world frame to solve a SetPoint() error.
