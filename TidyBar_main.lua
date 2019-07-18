@@ -4,22 +4,12 @@
 
 -- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
 
--- TODO SOONER
---  Test vehicles
---  FIXME - move PetActionBarFrame
---  FIXME - move MultiBarBottomRight
-
-
 -- TODO - investigate replacing the empty 30% tga with a backdrop:
 --  https://wow.gamepedia.com/API_Frame_SetBackdrop
 --  See the function frame_debug_overlay and apply it to the whole region
 --  I cannot apply it to each icon space, because there's nothing there when it's empty.
 
 -- However, if I keep my side frame, and then instead use the alpha code on VerticalMultiBarsContainer, then I might be able to completely resolve issue #30 (cooldown flash).  Investigate.
-
--- Test ExtraActionButton1
-  --  style it.
-  --  I'd love to move it to the middle, above all the bars.. but I'm not sure how to pull that off, offhand.
 
 
 
@@ -442,7 +432,11 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
     MicroButtonAndBagsBar:ClearAllPoints()
     --  It's intentionally shifted away from the edges.
     --  .. in case there's something the user stuffed into that corner.
-    MicroButtonAndBagsBar:SetPoint( 'BottomRight', WorldFrame, 'BottomRight', 3, 3 )
+    --  TODO - issue #61 - Implement movable bags
+    --         FIXME - Blindly changing these values will mess up the positioning and size of the sidebar.
+    local x = 3
+    local y = 3
+    MicroButtonAndBagsBar:SetPoint( 'BottomRight', WorldFrame, 'BottomRight', x, y )
 
 
     do  --  The corner background art
