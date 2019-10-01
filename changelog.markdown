@@ -10,6 +10,11 @@
 
 ## 8.2 series
 
+## 8.2.5.0
+
+- TOC bump
+
+ 
 ## 8.2.0.2
 
 - Minor code audit and cleanup.
