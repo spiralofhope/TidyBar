@@ -7,20 +7,29 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
+## 8.3 series
+
+
+### 8.3.0.0
+
+- TOC bump
+
+
 ## 8.2 series
 
-## 8.2.5.0
+
+### 8.2.5.0
 
 - TOC bump
 
  
-## 8.2.0.2
+### 8.2.0.2
 
 - Minor code audit and cleanup.
 - Slightly widened the reveal region for the side bars area; when the mouse approaches the side, the buttons will show sooner.
 
 
-## 8.2.0.1
+### 8.2.0.1
 
 - Removed TidyBar-specific main area frame, now attaching to the world frame to solve a SetPoint() error.
 
@@ -29,12 +38,12 @@
 ## 8.1 series
 
 
-## 8.1.0.1
+### 8.1.0.1
 
 - Move the hidden `PetActionBarFrame` so it's hidden frame is not overtop of everything.
 
 
-## 8.1.0.0
+### 8.1.0.0
 
 - TOC bump
 
