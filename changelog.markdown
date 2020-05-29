@@ -7,7 +7,6 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
-
 ## 8.2 series
 
 ## 8.2.5.0
