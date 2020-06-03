@@ -36,8 +36,12 @@ do  --  Default options
   if TidyBar_options.bags_area_positioning_x            == nil then   TidyBar_options.bags_area_positioning_x            =   3                                                        end
 -- fixme
   if TidyBar_options.bags_area_positioning_y            == nil then   TidyBar_options.bags_area_positioning_y            =   0                                                        end
-  if TidyBar_options.show_textured_background_petbattle == nil then   TidyBar_options.show_textured_background_petbattle =   false                                                    end
   if TidyBar_options.debug                              == nil then   TidyBar_options.debug                              =   false                                                    end
+
+  if release_type == 'retail' then
+  if TidyBar_options.show_textured_background_petbattle == nil then   TidyBar_options.show_textured_background_petbattle =   false                                                    end
+  end
+
 end
 
 
@@ -163,23 +167,24 @@ end
 
 
 
-do  --  TidyBar_options.show_textured_background_petbattle
-  position = position + 1
-  CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_petbattle', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
-  CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
-  _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show pet battle background' )
-  CheckButton.tooltipText = 'Show the background behind the pet battle UI.'
-  CheckButton:SetChecked( TidyBar_options.show_textured_background_petbattle )
-  CheckButton:SetScript( 'OnClick', function( self )
-    if self:GetChecked() then
-      TidyBar_options.show_textured_background_petbattle = true
-    else
-      TidyBar_options.show_textured_background_petbattle = false
-    end
-    TidyBar_refresh_everything()
-  end)
+if release_type == 'retail' then
+  do  --  TidyBar_options.show_textured_background_petbattle
+    position = position + 1
+    CheckButton = CreateFrame( 'CheckButton', 'TidyBar_options.show_textured_background_petbattle', TidyBar_options_panel_frame, 'OptionsCheckButtonTemplate' )
+    CheckButton:SetPoint( 'TopLeft', 20, -20 * position )
+    _G[ CheckButton:GetName() .. 'Text' ]:SetText( 'Show pet battle background' )
+    CheckButton.tooltipText = 'Show the background behind the pet battle UI.'
+    CheckButton:SetChecked( TidyBar_options.show_textured_background_petbattle )
+    CheckButton:SetScript( 'OnClick', function( self )
+      if self:GetChecked() then
+        TidyBar_options.show_textured_background_petbattle = true
+      else
+        TidyBar_options.show_textured_background_petbattle = false
+      end
+      TidyBar_refresh_everything()
+    end)
+  end
 end
-
 
 space()
 

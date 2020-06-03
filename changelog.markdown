@@ -10,6 +10,12 @@
 ## 8.3 series
 
 
+### retail 8.3.0.1, classic 1.13.1
+
+- Implemented dual retail-classic support.
+  -  I'm not going to maintain a totally separate addon for classic because that would be annoying.  This is a simple enough addon that I can manage this.
+
+
 ### 8.3.0.0
 
 - TOC bump
