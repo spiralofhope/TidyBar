@@ -7,101 +7,90 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
-## 8.3 series
-
-
-### retail 8.3.0.1, classic 1.13.1
+## retail 8.3.0.1, classic 1.13.1
 
 - Implemented dual retail-classic support.
   -  I'm not going to maintain a totally separate addon for classic because that would be annoying.  This is a simple enough addon that I can manage this.
 
 
-### 8.3.0.0
+## 8.3.0.0
 
 - TOC bump
 
 
-## 8.2 series
 
-
-### 8.2.5.0
+## 8.2.5.0
 
 - TOC bump
 
  
-### 8.2.0.2
+## 8.2.0.2
 
 - Minor code audit and cleanup.
 - Slightly widened the reveal region for the side bars area; when the mouse approaches the side, the buttons will show sooner.
 
 
-### 8.2.0.1
+## 8.2.0.1
 
 - Removed TidyBar-specific main area frame, now attaching to the world frame to solve a SetPoint() error.
 
 
 
-## 8.1 series
-
-
-### 8.1.0.1
+## 8.1.0.1
 
 - Move the hidden `PetActionBarFrame` so it's hidden frame is not overtop of everything.
 
 
-### 8.1.0.0
+## 8.1.0.0
 
 - TOC bump
 
 
 
-## 8.0 series
-
-
-### 8.0.1.9
+## 8.0.1.9
 
 - Implemented a hackish workaround for #67 - Implement StatusTrackingBarManager functionality
 
 
-### 8.0.1.8
+## 8.0.1.8
 
 - Fix an in-combat error from `MainMenuBar:SetWidth()`
 
 
-### 8.0.1.7
+## 8.0.1.7
 
 - Hide the background/side styling of the `ExtraActionButton`
 
 
-### 8.0.1.6
+## 8.0.1.6
 
 - Styling the power bar area.
 
 
-### 8.0.1.5
+## 8.0.1.5
 
 - Entirely removed objectives tracker code.
   -  I don't understand what parts to manipulate.
 
 
-### 8.0.1.4
+## 8.0.1.4
 
 - Fixed the objectives tracker code, again.
 
 
-### 8.0.1.3
+## 8.0.1.3
 
 - Fixed parts of the objectives tracker being constantly removed.
   -  This unintentionally fixed the positioning of the multi-seat vehicle UI (e.g. the Grand Expedition Yak).
 
 
-### 8.0.1.2
+## 8.0.1.2
 
 - Stacked the pet bar.
 - Shifted a hidden bar that was preventing mouseover and clicking in part of the chat area.
 
 
-### 8.0.1.1
+## 8.0.1.1
 
 - Major rewrite
   -  Not just a rewrite for 8.x, but a general code audit and simplification.  TidyBar is now easier to maintain.  Probably.
@@ -129,24 +118,18 @@
 
 
 
-## 7.3 series
-
-
 ## 7.3.2.0
 
 - TOC bump
 
 
-### 7.3.0.1
+## 7.3.0.1
 
 - TOC bump
 
 
 
-## 7.2 series
-
-
-### 7.2.5.1
+## 7.2.5.1
 
 - Fixed #58 - Move pet bar
   -  It's now positioned the same as the main bar.
@@ -157,55 +140,54 @@
   -  These could be made to be configured independently, but I'm not going to bother.
 
 
-### 7.2.0.5
+## 7.2.0.5
 
 - Hide the FPS text (FramerateText).
 
-### 7.2.0.4
+
+## 7.2.0.4
 
 - Fixed #57 - Move FPS meter
 
 
-### 7.2.0.3
+## 7.2.0.3
 
 - Vehicle support
   -  It's hardcoded, but seems to be a reasonable default for me.  People with a chat box on the right are screwed.  Same with the pet UI.
 
 
-### 7.2.0.2
+## 7.2.0.2
 
 - Fixed the pet battle UI.
 
 
-### 7.2.0.1
+## 7.2.0.1
 
 - Implemented #31 - Support the pet battle UI
 - Fixed #56 - Fix tooltips on items in the side
 - Fixed the right-gryphon not appearing properly when the option was toggled.
 - `README.markdown` update.
 
-### 7.2.0.0
+
+## 7.2.0.0
 
 - Fixed the addon release date.
 - Tested against 7.2
 
 
 
-## 7.1 series
-
-
-### 7.1.5.1
+## 7.1.5.1
 
 - More aggressively remove the talent nag's transparent overlay.
 - Code cleanup and style improvements.
 
 
-### 7.1.0.3
+## 7.1.0.3
 
 - Fixed the experience bar appearing with a max-level character.
 
 
-### 7.1.0.2
+## 7.1.0.2
 
 - Fixed #40 - Adjust bars when level 100 but not in possession of a legendary weapon
 - Fixed #43 and #54 related to the bars resetting and repositioning under certain circumstances.
@@ -224,22 +206,19 @@
 - I think TidyBar may have been broken for users who were not max level.
 
 
-### 7.1.0.1
+## 7.1.0.1
 
 - Fixed an unpredictable error message when first logging in.
 
 
 
-## 7.0.3 series
-
-
-### 7.0.3.23
+## 7.0.3.23
 
 - Fixed a probable bug with a global/local variable.
   -  Releasing with just this fix, since it's likely a bad issue for some people.
 
 
-### 7.0.3.22
+## 7.0.3.22
 
 - Fixed #47 - Fix ArtifactWatchBar height resetting
 - Fixed #43 - Fix artifact bar background resetting to dim yellow
@@ -252,13 +231,13 @@
 - Implemented an option to show/hide the HonorWatchBar.
 
 
-### 7.0.3.21
+## 7.0.3.21
 
 - Fixed #41 - Fix reputation bar when at max-xp
 - Fixed #26 - Fix artifact experience bar backdrop
 
 
-### 7.0.3.20
+## 7.0.3.20
 
 - Fixed #37 - Adjust artifact power bar 
   -  It was working well, but imperfectly and caused some jumpyness.
@@ -266,7 +245,7 @@
 - Fixed the horizontal movement for the main area.
 
 
-### 7.0.3.19
+## 7.0.3.19
 
 - Fixed the positioning of the ArtifactWatchBar.
 - Fixed the text of the ArtifactWatchBar appearing at startup, until refreshed or the mouse is moved through it.
@@ -275,35 +254,35 @@
   -  I don't know if the UI needs to be updated, or if the feature will return in some form.  I'm guessing the former.
 
 
-### 7.0.3.18
+## 7.0.3.18
 
 - Fixed ArtifactWatchBar on characters with no legendary weapon.
 
 
-### 7.0.3.17
+## 7.0.3.17
 
 - ArtifactWatchBar support.
 
 
-### 7.0.3.16
+## 7.0.3.16
 
 - Implemented a reasonable simplification of the vehicle UI.
 - Hid the overly-loud spark that appears when experience is gained.
 
 
-### 7.0.3.15
+## 7.0.3.15
 
 - Fixed the sidebar scaling.
 - Fixed the mainbar texture, when `TidyBar_options.show_textured_backgrounds = true`
 
 
-### 7.0.3.14
+## 7.0.3.14
 
 - Implemented an option to force the reputation bar height, even when changing them.
   -  This uses 'OnUpdate', which I hate.
 
 
-### 7.0.3.13
+## 7.0.3.13
 
 - Rework bar alignment for style and speed.
   -  Wrote `the reputation bar` with some notes on this.
@@ -317,7 +296,7 @@
 - Fixed #25 - Reposition the gryphons
 
 
-### 7.0.3.12
+## 7.0.3.12
 
 - Implemented #14 - Implement global configuration
   -  Implemented an options panel.
@@ -325,7 +304,7 @@
 - Fixed an issue with the gryphon hiding option.
 
 
-### 7.0.3.11
+## 7.0.3.11
 
 - `TidyBar_HideActionBarButtonsTexturedBackground` renamed to `TidyBar_show_MainMenuBar_textured_background`
 - `TidyBar_hide_macro_text` renamed to `TidyBar_show_macro_text`
@@ -338,7 +317,7 @@
   -  It's easy to fix these sorts of things, when focus is on code clarity.
 
 
-### 7.0.3.10
+## 7.0.3.10
 
 - Fixed alignment issues with the right bars.  Again.
 - Corrections to the background when `TidyBar_HideActionBarButtonsTexturedBackground = false`
@@ -348,19 +327,19 @@
   -  Default `true`
 
 
-### 7.0.3.9
+## 7.0.3.9
 
 - Fixed alignment issues with the right bars.
 - Fixed the objective tracker placement with/without the right bars.
 
 
-### 7.0.3.8
+## 7.0.3.8
 
 - Fixed the reputation/etc bars jumping around when entering/exiting rested (city), and world.
 - Code style changes.
 
 
-### 7.0.3.7
+## 7.0.3.7
 
 - Reworked the button/bar alignment, so they line up properly in all cases.
 - Hide the button border around the stance buttons.
@@ -369,49 +348,50 @@
 - Renamed `Empty.tga` to `empty.tga`.
 
 
-### 7.0.3.6
+## 7.0.3.6
 
 - Fixed the height and separation of the experience and reputation bars.
 - Fixed the objectives tracker only showing a few items.
 
 
-### 7.0.3.5
+## 7.0.3.5
 
 - Implemented an option to remove the background texture of the main buttons.
   -  `TidyBar_HideActionBarButtonsTexturedBackground`
   -  Default `true`
 
 
-### 7.0.3.4
+## 7.0.3.4
 
 - Fixed the reputation bar hanging off of the right-hand side.  Again.
 - Fixed the experience bar hanging off of the right-hand side.
 
 
-### 7.0.3.3
+## 7.0.3.3
 
 - Fixed the reputation bar hanging off of the right-hand side.
 - Updated `TidyBar.toc`
   -  It lists the author as "Binny".  Curious.
 
 
-### 7.0.3.2
+## 7.0.3.2
 
 - Implemented an option to automatically/always show the right sidebar.
 
 
-### 7.0.3.1
+## 7.0.3.1
 
 - Implemented an option to show/hide the gryphons on either side the bars.
 
 
-### 7.0.3
+## 7.0.3
 
 - 7.0.3 compatibility changes.
 - A major code style rewrite.  Thanks, Cynbe.
 - Removed old comments.
 
 Earlier than this, I had hacked on TidyBar here and there.
+
 
 
 # 6.x - Warlords of Draenor (WoD)
@@ -429,12 +409,13 @@ The following notes were by the original author.
 Note that these old releases may or may not be buried in this git repository.  I (spiralofhope) have kept those old archives if anyone is *that* interested.
 
 
+
 # 5.x - Mists of Pandaria (MoP)
 
 
 ## 5.2
 
-- Added the Store button to the Tidy Bar container so it gets hidden properly
+- Added the Store button to the Tidy Bar container so it gets hidden properly.
 
 
 ## 5.1
@@ -445,7 +426,7 @@ Note that these old releases may or may not be buried in this git repository.  I
 ## 5.0
 
 - Update to 5.x TOC
-- Added HideMainButtonArt and HideExperienceBar variables to the head of TidyBar.lua; Setting the variable to 'true' will make the changes.
+- Added `HideMainButtonArt` and `HideExperienceBar` variables to the head of `TidyBar.lua`; Setting the variable to `true` will make the changes.
 
 
 
@@ -463,3 +444,9 @@ Note that these old releases may or may not be buried in this git repository.  I
 - Updated to 4.2 UI changes
 
 I have no notes from earlier than this.
+
+
+
+# No earlier notes are known
+
+Presumably this AddOn didn't exist before the 4.2 update that was mentioned last.
