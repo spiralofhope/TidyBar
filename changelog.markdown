@@ -7,6 +7,11 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
+## BETA - retail 8.3.0.2, classic 1.13.2
+
+- Fixed an in-combat error.
+
+
 ## retail 8.3.0.1, classic 1.13.1
 
 - Implemented dual retail-classic support.
