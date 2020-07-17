@@ -96,7 +96,7 @@ local function TidyBar_refresh_main_area()
   local __
 
   --  If out of combat:
-  if InCombatLockdown() == false then
+  if not InCombatLockdown() then
     local anchor
 
     --do  --  Positioning
@@ -401,7 +401,7 @@ local function TidyBar_refresh_side( is_mouse_inside_side )
   local __ = 10
   if MultiBarRight:IsShown() then __ = __ + MultiBarRightButton1:GetWidth() end
   if MultiBarLeft:IsShown()  then __ = __ + MultiBarLeftButton1:GetWidth()  end
-  VerticalMultiBarsContainer:SetWidth( __ )
+  if not InCombatLockdown() then VerticalMultiBarsContainer:SetWidth( __ ) end
   --VerticalMultiBarsContainer:SetWidth( VerticalMultiBarsContainer:GetWidth() + 10 )
 
 
@@ -444,8 +444,6 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
   end
 
   if not InCombatLockdown() then
-
-
     do  -- The corner frame for the buttons and bags
       local __ = MicroButtonAndBagsBar
       --  parent frame size
@@ -521,7 +519,6 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
         MainMenuBarBackpackButton:SetPoint( 'BottomLeft', MicroButtonPortrait, 'TopLeft', -3, 10 )
       end
     end
-
   end  --  not InCombatLockdown() then
 
 
