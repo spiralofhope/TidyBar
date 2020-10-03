@@ -522,11 +522,6 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
   end  --  not InCombatLockdown() then
 
 
-  if release_type == 'retail' then
-    -- The nagging talent popup.
-    TalentMicroButtonAlert:Hide()
-  end
-
   local alpha
   if  is_mouse_inside_corner
   or  TidyBar_options.always_show_corner  ==  true

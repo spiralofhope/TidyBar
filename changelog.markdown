@@ -10,6 +10,7 @@
 ## BETA - retail 8.3.0.2, classic 1.13.2
 
 - Fixed an in-combat error.
+- No longer hiding a popup nag, as that's not compatible with Shadowlands and it's not this AddOn's job anyway.
 
 
 ## retail 8.3.0.1, classic 1.13.1
