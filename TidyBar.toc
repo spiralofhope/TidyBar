@@ -1,20 +1,25 @@
 ﻿# TidyBar has most recently been tested against:
 # Retail:
-#   Version 8.3.0 (34220) (Release x64)
-#   Apr 28 2020
+#   Version 8.3.7.35662 (Release x64)
+#   Aug 24 2020
 # Classic:
-#   Version 1.13.4 (34266) (Release x64)
-#   May 1 2020
+#   Version 1.13.36035 (Release x64)
+#   Sep 24 2020
+# Shadowlands Beta:
+#   Version 9.0.2.36086
+#   Sep 29 2020
 
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
 ## Interface:             80300
+  ## (Classic):           11305
+  ## (Shadowlands beta):  90002
 ## Title:                 Tidy Bar
 
 ## Notes:                 Simplifies your button bars, saving screen real estate.
 ## Author:                spiralofhope
-## Version:               retail 8.3.0.1, classic 1.13.1
-## X-Date:                2020-06-03
+## Version:               retail 8.3.7.1, classic 1.13.2
+## X-Date:                2020-10-04
 ## X-Website:             https://github.com/spiralofhope/TidyBar/
 ## X-Feedback:            https://github.com/spiralofhope/TidyBar/issues/new
 

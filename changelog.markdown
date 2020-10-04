@@ -7,8 +7,9 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
-## BETA - retail 8.3.0.2, classic 1.13.2
+## retail 8.3.7.1, classic 1.13.2
 
+- Tested for Shadowlands beta 9.0.2.36086
 - Fixed an in-combat error.
 - No longer hiding a popup nag, as that's not compatible with Shadowlands and it's not this AddOn's job anyway.
 
