@@ -1,16 +1,3 @@
---
--- TODO - put all these in the issue tracker!
---
-
--- RE-TEST - Refreshing is throttled.  Every tiny thing can help performance.
-
--- TODO - investigate replacing the empty 30% tga with a backdrop:
---  https://wow.gamepedia.com/API_Frame_SetBackdrop
---  See the function frame_debug_overlay and apply it to the whole region
---  I cannot apply it to each icon space, because there's nothing there when it's empty.
-
-
-
 --  Technically adjustable, but I don't want to support that without a request.
 local Empty_Art              = 'Interface/Addons/TidyBar/empty'
 
