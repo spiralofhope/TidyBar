@@ -12,8 +12,8 @@
 # The interface number can be learned with:
 #   /dump select( 4, GetBuildInfo() )
 ## Interface:             80300
-  ## (Classic):           11305
-  ## (Shadowlands beta):  90002
+#    (Classic):           11305
+#    (Shadowlands beta):  90002
 ## Title:                 Tidy Bar
 
 ## Notes:                 Simplifies your button bars, saving screen real estate.

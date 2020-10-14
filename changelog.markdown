@@ -7,6 +7,11 @@
 # 8.x - Battle for Azeroth (BfA)
 
 
+## UNRELEASED retail 8.3.7.2, classic 1.13.3
+
+- Fixed some .toc text.
+
+
 ## retail 8.3.7.1, classic 1.13.2
 
 - Tested for Shadowlands beta 9.0.2.36086
