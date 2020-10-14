@@ -158,7 +158,19 @@ local function TidyBar_refresh_main_area()
       end
       -- Note that StatusTrackingBarManager has an untrustworthy position.
       ActionButton1:SetPoint( 'BottomLeft', UIParent, 'BottomLeft', TidyBar_options.main_area_positioning_x, TidyBar_options.main_area_positioning_y )
-
+      -- See issue #83
+      --   https://github.com/spiralofhope/TidyBar/issues/83
+--[[
+      do  -- Apply a transparent background behind the buttons.
+        for i=1,10 do
+          __ = _G[ 'ActionButton' .. i ]
+          __ = __:CreateTexture( nil, 'BACKGROUND' )
+          __:SetAllPoints()
+          __:SetTexture( Empty_Art )
+          __:SetColorTexture( 0, 0, 0, 0.3 )
+        end
+      end
+]]
       anchor = ActionButton1
     end
 
