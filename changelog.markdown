@@ -10,6 +10,7 @@
 ## UNRELEASED retail 8.3.7.2, classic 1.13.3
 
 - Fixed some .toc text.
+- Make the backpack order the same as what's displayed in AddOns like ArkInventory.
 
 
 ## retail 8.3.7.1, classic 1.13.2
