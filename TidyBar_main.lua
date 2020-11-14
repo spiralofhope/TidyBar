@@ -503,12 +503,12 @@ local function TidyBar_refresh_corner( is_mouse_inside_corner )
 
 
     do  --  Bags / backpack repositioning
-      --  Chain the bags together, in reverse order.
+      --  Chain the bags together, with the main backpack first.
       local separation = 4
-      CharacterBag3Slot:ClearAllPoints() ; CharacterBag3Slot:SetPoint( 'BottomLeft', MainMenuBarBackpackButton, 'BottomRight', separation, 0 )
-      CharacterBag2Slot:ClearAllPoints() ; CharacterBag2Slot:SetPoint( 'BottomLeft', CharacterBag3Slot,         'BottomRight', separation, 0 )
-      CharacterBag1Slot:ClearAllPoints() ; CharacterBag1Slot:SetPoint( 'BottomLeft', CharacterBag2Slot,         'BottomRight', separation, 0 )
-      CharacterBag0Slot:ClearAllPoints() ; CharacterBag0Slot:SetPoint( 'BottomLeft', CharacterBag1Slot,         'BottomRight', separation, 0 )
+      CharacterBag0Slot:ClearAllPoints() ; CharacterBag0Slot:SetPoint( 'BottomLeft', MainMenuBarBackpackButton, 'BottomRight', separation, 0 )
+      CharacterBag1Slot:ClearAllPoints() ; CharacterBag1Slot:SetPoint( 'BottomLeft', CharacterBag0Slot,         'BottomRight', separation, 0 )
+      CharacterBag2Slot:ClearAllPoints() ; CharacterBag2Slot:SetPoint( 'BottomLeft', CharacterBag1Slot,         'BottomRight', separation, 0 )
+      CharacterBag3Slot:ClearAllPoints() ; CharacterBag3Slot:SetPoint( 'BottomLeft', CharacterBag2Slot,         'BottomRight', separation, 0 )
       --  Link them above the bottom buttons
       MainMenuBarBackpackButton:ClearAllPoints()
       if     release_type == 'retail' then
